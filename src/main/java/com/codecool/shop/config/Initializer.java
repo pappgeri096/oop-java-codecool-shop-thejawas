@@ -50,9 +50,9 @@ public class Initializer implements ServletContextListener {
         productDataStore.add(new Product("Lenovo IdeaPad Miix 700", 479, "USD", "Keyboard cover is included. Fanless Core m5 processor. Full-size USB ports. Adjustable kickstand.", tablet, lenovo));
         productDataStore.add(new Product("Amazon Fire HD 8", 89, "USD", "Amazon's latest Fire HD 8 tablet is a great value for media consumption.", tablet, amazon));
 
-        productDataStore.add(new Product("Health Energy", 19.99f, "USD", "Coming from mother Earth, this is the most efficient energy on the market, if you want to recover from any illness or just stay healthy.", energy, earth));
-        productDataStore.add(new Product("Life Energy", 99.99f, "USD", "We are selling the most healthiest life energy available on Planet Earth. Get your package now", energy, universe));
-        productDataStore.add(new Product("Money Energy", 199.89f, "USD", "You wanna get rich quick? Our money energy is just for you. It is handy, quick to absorb and it is recommended by 9 out of 10 rich people", energy, earth));
+        productDataStore.add(new Product("Health Energy", 19.99f, "USD", "Coming from mother Earth, this is the most efficient energy on the market, if you want to recover from any illness or just stay healthy, our first class Health Energy is just for you.", energy, earth));
+        productDataStore.add(new Product("Life Energy", 99.99f, "USD", "We are selling the most healthiest life energy available on Planet Earth. Get your package now, and get revitalized.", energy, universe));
+        productDataStore.add(new Product("Money Energy", 199.89f, "USD", "You wanna get rich quick? Then, order this money energy package right now and become rich in no time. It is handy, quick to absorb and recommended by 9 out of 10 rich people", energy, earth));
 
     }
 }

@@ -5,6 +5,7 @@ import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.model.Product;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet(urlPatterns = {"/", "/index"})
@@ -25,34 +27,27 @@ public class ProductController extends HttpServlet {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
 
-        String browseCategory = req.getParameter("category");
+        List<Product> productList = productDataStore.getAll();
 
-        String htmlFileName;
-        int categoryId = (browseCategory == null) ? 1 : Integer.parseInt(browseCategory);
-        switch (categoryId) {
-            case 1:
-                htmlFileName = "tablet";
-                break;
-            case 2:
-                htmlFileName = "energy";
-                break;
-            default:
-                htmlFileName = "index";
-                break;
-        }
-        String htmlPage = "product/" + htmlFileName + ".html";
+        String categoryParameter = req.getParameter("category");
 
         Map params = new HashMap<>();
-        params.put("category", productCategoryDataStore.find(categoryId));
-        params.put("products", productDataStore.getBy(productCategoryDataStore.find(categoryId)));
+        if (categoryParameter != null) {
+            int productCategoryId = Integer.parseInt(categoryParameter);
+
+            if (productCategoryId > 0 && productCategoryId < 3) {
+                productList = productDataStore.getBy(productCategoryDataStore.find(productCategoryId));
+                params.put("category", productCategoryDataStore.find(productCategoryId));
+            }
+        }
+
+        params.put("products", productList);
+        params.put("recipient", "World");
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariables(params);
-        context.setVariable("recipient", "World");
-        context.setVariable("category", productCategoryDataStore.find(categoryId));
-        context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(categoryId)));
-        engine.process(htmlPage, context, resp.getWriter());
+        engine.process("product/index.html", context, resp.getWriter());
     }
 
 }

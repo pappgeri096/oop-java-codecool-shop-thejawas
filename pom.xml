@@ -56,5 +56,10 @@
             <artifactId>thymeleaf</artifactId>
             <version>3.0.9.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>com.paypal.sdk</groupId>
+            <artifactId>rest-api-sdk</artifactId>
+            <version>LATEST</version>
+        </dependency>
     </dependencies>
 </project>

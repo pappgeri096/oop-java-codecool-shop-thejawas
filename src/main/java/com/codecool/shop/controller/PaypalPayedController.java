@@ -17,7 +17,7 @@ import java.util.List;
 
 
 @WebServlet(urlPatterns = {"/done"})
-public class PayedController extends HttpServlet {
+public class PaypalPayedController extends HttpServlet {
 
 
     @Override
@@ -34,7 +34,7 @@ public class PayedController extends HttpServlet {
         try {
             APIContext apiContext = new APIContext(clientId, clientSecret, "sandbox");
             Payment createdPayment = payment.execute(apiContext, paymentExecution);
-            System.out.println(createdPayment.getPayer());
+            System.out.println(createdPayment);
 
         } catch (PayPalRESTException e) {
             System.err.println(e.getDetails());

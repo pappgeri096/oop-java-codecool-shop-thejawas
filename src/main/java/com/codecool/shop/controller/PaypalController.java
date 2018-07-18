@@ -17,7 +17,7 @@ import java.util.List;
 
 
 @WebServlet(urlPatterns = {"/payment"})
-public class PaymentController extends HttpServlet {
+public class PaypalController extends HttpServlet {
 
 
     @Override
@@ -26,27 +26,72 @@ public class PaymentController extends HttpServlet {
         String clientId = "AWTqmvOfxu2VnNifNQblRmD8ty6zvuam7Hh_k36MHk8sbYuZdEtR3gneLyuK_3A7E_AzZm0AWr-rNVA3";
         String clientSecret = "ECYgXqdlLBxQsCHhdwMt4yz1LU5O5n6chmJe3EHrhGftsUOiN5PbmergN_0_lqQcFl-JzzC1ep68JG5I";
 
+
+        ShippingAddress address = new ShippingAddress();
+        address.setRecipientName("Janos Istvan");
+        address.setPhone("32523523");
+        address.setCountryCode("HU");
+        address.setCity("Budapest");
+        address.setLine1("IDK");
+        address.setPostalCode("2600");
+        address.setState("Pest");
+
+        Item item = new Item();
+        item.setName("WC PAPIR");
+        item.setPrice("5000");
+        item.setCategory("PHYSICAL");
+        item.setQuantity("2");
+        item.setCurrency("HUF");
+
+        List items2 = new ArrayList();
+        items2.add(item);
+        //items2.add(item2);
+
+        ItemList list = new ItemList();
+        list.setItems(items2);
+        list.setShippingAddress(address);
+
+
+        Details details = new Details();
+        details.setShipping("5");
+        details.setSubtotal("10000");
+
         Amount amount = new Amount();
-        amount.setCurrency("USD");
-        amount.setTotal("100");
+        amount.setCurrency("HUF");
+        amount.setTotal("10005");
+        amount.setDetails(details);
 
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
+        transaction.setItemList(list);
+        transaction.setDescription("DO WHAT YOU LOVE");
+        transaction.setInvoiceNumber("2352352");
         List<Transaction> transactions = new ArrayList<Transaction>();
         transactions.add(transaction);
 
+
+        PayerInfo info = new PayerInfo();
+        info.setLastName("Bill");
+        info.setFirstName("Gates");
+        info.setBillingAddress(address);
+
         Payer payer = new Payer();
+        payer.setPayerInfo(info);
         payer.setPaymentMethod("paypal");
+
+        RedirectUrls redirectUrls = new RedirectUrls();
+        redirectUrls.setCancelUrl("https://example.com/cancel");
+        redirectUrls.setReturnUrl("http://localhost:8080/done");
+
 
         Payment payment = new Payment();
         payment.setIntent("sale");
         payment.setPayer(payer);
         payment.setTransactions(transactions);
-
-        RedirectUrls redirectUrls = new RedirectUrls();
-        redirectUrls.setCancelUrl("https://example.com/cancel");
-        redirectUrls.setReturnUrl("http://localhost:8080/done");
         payment.setRedirectUrls(redirectUrls);
+
+
+
 
 
         try {

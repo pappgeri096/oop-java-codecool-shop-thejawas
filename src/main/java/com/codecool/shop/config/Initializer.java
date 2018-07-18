@@ -37,8 +37,6 @@ public class Initializer implements ServletContextListener {
 
         Supplier universe = new Supplier("Universe", "Stars, black holes, atoms, space, energy");
         supplierDataStore.add(universe);
-        Supplier milkyWay = new Supplier("Milky Way", "Planets, moons, space, energy");
-        supplierDataStore.add(milkyWay);
         Supplier earth = new Supplier("Earth", "Water, breatheable air, solid land mass, energy");
         supplierDataStore.add(earth);
 

@@ -1,10 +1,12 @@
 package com.codecool.shop.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Order {
     private int id;
+    Map<String, String> map = new HashMap<String, String>();
+    private List<String> checkoutData = Arrays.asList("fullName","emailAddress"," telephoneNumber","countryBill","cityBill","zipCodeBill","addressBill","countryShip","cityShip","zipCodeShip","addressShip");
+
     private List<Product> products;
 
     public Order() {
@@ -17,6 +19,12 @@ public class Order {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setUserData(List<String> userData) {
+        for (int i = 0; i < 11; i++) {
+            this.map.put(checkoutData.get(i), userData.get(i));
+        }
     }
 
     public long getProductQuantity(int id) {

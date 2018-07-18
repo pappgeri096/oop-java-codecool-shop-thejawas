@@ -1,7 +1,9 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.implementation.OrderDaoMem;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
@@ -26,10 +28,18 @@ public class ProductController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+        OrderDao orderDataStore = OrderDaoMem.getInstance();
 
         List<Product> productList = productDataStore.getAll();
 
         String categoryParameter = req.getParameter("category");
+
+        String productParameter = req.getParameter("product");
+
+        if (productParameter != null){
+            int productId = Integer.parseInt(productParameter);
+            orderDataStore.getCurrent().addProduct((productDataStore.getBy(productId)));
+        }
 
         Map params = new HashMap<>();
         if (categoryParameter != null) {
@@ -43,6 +53,9 @@ public class ProductController extends HttpServlet {
 
         params.put("products", productList);
         params.put("recipient", "World");
+        params.put("cart", orderDataStore.getCurrent());
+        System.out.println(params);
+        System.out.println(orderDataStore.getCurrent().getProductList());
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());

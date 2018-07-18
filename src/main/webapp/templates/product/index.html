@@ -43,6 +43,7 @@
         <a href='/index'><strong>All</strong></a>
         <a href='/index?category=1'><strong>Tablet</strong></a>
         <a href='/index?category=2'><strong>Energy</strong></a>
+        <h3 th:text="${cart.getProductList().size()}"></h3>
 
     </div>
 
@@ -59,7 +60,7 @@
                             <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
                         </div>
                         <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success" href="/#">Add to cart</a>
+                            <a class="btn btn-success" href="/shop?product=1" th:attr="href='/shop?product=' + ${prod.id}">Add to cart</a>
                         </div>
                     </div>
                 </div>

@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-@WebServlet(urlPatterns = {"/payment"})
+@WebServlet(urlPatterns = {"/paypal"})
 public class PaypalController extends HttpServlet {
 
 
@@ -28,7 +28,7 @@ public class PaypalController extends HttpServlet {
 
 
         ShippingAddress address = new ShippingAddress();
-        address.setRecipientName("Janos Istvan");
+        //address.setRecipientName("Janos Istvan");
         address.setPhone("32523523");
         address.setCountryCode("HU");
         address.setCity("Budapest");
@@ -64,8 +64,8 @@ public class PaypalController extends HttpServlet {
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
         transaction.setItemList(list);
-        transaction.setDescription("DO WHAT YOU LOVE");
-        transaction.setInvoiceNumber("2352352");
+        transaction.setDescription("cunci");
+        transaction.setInvoiceNumber("23429999");
         List<Transaction> transactions = new ArrayList<Transaction>();
         transactions.add(transaction);
 
@@ -89,9 +89,6 @@ public class PaypalController extends HttpServlet {
         payment.setPayer(payer);
         payment.setTransactions(transactions);
         payment.setRedirectUrls(redirectUrls);
-
-
-
 
 
         try {

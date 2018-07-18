@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta name="author" content="Codecool" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8"/>
+    <meta name="author" content="Codecool"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <title>Codecool Shop</title>
 
@@ -13,7 +13,7 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
 
     <link rel="stylesheet" href="https://bootswatch.com/3/flatly/bootstrap.min.css">
 
@@ -21,27 +21,26 @@
 
     <link rel="stylesheet" href="https://bootswatch.com/3/flatly/_bootswatch.scss">
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"-->
+    <!--integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />-->
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            ></script>
+    ></script>
 
-    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css"/>
 </head>
 
 <body>
 
-<div class="jumbotron text-center">
-    <h1>Codecool Shop</h1>
-</div>
-
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-2">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -52,21 +51,24 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li class="active"><a href='/index'><strong>All products</strong> <span class="sr-only">(current)</span></a></li>
-
+                <li class="active"><a href='/index'><strong>All products</strong> <span class="sr-only">(current)</span></a>
+                </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Browse by category<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Browse
+                        by category<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li th:each="categ,iterStat : ${categories}" >
+                        <li th:each="categ,iterStat : ${categories}">
                             <a th:attr="href='/index?category=' + ${categ.id}" th:text="${categ.name}">Category text</a>
                         </li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Browse by Supplier<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Browse
+                        by Supplier<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li th:each="supplier,iterStat : ${suppliers}" >
-                            <a th:attr="href='/index?supplier=' + ${supplier.id}" th:text="${supplier.name}">Category text</a>
+                        <li th:each="supplier,iterStat : ${suppliers}">
+                            <a th:attr="href='/index?supplier=' + ${supplier.id}" th:text="${supplier.name}">Category
+                                text</a>
                         </li>
                     </ul>
                 </li>
@@ -78,34 +80,37 @@
                 </div>
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
+
             <!--<ul class="nav navbar-nav navbar-right">-->
-                <!--<li><a href="#">Link</a></li>-->
+            <!--<li><a href="#">Link</a></li>-->
             <!--</ul>-->
         </div>
     </div>
 </nav>
+<a class="navbar-form navbar-right shopping-cart" href="/cart"><i class="fas fa-cart-arrow-down"></i></a>
+<i class="navbar-form navbar-right" th:text="${cart.getProductList().size()}"></i>
+<div id="products" class="row list-group">
 
-<div class="container">
-    <div id="products" class="row list-group">
-
-        <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products}">
-            <div class="thumbnail">
-                <img class="group list-group-image" src="http://placehold.it/400x250/000/fff" th:attr="src='/static/img/product_' + ${prod.id} + '.jpg'" alt="" />
-                <div class="caption">
-                    <h4 class="group inner list-group-item-heading" th:text="${prod.name}">Product name</h4>
-                    <p class="group inner list-group-item-text" th:text="${prod.description}">Product description... </p>
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success" href="/#">Add to cart</a>
-                        </div>
+    <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products}">
+        <div class="thumbnail">
+            <img class="group list-group-image" src="http://placehold.it/400x250/000/fff"
+                 th:attr="src='/static/img/product_' + ${prod.id} + '.jpg'" alt=""/>
+            <div class="caption">
+                <h4 class="group inner list-group-item-heading" th:text="${prod.name}">Product name</h4>
+                <p class="group inner list-group-item-text" th:text="${prod.description}">Product description... </p>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <a class="btn btn-success" href="/shop?product=1" th:attr="href='/shop?product=' + ${prod.id}">Add
+                            to cart</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 </div>
 

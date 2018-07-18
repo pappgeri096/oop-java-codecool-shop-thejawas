@@ -8,10 +8,11 @@ public class Order {
     private List<Product> products;
 
     public Order() {
+        products = new ArrayList<>();
     }
 
     public void addProduct(Product product) {
-        products.add(product);
+        if (product != null) products.add(product);
     }
 
     public void setId(int id) {
@@ -24,5 +25,16 @@ public class Order {
 
     public int getId() {
         return this.id;
+    }
+
+    public List<Product> getProductList() {
+        return products;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("id: %1$d, ",
+                this.id);
+
     }
 }

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="static/css/checkout.css">
+    <title>Checkout</title>
+</head>
+<body>
+<div class="mx-auto" style="width: 30%;">
+<form action="/checkoutsave">
+    <div class="form-group mx-auto">
+    <label>Name</label>
+    <input class="form-control" placeholder="Enter your name" type="text" name="name" required ><br>
+
+    <label>Email address</label>
+    <input class="form-control" placeholder="Enter email" type="text" name="email" required ><br>
+
+    <label>Phone Number</label>
+    <input class="form-control" placeholder="06-20-458-4578" type="tel" pattern="[0]{6}-[0-9]{0}-[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]" name="phonenumber" required ><br>
+    </div>
+
+    <div class="form-group">
+    <label>Billing Address</label><br>
+
+    <label>Country:<br></label>
+    <input class="form-control" type="text" name="countryBill"><br>
+
+    <label>City</label>
+    <input class="form-control" type="text" name="cityBill"><br>
+
+    <label>Zipcode</label>
+    <input class="form-control" type="text" name="zipcodeBill"><br>
+
+    <label>Address</label>
+    <input class="form-control" type="text" name="addressBill"><br>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="true" id="sameAddress" name="sameAddress">
+        <label class="form-check-label" for="sameAddress">
+           Same <br>
+        </label>
+    </div>
+    <p>
+    <div class="form-group">
+    <label>Shiping Address</label><br>
+
+    <label>Country:<br></label>
+    <input class="form-control" type="text" name="countryShip"><br>
+
+    <label>City</label>
+    <input class="form-control" type="text" name="cityShip"><br>
+
+    <label>Zipcode</label>
+    <input class="form-control" type="text" name="zipcodeShip"><br>
+
+    <label>Address</label>
+    <input class="form-control" type="text" name="addressShip"><br>
+    </div>
+    <button type="submit" value="Submit">Submit</button>
+</form>
+</div>
+</body>
+</html>

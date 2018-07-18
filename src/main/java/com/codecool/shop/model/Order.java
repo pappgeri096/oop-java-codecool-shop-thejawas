@@ -4,17 +4,25 @@ import java.util.*;
 
 public class Order {
     private int id;
-    Map<String, String> map = new HashMap<String, String>();
+    Map<String, String> map = new HashMap<>();
     private List<String> checkoutData = Arrays.asList("fullName","emailAddress"," telephoneNumber","countryBill","cityBill","zipCodeBill","addressBill","countryShip","cityShip","zipCodeShip","addressShip");
 
-    private List<Product> products;
+    private List<LineItem> lineItemList;
 
     public Order() {
-        products = new ArrayList<>();
+        lineItemList = new ArrayList<>();
     }
 
     public void addProduct(Product product) {
-        if (product != null) products.add(product);
+        boolean wasProductFound = false;
+        for (LineItem lineItem: lineItemList) {
+            if (lineItem.getProduct().getId()==(product.getId())){
+                lineItem.increaseQuantity();
+                wasProductFound=true;
+            }
+        }
+        if (!wasProductFound) lineItemList.add(new LineItem(product));
+
     }
 
     public void setId(int id) {
@@ -27,16 +35,29 @@ public class Order {
         }
     }
 
-    public long getProductQuantity(int id) {
-        return products.stream().filter(t -> t.getId() == id).count();
-    } // may be incorrect
+    public int getQuantityOfProducts(){
+        int numberOfItems = 0;
+        for (LineItem lineItem: lineItemList) {
+            numberOfItems+= lineItem.getQuantity();
+        }
+        return numberOfItems;
+    }
+
+    public int getProductQuantity(int id) {
+        for (LineItem lineItem: lineItemList) {
+            if (lineItem.getProduct().getId() == id) {
+                return lineItem.getQuantity();
+            }
+        }
+        return 0;
+    }
 
     public int getId() {
         return this.id;
     }
 
-    public List<Product> getProductList() {
-        return products;
+    public List<LineItem> getProductList() {
+        return lineItemList;
     }
 
     @Override

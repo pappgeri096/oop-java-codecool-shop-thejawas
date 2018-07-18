@@ -88,7 +88,7 @@
     </div>
 </nav>
 <a class="navbar-form navbar-right shopping-cart" href="/cart"><i class="fas fa-cart-arrow-down"></i></a>
-<i class="navbar-form navbar-right" th:text="${cart.getProductList().size()}"></i>
+<i class="navbar-form navbar-right" th:text="${cart.getQuantityOfProducts()}"></i>
 <div id="products" class="row list-group">
 
     <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products}">
@@ -110,8 +110,6 @@
             </div>
         </div>
     </div>
-</div>
-
 </div>
 
 <div th:replace="footer.html :: copy"></div>

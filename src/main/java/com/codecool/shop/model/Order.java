@@ -87,6 +87,14 @@ public class Order {
         return sumPrice;
     }
 
+    public Map<String, String> getUserDataMap() {
+        return userDataMap;
+    }
+
+    public Map<String, Integer> getProductNameAndQuantityMap() {
+        return productNameAndQuantityMap;
+    }
+
     @Override
     public String toString() {
         return String.format("id: %1$d, ",

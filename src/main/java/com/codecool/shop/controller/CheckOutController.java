@@ -2,6 +2,7 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.OrderDao;
+import com.codecool.shop.dao.implementation.JSON.OrderDaoJson;
 import com.codecool.shop.dao.implementation.OrderDaoMem;
 import com.codecool.shop.model.Order;
 import org.thymeleaf.TemplateEngine;
@@ -22,11 +23,8 @@ public class CheckOutController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
-
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        context.setVariable("order", orderDataStore.getCurrent());
         engine.process("product/checkout.html", context, resp.getWriter());
     }
 
@@ -50,6 +48,10 @@ public class CheckOutController extends HttpServlet {
             }
         }
         order.setUserData(userData);
+
+        OrderDao writeOrderDataToFile = new OrderDaoJson();
+        writeOrderDataToFile.add(order);
+
         resp.sendRedirect("/payment");
     }
 }

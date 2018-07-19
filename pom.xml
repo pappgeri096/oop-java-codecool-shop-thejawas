@@ -76,5 +76,10 @@
             <version>2.9.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.paypal.sdk</groupId>
+            <artifactId>rest-api-sdk</artifactId>
+            <version>LATEST</version>
+        </dependency>
     </dependencies>
 </project>

@@ -63,12 +63,13 @@ public class Order {
         return lineItemList;
     }
 
+
     public void makeProductsMaps(){
         for (LineItem lineItem:lineItemList) {
             productNameAndQuantityMap.put(lineItem.getProduct().name,lineItem.getQuantity());
         }
     }
-    public String getPriceOfAllProducts(){
+    public float getPriceOfAllProducts(){
         float sumPrice = 0;
         Currency currency = null;
         for (LineItem lineItem : lineItemList) {
@@ -76,7 +77,7 @@ public class Order {
             currency = lineItem.getProduct().getDefaultCurrency();
         }
 
-        return String.valueOf(sumPrice) + " " + String.valueOf(currency);
+        return sumPrice;
     }
 
     public Map<String, String> getUserDataMap() {

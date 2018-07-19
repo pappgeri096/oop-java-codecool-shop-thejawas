@@ -60,3 +60,11 @@
 {
     margin: 0 0 11px;
 }
+
+.credit-card-container{
+    display: none;
+}
+
+.paypal-container {
+    display: none;
+}

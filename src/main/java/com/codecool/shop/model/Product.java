@@ -41,6 +41,9 @@ public class Product extends BaseModel {
         this.defaultPrice = price;
         this.defaultCurrency = Currency.getInstance(currency);
     }
+    public float getDefaulPrice(){
+        return defaultPrice;
+    }
 
     public ProductCategory getProductCategory() {
         return productCategory;

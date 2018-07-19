@@ -5,7 +5,7 @@ import java.util.*;
 public class Order {
     private int id;
     Map<String, String> map = new HashMap<>();
-    private List<String> checkoutData = Arrays.asList("fullName","emailAddress"," telephoneNumber","countryBill","cityBill","zipCodeBill","addressBill","countryShip","cityShip","zipCodeShip","addressShip");
+    private List<String> checkoutData = Arrays.asList("fullName", "emailAddress", " telephoneNumber", "countryBill", "cityBill", "zipCodeBill", "addressBill", "countryShip", "cityShip", "zipCodeShip", "addressShip");
 
     private List<LineItem> lineItemList;
 
@@ -15,10 +15,10 @@ public class Order {
 
     public void addProduct(Product product) {
         boolean wasProductFound = false;
-        for (LineItem lineItem: lineItemList) {
-            if (lineItem.getProduct().getId()==(product.getId())){
+        for (LineItem lineItem : lineItemList) {
+            if (lineItem.getProduct().getId() == (product.getId())) {
                 lineItem.increaseQuantity();
-                wasProductFound=true;
+                wasProductFound = true;
             }
         }
         if (!wasProductFound) lineItemList.add(new LineItem(product));
@@ -35,16 +35,16 @@ public class Order {
         }
     }
 
-    public int getQuantityOfProducts(){
+    public int getQuantityOfProducts() {
         int numberOfItems = 0;
-        for (LineItem lineItem: lineItemList) {
-            numberOfItems+= lineItem.getQuantity();
+        for (LineItem lineItem : lineItemList) {
+            numberOfItems += lineItem.getQuantity();
         }
         return numberOfItems;
     }
 
     public int getProductQuantity(int id) {
-        for (LineItem lineItem: lineItemList) {
+        for (LineItem lineItem : lineItemList) {
             if (lineItem.getProduct().getId() == id) {
                 return lineItem.getQuantity();
             }

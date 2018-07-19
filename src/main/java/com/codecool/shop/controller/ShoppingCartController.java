@@ -22,8 +22,13 @@ public class ShoppingCartController extends HttpServlet {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        context.setVariable("cart", orderDataStore.getCurrent());
+        context.setVariable("order", orderDataStore.getCurrent());
         engine.process("product/cart.html", context, resp.getWriter());
+    }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.sendRedirect("/checkout");
+
     }
 }
 

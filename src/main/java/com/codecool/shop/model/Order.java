@@ -60,6 +60,10 @@ public class Order {
         return lineItemList;
     }
 
+    public Map<String, String> getOrderMap() {
+        return map;
+    }
+
     @Override
     public String toString() {
         return String.format("id: %1$d, ",

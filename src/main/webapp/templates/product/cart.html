@@ -51,13 +51,13 @@
     </div>
 </nav>
 
-<form action="/cart" method="post">
+<form action="/checkout" method="post">
 <div id="products" class="col-10 row" th:each="lineitem,iterStat : ${cart.getProductList()}">
     <h4 class="group inner list-group-item-heading" th:text="${lineitem.getProduct().name}">Product name</h4>
     <p class="lead" th:text="${lineitem.getProduct().getPrice()}">100 USD</p>
     <input style="width: 100px" type="number" name="quantity+ ${lineitem.id}" value="1" th:attr="value=${cart.getProductQuantity(lineitem.getProduct().id)}">
 </div>
-    <button type="submit" class="btn btn-secondary disabled"> Proceed </button>
+    <button type="submit" class="btn btn-secondary">Proceed to checkout</button>
 </form>
 
 <div th:replace="footer.html :: copy"></div>

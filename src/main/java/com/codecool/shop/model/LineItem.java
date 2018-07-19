@@ -1,12 +1,16 @@
 package com.codecool.shop.model;
 
 public class LineItem {
+    private static int idCounter=1;
     public int id;
     private Product product;
     private int quantity = 1;
 
     public LineItem(Product product){
         this.product = product;
+        id = idCounter;
+        idCounter++;
+
     }
 
     public void setId(int id) {
@@ -27,5 +31,9 @@ public class LineItem {
 
     public void increaseQuantity(){
         quantity++;
+    }
+
+    public String getSumPrice(){
+        return String.valueOf(product.getDefaulPrice()*quantity)+" "+ product.getDefaultCurrency();
     }
 }

@@ -31,12 +31,27 @@ public class ShoppingCartController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         OrderDao orderDataStore = OrderDaoMem.getInstance();
         List<LineItem> lineItemList = orderDataStore.getCurrent().getLineItemList();
-        for (LineItem lineItem:lineItemList) {
-            int newQuantity = Integer.parseInt(req.getParameter(String.valueOf(lineItem.id)));
-            lineItem.setQuantity(newQuantity);
+        boolean repeat = true;
+        while (repeat) {
+            repeat = false;
+            for (LineItem lineItem : lineItemList) {
+                int newQuantity = Integer.parseInt(req.getParameter(String.valueOf(lineItem.id)));
+                if (newQuantity < 1) {
+                    orderDataStore.getCurrent().getLineItemList().remove(lineItem);
+                    repeat = true;
+                    break;
+                } else {
+                    lineItem.setQuantity(newQuantity);
+                }
+            }
         }
-        resp.sendRedirect("/checkout");
         orderDataStore.getCurrent().makeProductsMaps();
+        if (orderDataStore.getCurrent().getLineItemList().size()>0) {
+            resp.sendRedirect("/checkout");
+        }else {
+            resp.sendRedirect("/");
+        }
+
     }
 }
 

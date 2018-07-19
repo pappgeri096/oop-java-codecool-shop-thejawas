@@ -7,7 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -31,10 +33,25 @@ public class OrderDaoJson implements OrderDao {
     @Override
     public void add(Order order) {
         ObjectMapper objectMapper = new ObjectMapper();
+
+        Map<String, Integer> productNameAndQuantityMap = order.getProductNameAndQuantityMap();
+        Map<String, String> userDataMap = order.getUserDataMap();
+
+        Map<String, String> orderDataMap = new HashMap<>();
+
+        for (Map.Entry<String, String> entrySet : userDataMap.entrySet()) {
+            orderDataMap.put(entrySet.getKey(), entrySet.getValue());
+        }
+
+
+        for (Map.Entry<String, Integer> entrySet : productNameAndQuantityMap.entrySet()) {
+            orderDataMap.put(entrySet.getKey(), String.valueOf(entrySet.getValue()));
+        }
+
         String uuidString = createUuid();
         String filePathAndName = "target/orders/Order_" + uuidString + ".json";
         try {
-            objectMapper.writeValue(new FileOutputStream(filePathAndName), order.getOrderMap());
+            objectMapper.writeValue(new FileOutputStream(filePathAndName), orderDataMap);
         } catch (IOException e) {
             e.printStackTrace();
         }

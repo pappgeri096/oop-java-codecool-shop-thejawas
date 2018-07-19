@@ -67,8 +67,12 @@ public class Order {
         }
     }
 
-    public Map<String, String> getOrderMap() {
-        return map;
+    public Map<String, String> getUserDataMap() {
+        return userDataMap;
+    }
+
+    public Map<String, Integer> getProductNameAndQuantityMap() {
+        return productNameAndQuantityMap;
     }
 
     @Override

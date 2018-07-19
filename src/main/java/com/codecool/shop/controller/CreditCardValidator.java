@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/validate"})
 public class CreditCardValidator extends HttpServlet {
@@ -43,9 +46,20 @@ public class CreditCardValidator extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String cardNumbers = "34534534543";
-        String[] numbers = cardNumbers.split("");
-       // int[] digits = Arrays.stream(numbers).map(Integer::parseInt);
+        String cardString = req.getParameter("card-number");
+        List<String> cardNumbers = new ArrayList<String>(Arrays.asList(cardString.split("")));
+
+        List<Integer> numbers = cardNumbers.stream().map(Integer::parseInt).collect(Collectors.toList());
+
+        int[] toValidate = numbers.stream().mapToInt(i -> i).toArray();;
+
+
+        if(validateCreditCard(toValidate))
+            System.out.println("OK");
+        else
+            System.out.println("NOPE");
+
+        //resp.sendRedirect("/payment");
 
     }
 

@@ -52,14 +52,19 @@
 
                 </div>
                 <div class="col-md-6">
-                    <a href="/paypal"><img class="img-responsive" src="http://placehold.it/400x250/000/fff"
-                                           th:attr="src='/static/img/paypal.png'" alt=""/></a>
+                    <img class="img-responsive paypal" src="http://placehold.it/400x250/000/fff"
+                                           th:attr="src='/static/img/paypal.png'" alt=""/>
+                </div>
+
+                <div class="paypal-container col-md-12">
+                    <h1>Pay with Paypal</h1>
+                    <a href="/paypal" class="btn btn-success">Pay now</a>
                 </div>
 
                 <div class="credit-card-container col-md-12">
                     <form method="post" action="/credit-card" class="form" role="form">
                         <fieldset>
-                            <legend>Payment</legend>
+
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" >Name on Card</label>
 

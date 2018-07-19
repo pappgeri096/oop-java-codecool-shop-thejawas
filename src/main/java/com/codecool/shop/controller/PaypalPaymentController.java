@@ -14,7 +14,7 @@ import java.io.IOException;
 
 
 @WebServlet(urlPatterns = {"/done"})
-public class PaypalPayedController extends HttpServlet {
+public class PaypalPaymentController extends HttpServlet {
 
 
     @Override
@@ -31,10 +31,11 @@ public class PaypalPayedController extends HttpServlet {
         try {
             APIContext apiContext = new APIContext(clientId, clientSecret, "sandbox");
             Payment createdPayment = payment.execute(apiContext, paymentExecution);
-            System.out.println(createdPayment);
+            resp.sendRedirect("/success");
 
         } catch (PayPalRESTException e) {
             System.err.println(e.getDetails());
+            resp.sendRedirect("/cancel");
         }
 
     }

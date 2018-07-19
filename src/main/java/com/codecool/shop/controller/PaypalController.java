@@ -19,12 +19,12 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/paypal"})
 public class PaypalController extends HttpServlet {
 
+    private String clientID = "AWTqmvOfxu2VnNifNQblRmD8ty6zvuam7Hh_k36MHk8sbYuZdEtR3gneLyuK_3A7E_AzZm0AWr-rNVA3";
+    private String SecretID = "ECYgXqdlLBxQsCHhdwMt4yz1LU5O5n6chmJe3EHrhGftsUOiN5PbmergN_0_lqQcFl-JzzC1ep68JG5I";
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String clientId = "AWTqmvOfxu2VnNifNQblRmD8ty6zvuam7Hh_k36MHk8sbYuZdEtR3gneLyuK_3A7E_AzZm0AWr-rNVA3";
-        String clientSecret = "ECYgXqdlLBxQsCHhdwMt4yz1LU5O5n6chmJe3EHrhGftsUOiN5PbmergN_0_lqQcFl-JzzC1ep68JG5I";
 
 
         ShippingAddress address = new ShippingAddress();
@@ -65,7 +65,6 @@ public class PaypalController extends HttpServlet {
         transaction.setAmount(amount);
         transaction.setItemList(list);
         transaction.setDescription("cunci");
-        transaction.setInvoiceNumber("23429999");
         List<Transaction> transactions = new ArrayList<Transaction>();
         transactions.add(transaction);
 
@@ -92,7 +91,7 @@ public class PaypalController extends HttpServlet {
 
 
         try {
-            APIContext apiContext = new APIContext(clientId, clientSecret, "sandbox");
+            APIContext apiContext = new APIContext(clientID, SecretID, "sandbox");
             Payment createdPayment = payment.create(apiContext);
 
             Iterator links = createdPayment.getLinks().iterator();

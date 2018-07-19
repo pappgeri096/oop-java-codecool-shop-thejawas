@@ -15,8 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(urlPatterns = {"/validate"})
-public class CreditCardValidator extends HttpServlet {
+@WebServlet(urlPatterns = {"/credit-card"})
+public class CreditCard extends HttpServlet {
 
     private boolean validateCreditCard(int[] digits){
         int sum = 0;
@@ -46,7 +46,14 @@ public class CreditCardValidator extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+
+        if(req.getParameter("card-number").length()==0 || req.getParameter("name").length()==0 ||
+                req.getParameter("expiry-month").length()==0 ||
+                req.getParameter("expiry-year").length()==0 ||  req.getParameter("cvv").length()==0)
+            resp.sendRedirect("/cancel");
+
         String cardString = req.getParameter("card-number");
+
         List<String> cardNumbers = new ArrayList<String>(Arrays.asList(cardString.split("")));
 
         List<Integer> numbers = cardNumbers.stream().map(Integer::parseInt).collect(Collectors.toList());
@@ -55,9 +62,9 @@ public class CreditCardValidator extends HttpServlet {
 
 
         if(validateCreditCard(toValidate))
-            System.out.println("OK");
+            resp.sendRedirect("/success");
         else
-            System.out.println("NOPE");
+            resp.sendRedirect("/cancel");
 
         //resp.sendRedirect("/payment");
 

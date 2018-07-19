@@ -76,7 +76,7 @@ public class Order {
             productNameAndQuantityMap.put(lineItem.getProduct().name,lineItem.getQuantity());
         }
     }
-    public String getPriceOfAllProducts(){
+    public float getPriceOfAllProducts(){
         float sumPrice = 0;
         Currency currency = null;
         for (LineItem lineItem : lineItemList) {
@@ -84,7 +84,7 @@ public class Order {
             currency = lineItem.getProduct().getDefaultCurrency();
         }
 
-        return String.valueOf(sumPrice) + " " + String.valueOf(currency);
+        return sumPrice;
     }
 
     @Override

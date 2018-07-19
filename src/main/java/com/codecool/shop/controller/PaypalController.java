@@ -3,6 +3,7 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.implementation.OrderDaoMem;
+import com.codecool.shop.model.LineItem;
 import com.codecool.shop.model.Order;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 @WebServlet(urlPatterns = {"/paypal"})
@@ -25,51 +27,66 @@ public class PaypalController extends HttpServlet {
 
     private String clientID = "AWTqmvOfxu2VnNifNQblRmD8ty6zvuam7Hh_k36MHk8sbYuZdEtR3gneLyuK_3A7E_AzZm0AWr-rNVA3";
     private String SecretID = "ECYgXqdlLBxQsCHhdwMt4yz1LU5O5n6chmJe3EHrhGftsUOiN5PbmergN_0_lqQcFl-JzzC1ep68JG5I";
-
+    private OrderDao orderDataStore = OrderDaoMem.getInstance();;
+    private Order order = orderDataStore.getCurrent();;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        if(order.getUserDataMap().size()==0 || order.getProductNameAndQuantityMap().size()==0)
+            resp.sendRedirect("/");
 
         ShippingAddress address = new ShippingAddress();
         //address.setRecipientName("Janos Istvan");
-        address.setPhone("32523523");
+        address.setPhone(order.getUserDataMap().get("telephoneNumber"));
         address.setCountryCode("HU");
-        address.setCity("Budapest");
-        address.setLine1("IDK");
-        address.setPostalCode("2600");
-        address.setState("Pest");
+        address.setCity(order.getUserDataMap().get("cityBill"));
+        address.setLine1(order.getUserDataMap().get("addressBill"));
+        address.setPostalCode(order.getUserDataMap().get("zipCodeBill"));
+        address.setState(order.getUserDataMap().get("Pest"));
 
-        Item item = new Item();
-        item.setName("WC PAPIR");
-        item.setPrice("5000");
-        item.setCategory("PHYSICAL");
-        item.setQuantity("2");
-        item.setCurrency("HUF");
+        List items = new ArrayList();
 
-        List items2 = new ArrayList();
-        items2.add(item);
-        //items2.add(item2);
+        for (Map.Entry<String, Integer> entry : order.getProductNameAndQuantityMap().entrySet()) {
+
+
+            String name = entry.getKey();
+            String quantity = Integer.toString(entry.getValue());
+            String price = "1.1";
+
+            for(LineItem item  : order.getLineItemList()){
+                if(item.getProduct().getName().equals(name)){
+                    price = String.valueOf(item.getProduct().getDefaulPrice());
+                    break;
+                }
+
+            }
+
+            Item item = new Item();
+            item.setName(name);
+            item.setPrice(Double.toString(Integer.parseInt(quantity)*Double.parseDouble(price)));
+            item.setCategory("PHYSICAL");
+            item.setQuantity(quantity);
+            item.setCurrency("USD");
+            items.add(item);
+        }
+
 
         ItemList list = new ItemList();
-        list.setItems(items2);
+        list.setItems(items);
         list.setShippingAddress(address);
 
 
-        Details details = new Details();
-        details.setShipping("5");
-        details.setSubtotal("10000");
-
         Amount amount = new Amount();
-        amount.setCurrency("HUF");
-        amount.setTotal("10005");
-        amount.setDetails(details);
+        amount.setCurrency("USD");
+        amount.setTotal(Float.toString(order.getPriceOfAllProducts()));
+
 
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
         transaction.setItemList(list);
-        transaction.setDescription("cunci");
-        transaction.setInvoiceNumber("23429999");
+        transaction.setDescription("Payment page");
+        //transaction.setInvoiceNumber(Integer.toString(ThreadLocalRandom.current().nextInt(1000000000, 999999999 + 1)));
         List<Transaction> transactions = new ArrayList<Transaction>();
         transactions.add(transaction);
 

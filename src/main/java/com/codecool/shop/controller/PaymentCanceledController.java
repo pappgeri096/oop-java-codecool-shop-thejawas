@@ -12,14 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/cancel"})
-public class CancelController extends HttpServlet {
+public class PaymentCanceledController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        engine.process("payment/index.html", context, resp.getWriter());
+        engine.process("payment/canceled.html", context, resp.getWriter());
     }
 
 }

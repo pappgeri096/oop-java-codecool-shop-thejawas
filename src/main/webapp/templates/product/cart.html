@@ -50,16 +50,19 @@
         </div>
     </div>
 </nav>
-
-<form action="/cart" method="post">
-<div id="products" class="col-10 row" th:each="lineitem,iterStat : ${order.getProductList()}">
-    <h4 class="group inner list-group-item-heading" th:text="${lineitem.getProduct().name}">Product name</h4>
-    <p class="lead" th:text="${lineitem.getProduct().getPrice()}">100 USD</p>
-    <input style="width: 100px" type="number" name="quantity+ ${lineitem.id}" value="1" th:attr="value=${order.getProductQuantity(lineitem.getProduct().id)}">
+<div th:if="${order.getLineItemList().size()< 1}">
+    <div>Your cart is empty!</div>
 </div>
-    <button type="submit" class="btn btn-secondary"> Proceed </button>
-</form>
-
+<div th:if="${order.getLineItemList().size() > 0}">
+    <form action="/cart" method="post">
+    <div id="products" class="col-10 row" th:each="lineitem,iterStat : ${order.getLineItemList()}">
+        <h4 class="group inner list-group-item-heading" th:text="${lineitem.getProduct().name}">Product name</h4>
+        <p class="lead" th:text="${lineitem.getProduct().getPrice()}">100 USD</p>
+        <input style="width: 100px" type="number" th:name="${lineitem.id}" value="1" th:attr="value=${(lineitem.getQuantity())}">
+    </div>
+        <button type="submit" class="btn btn-secondary"> Proceed </button>
+    </form>
+</div>
 <div th:replace="footer.html :: copy"></div>
 
 </body>

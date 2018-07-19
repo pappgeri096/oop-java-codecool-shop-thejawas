@@ -1,6 +1,9 @@
 package com.codecool.shop.controller;
 
 
+import com.codecool.shop.dao.OrderDao;
+import com.codecool.shop.dao.implementation.OrderDaoMem;
+import com.codecool.shop.model.Order;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
@@ -14,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 @WebServlet(urlPatterns = {"/paypal"})
@@ -65,6 +69,7 @@ public class PaypalController extends HttpServlet {
         transaction.setAmount(amount);
         transaction.setItemList(list);
         transaction.setDescription("cunci");
+        transaction.setInvoiceNumber("23429999");
         List<Transaction> transactions = new ArrayList<Transaction>();
         transactions.add(transaction);
 
@@ -79,7 +84,7 @@ public class PaypalController extends HttpServlet {
         payer.setPaymentMethod("paypal");
 
         RedirectUrls redirectUrls = new RedirectUrls();
-        redirectUrls.setCancelUrl("https://example.com/cancel");
+        redirectUrls.setCancelUrl("http://localhost:8080/cancel");
         redirectUrls.setReturnUrl("http://localhost:8080/done");
 
 
@@ -105,6 +110,7 @@ public class PaypalController extends HttpServlet {
         } catch (PayPalRESTException e) {
             System.err.println(e.getDetails());
         }
+
 
     }
 

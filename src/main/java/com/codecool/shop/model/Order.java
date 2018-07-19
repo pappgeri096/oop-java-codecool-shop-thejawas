@@ -61,6 +61,14 @@ public class Order {
         return lineItemList;
     }
 
+    public Map<String, String> getUserDataMap() {
+        return userDataMap;
+    }
+
+    public Map<String, Integer> getProductNameAndQuantityMap() {
+        return productNameAndQuantityMap;
+    }
+
     public void makeProductsMaps(){
         for (LineItem lineItem:lineItemList) {
             productNameAndQuantityMap.put(lineItem.getProduct().name,lineItem.getQuantity());

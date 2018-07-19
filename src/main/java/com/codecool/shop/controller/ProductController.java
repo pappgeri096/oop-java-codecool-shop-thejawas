@@ -63,7 +63,7 @@ public class ProductController extends HttpServlet {
         context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", supplierDataStore.getAll());
         context.setVariable("products", productList);
-        context.setVariable("cart", orderDataStore.getCurrent());
+        context.setVariable("order", orderDataStore.getCurrent());
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         engine.process("product/index.html", context, resp.getWriter());

@@ -4,8 +4,9 @@ import java.util.*;
 
 public class Order {
     private int id;
-    Map<String, String> map = new HashMap<>();
-    private List<String> checkoutData = Arrays.asList("fullName","emailAddress"," telephoneNumber","countryBill","cityBill","zipCodeBill","addressBill","countryShip","cityShip","zipCodeShip","addressShip");
+    Map<String, String> userDataMap = new HashMap<>();
+    Map<String, Integer> productNameAndQuantityMap = new HashMap<>();
+    private List<String> checkoutData = Arrays.asList("fullName", "emailAddress", " telephoneNumber", "countryBill", "cityBill", "zipCodeBill", "addressBill", "countryShip", "cityShip", "zipCodeShip", "addressShip");
 
     private List<LineItem> lineItemList;
 
@@ -15,10 +16,10 @@ public class Order {
 
     public void addProduct(Product product) {
         boolean wasProductFound = false;
-        for (LineItem lineItem: lineItemList) {
-            if (lineItem.getProduct().getId()==(product.getId())){
+        for (LineItem lineItem : lineItemList) {
+            if (lineItem.getProduct().getId() == (product.getId())) {
                 lineItem.increaseQuantity();
-                wasProductFound=true;
+                wasProductFound = true;
             }
         }
         if (!wasProductFound) lineItemList.add(new LineItem(product));
@@ -31,20 +32,20 @@ public class Order {
 
     public void setUserData(List<String> userData) {
         for (int i = 0; i < 11; i++) {
-            this.map.put(checkoutData.get(i), userData.get(i));
+            this.userDataMap.put(checkoutData.get(i), userData.get(i));
         }
     }
 
-    public int getQuantityOfProducts(){
+    public int getQuantityOfProducts() {
         int numberOfItems = 0;
-        for (LineItem lineItem: lineItemList) {
-            numberOfItems+= lineItem.getQuantity();
+        for (LineItem lineItem : lineItemList) {
+            numberOfItems += lineItem.getQuantity();
         }
         return numberOfItems;
     }
 
     public int getProductQuantity(int id) {
-        for (LineItem lineItem: lineItemList) {
+        for (LineItem lineItem : lineItemList) {
             if (lineItem.getProduct().getId() == id) {
                 return lineItem.getQuantity();
             }
@@ -56,8 +57,14 @@ public class Order {
         return this.id;
     }
 
-    public List<LineItem> getProductList() {
+    public List<LineItem> getLineItemList() {
         return lineItemList;
+    }
+
+    public void makeProductsMaps(){
+        for (LineItem lineItem:lineItemList) {
+            productNameAndQuantityMap.put(lineItem.getProduct().name,lineItem.getQuantity());
+        }
     }
 
     public Map<String, String> getOrderMap() {

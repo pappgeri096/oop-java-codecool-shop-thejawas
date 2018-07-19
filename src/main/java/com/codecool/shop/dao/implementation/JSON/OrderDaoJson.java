@@ -7,10 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * TODO: DATA I NEED TO WRITE TO JSON FILE:
@@ -22,6 +19,8 @@ import java.util.UUID;
  * */
 public class OrderDaoJson implements OrderDao {
 
+
+    List<String> orderIdHistory = new ArrayList<>();
 
     /**
      * writes single order data to json file
@@ -37,6 +36,7 @@ public class OrderDaoJson implements OrderDao {
         Map<String, Integer> productNameAndQuantityMap = order.getProductNameAndQuantityMap();
         Map<String, String> userDataMap = order.getUserDataMap();
 
+
         Map<String, String> orderDataMap = new HashMap<>();
 
         for (Map.Entry<String, String> entrySet : userDataMap.entrySet()) {
@@ -49,12 +49,17 @@ public class OrderDaoJson implements OrderDao {
         }
 
         String uuidString = createUuid();
+
+        orderDataMap.put("OrderId", uuidString);
+        orderDataMap.put("OrderStatus", "PendingUnshippedCancelled");
         String filePathAndName = "target/orders/Order_" + uuidString + ".json";
         try {
             objectMapper.writeValue(new FileOutputStream(filePathAndName), orderDataMap);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        System.out.println("ths method is executed");
 
     }
 

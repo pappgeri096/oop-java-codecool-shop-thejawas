@@ -49,8 +49,6 @@ public class CheckOutController extends HttpServlet {
         }
         order.setUserData(userData);
 
-        System.out.println("im getting this post request");
-
         OrderDao writeOrderDataToFile = new OrderDaoJson();
         writeOrderDataToFile.add(order);
 

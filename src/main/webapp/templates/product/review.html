@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="author" content="Codecool"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>ShoppingCart</title>
+
+    <!-- Latest compiled and minified Jquery -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+
+    <link rel="stylesheet" href="https://bootswatch.com/3/flatly/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://bootswatch.com/3/flatly/variables.less">
+
+    <link rel="stylesheet" href="https://bootswatch.com/3/flatly/_bootswatch.scss">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"-->
+    <!--integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />-->
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/cart.css">
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Codecool shop</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+        </div>
+    </div>
+</nav>
+    <div id="products" class="col-10 row" th:each="lineitem,iterStat : ${order.getLineItemList()}">
+        <h4 class="group inner list-group-item-heading" th:text="${lineitem.getProduct().name}">Product name</h4>
+        <p class="lead" th:text="${lineitem.getProduct().getPrice()}+ ' / '+ ${lineitem.getSumPrice()}">100 USD</p>
+        <p style="width: 100px"  th:text="${(lineitem.getQuantity())} +' items'"></p>
+    </div>
+<br>
+<p th:text="'Total: ' + ${order.getPriceOfAllProducts()}"> </p>
+        <br>
+<a href="/cart"><button type="submit" class="btn btn-secondary .float-right"> Edit </button></a> <a href="/checkout"><button type="submit" class="btn btn-secondary .float-right"> Proceed </button></a>
+
+<div th:replace="footer.html :: copy"></div>
+
+</body>
+
+</html>

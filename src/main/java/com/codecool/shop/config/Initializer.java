@@ -40,6 +40,9 @@ public class Initializer implements ServletContextListener {
         Supplier earth = new Supplier("Earth", "Water, breatheable air, solid land mass, energy");
         supplierDataStore.add(earth);
 
+        Supplier ebay = new Supplier("Ebay", "Everything you can imagine");
+        supplierDataStore.add(ebay);
+
 
         //setting up a new product category
         ProductCategory tablet = new ProductCategory("Tablet", "Hardware", "A tablet computer, commonly shortened to tablet, is a thin, flat mobile computer with a touchscreen display.");
@@ -47,6 +50,9 @@ public class Initializer implements ServletContextListener {
 
         ProductCategory energy = new ProductCategory("Energy", "Esoteric", "Paranormal energies.");
         productCategoryDataStore.add(energy);
+
+        ProductCategory bodyPillow = new ProductCategory("bodyPillow", "Pillow", "Confortable Pillows.");
+        productCategoryDataStore.add(bodyPillow);
 
 
         //setting up products and printing it
@@ -58,5 +64,8 @@ public class Initializer implements ServletContextListener {
         productDataStore.add(new Product("Life Energy", 99.99f, "USD", "We are selling the most healthiest life energy available on Planet Earth. Get your package now, and get revitalized.", energy, universe));
         productDataStore.add(new Product("Money Energy", 199.89f, "USD", "You wanna get rich quick? Then, order this money energy package right now and become rich in no time. It is handy, quick to absorb and recommended by 9 out of 10 rich people", energy, earth));
 
+        productDataStore.add(new Product("Maiden Body Pillow", 80, "USD", "Maiden body pillow, designed to fulfill all your desires.", bodyPillow, ebay));
+        productDataStore.add(new Product("Levi Body Pillow", 50, "USD", "A body pillow of Levi, designed to fulfill all your desires.", bodyPillow, ebay));
+        productDataStore.add(new Product("Sebastian Body Pillow", 40, "USD", "A body pillow of Sebastian, designed to fulfill all your desires.", bodyPillow, ebay));
     }
 }

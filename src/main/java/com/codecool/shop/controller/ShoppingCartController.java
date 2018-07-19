@@ -37,17 +37,17 @@ public class ShoppingCartController extends HttpServlet {
             for (LineItem lineItem : lineItemList) {
                 int newQuantity = Integer.parseInt(req.getParameter(String.valueOf(lineItem.id)));
                 if (newQuantity < 1) {
-                    orderDataStore.getCurrent().getLineItemList().remove(lineItem);
+                    lineItemList.remove(lineItem);
                     repeat = true;
                     break;
-                } else {
+                } else if (newQuantity != lineItem.getQuantity()){
                     lineItem.setQuantity(newQuantity);
                 }
             }
         }
         orderDataStore.getCurrent().makeProductsMaps();
         if (orderDataStore.getCurrent().getLineItemList().size()>0) {
-            resp.sendRedirect("/checkout");
+            resp.sendRedirect("/review");
         }else {
             resp.sendRedirect("/");
         }

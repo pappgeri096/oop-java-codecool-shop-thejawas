@@ -2,8 +2,10 @@ package com.codecool.shop.dao.implementation.JSON;
 
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.model.Order;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,9 +21,6 @@ import java.util.*;
  * */
 public class OrderDaoJson implements OrderDao {
 
-
-    List<String> orderIdHistory = new ArrayList<>();
-
     /**
      * writes single order data to json file
      * creates UUID for each order and gives the file this UUID as name
@@ -31,8 +30,51 @@ public class OrderDaoJson implements OrderDao {
      * */
     @Override
     public void add(Order order) {
-        ObjectMapper objectMapper = new ObjectMapper();
+        String uuidString = createUuid();
+        Map<String, String> orderDataMap = joinMaps(order, uuidString);
 
+        String filePathAndName = "target/orders/Order_" + uuidString + ".json";
+
+        ObjectMapper orderMapper = new ObjectMapper();
+        try {
+            orderMapper.writeValue(new FileOutputStream(filePathAndName), orderDataMap);
+            writeNewId(uuidString);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("ths method is executed");
+
+    }
+
+    List<String> writeNewId(String newId) {
+        List<String> orderIdHistory = getAllOrderId();
+        orderIdHistory.add(newId);
+
+        ObjectMapper orderIdWriter = new ObjectMapper();
+        try {
+            orderIdWriter.writeValue(new FileOutputStream("target/orders/OrderIdHistory.json"), orderIdHistory);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return orderIdHistory;
+    }
+
+    List<String> getAllOrderId() {
+        List<String> orderIdHistory = new ArrayList<>();
+        TypeReference<List<String>> listTypeReference = new TypeReference<List<String>>(){};
+        ObjectMapper orderIdReader = new ObjectMapper();
+        try {
+            orderIdHistory = orderIdReader.readValue(new File("target/orders/OrderIdHistory.json"), listTypeReference);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return orderIdHistory;
+    }
+
+
+    Map<String, String> joinMaps(Order order, String uuidString) {
         Map<String, Integer> productNameAndQuantityMap = order.getProductNameAndQuantityMap();
         Map<String, String> userDataMap = order.getUserDataMap();
 
@@ -48,19 +90,10 @@ public class OrderDaoJson implements OrderDao {
             orderDataMap.put(entrySet.getKey(), String.valueOf(entrySet.getValue()));
         }
 
-        String uuidString = createUuid();
-
         orderDataMap.put("OrderId", uuidString);
         orderDataMap.put("OrderStatus", "PendingUnshippedCancelled");
-        String filePathAndName = "target/orders/Order_" + uuidString + ".json";
-        try {
-            objectMapper.writeValue(new FileOutputStream(filePathAndName), orderDataMap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        System.out.println("ths method is executed");
-
+        return orderDataMap;
     }
 
     /**
@@ -99,11 +132,27 @@ public class OrderDaoJson implements OrderDao {
      * Creates UUID for order and order file name
      * */
     String createUuid() {
-        return UUID.randomUUID().toString();
+        List<String> allOrderIds = getAllOrderId();
+        System.out.println(allOrderIds);
+        boolean exists = false;
+        String newUuid;
+        do {
+            newUuid = UUID.randomUUID().toString();
+            for (String orderId :
+                    allOrderIds) {
+                if (orderId.equals(newUuid)) {
+                    exists = true;
+                    System.out.println("UUID already exists");
+                    break;
+                }
+            }
+        } while (exists);
+
+        return newUuid;
     }
 
     public static void main(String[] args) {
         OrderDaoJson orderDao = new OrderDaoJson();
-        System.out.println(orderDao.createUuid());;
+        System.out.println("");
     }
 }

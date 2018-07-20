@@ -36,14 +36,7 @@ public class PaypalController extends HttpServlet {
         if(order.getUserDataMap().size()==0 || order.getProductNameAndQuantityMap().size()==0)
             resp.sendRedirect("/");
 
-        ShippingAddress address = new ShippingAddress();
-        //address.setRecipientName("Janos Istvan");
-        address.setPhone(order.getUserDataMap().get("telephoneNumber"));
-        address.setCountryCode("HU");
-        address.setCity(order.getUserDataMap().get("cityBill"));
-        address.setLine1(order.getUserDataMap().get("addressBill"));
-        address.setPostalCode(order.getUserDataMap().get("zipCodeBill"));
-        address.setState(order.getUserDataMap().get("Pest"));
+        ShippingAddress address = ensembleAddress();
 
         List items = new ArrayList();
 
@@ -129,6 +122,18 @@ public class PaypalController extends HttpServlet {
         }
 
 
+    }
+
+    private ShippingAddress ensembleAddress() {
+        ShippingAddress address = new ShippingAddress();
+        //address.setRecipientName("Janos Istvan");
+        address.setPhone(order.getUserDataMap().get("telephoneNumber"));
+        address.setCountryCode("HU");
+        address.setCity(order.getUserDataMap().get("cityBill"));
+        address.setLine1(order.getUserDataMap().get("addressBill"));
+        address.setPostalCode(order.getUserDataMap().get("zipCodeBill"));
+        address.setState(order.getUserDataMap().get("Pest"));
+        return address;
     }
 
 }

@@ -2,6 +2,7 @@ package com.codecool.shop.dao.implementation.JSON;
 
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.model.Order;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -166,4 +167,42 @@ public class OrderDaoJson implements OrderDao {
     public void remove(int id) {
 
     }
+
+    public String mapToJsonString(Map map) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String carAsString = "";
+        try {
+            carAsString = objectMapper.writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return carAsString;
+    }
+
+    public String listToJsonString(List list) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String listAsString = "";
+        try {
+            listAsString = objectMapper.writeValueAsString(list);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return listAsString;
+    }
+
+    public String orderToJsonString(Order order) {
+        String uuidString = createUuid();
+        Map<String, String> orderDataMap = joinMaps(order, uuidString);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String orderAsString = "";
+        try {
+            orderAsString = objectMapper.writeValueAsString(orderDataMap);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return orderAsString;
+    }
+
 }

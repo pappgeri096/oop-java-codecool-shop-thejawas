@@ -1,0 +1,63 @@
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building codecoolshop 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] >>> jetty-maven-plugin:9.4.11.v20180605:run (default-cli) > test-compile @ codecoolshop >>>
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ codecoolshop ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.7.0:compile (default-compile) @ codecoolshop ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ codecoolshop ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/akincsei/IntelliJ/4TW-codecoolShop/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.7.0:testCompile (default-testCompile) @ codecoolshop ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] <<< jetty-maven-plugin:9.4.11.v20180605:run (default-cli) < test-compile @ codecoolshop <<<
+[INFO] 
+[INFO] --- jetty-maven-plugin:9.4.11.v20180605:run (default-cli) @ codecoolshop ---
+[INFO] webAppSourceDirectory not set. Trying src/main/webapp
+[INFO] Reload Mechanic: manual
+[INFO] nonBlocking:false
+[INFO] Classes = /home/akincsei/IntelliJ/4TW-codecoolShop/target/classes
+[INFO] Configuring Jetty for project: codecoolshop
+[INFO] Logging initialized @2495ms to org.eclipse.jetty.util.log.Slf4jLog
+[INFO] Context path = /
+[INFO] Tmp directory = /home/akincsei/IntelliJ/4TW-codecoolShop/target/tmp
+[INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
+[INFO] Web overrides =  none
+[INFO] web.xml file = file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/WEB-INF/web.xml
+[INFO] Webapp directory = /home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp
+[INFO] jetty-9.4.11.v20180605; built: 2018-06-05T18:24:03.829Z; git: d5fc0523cfa96bfebfbda19606cad384d772f04c; jvm 1.8.0_181-b13
+[WARNING] Unknown asm implementation version, assuming version 393216
+[INFO] Scanning elapsed time=187ms
+[WARNING] com.codecool.shop.config.TemplateEngineUtil does not implement one of the servlet listener interfaces
+[INFO] DefaultSessionIdManager workerName=node0
+[INFO] No SessionScavenger set, using defaults
+[INFO] node0 Scavenging every 600000ms
+[INFO] Started o.e.j.m.p.JettyWebAppContext@232cce0{CodecoolShop Application,/,file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/,AVAILABLE}{file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/}
+[INFO] Started ServerConnector@3c5dbdf8{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+[INFO] Started @3508ms
+[INFO] Started Jetty Server
+[INFO] Console reloading is ENABLED. Hit ENTER on the console to restart the context.
+20:17:40.607 [qtp2025955363-18] WARN  c.c.s.controller.ProductController - Print this every time / or /index recieves a get request
+20:17:41.548 [qtp2025955363-22] WARN  c.c.s.controller.ProductController - Print this every time / or /index recieves a get request
+20:17:44.489 [qtp2025955363-19] WARN  c.c.s.controller.ProductController - Print this every time / or /index recieves a get request
+20:17:44.621 [qtp2025955363-16] WARN  c.c.s.controller.ProductController - Print this every time / or /index recieves a get request
+20:17:45.580 [qtp2025955363-19] WARN  c.c.s.controller.ProductController - Print this every time / or /index recieves a get request
+20:17:45.695 [qtp2025955363-16] WARN  c.c.s.controller.ProductController - Print this every time / or /index recieves a get request
+20:17:47.490 [qtp2025955363-16] WARN  c.c.s.controller.ProductController - Print this every time / or /index recieves a get request
+20:17:54.545 [qtp2025955363-19] WARN  c.c.s.controller.ProductController - Print this every time / or /index recieves a get request
+20:17:55.764 [qtp2025955363-19] WARN  c.c.s.controller.ProductController - Print this every time / or /index recieves a get request
+[90b55dcf-3f16-4925-a77a-24b2855cb26e, f7b95000-576c-4859-91c7-c819c4e78855, 5cba9737-bff1-4e8b-ac5d-b912425a8ad7, d33823b8-5949-424b-96d5-57057900c460, 7d0869f2-507a-4930-97d8-95ffef08582d, fd193af2-c9e0-47df-ad7a-f26c6eb599b5]
+[90b55dcf-3f16-4925-a77a-24b2855cb26e, f7b95000-576c-4859-91c7-c819c4e78855, 5cba9737-bff1-4e8b-ac5d-b912425a8ad7, d33823b8-5949-424b-96d5-57057900c460, 7d0869f2-507a-4930-97d8-95ffef08582d, fd193af2-c9e0-47df-ad7a-f26c6eb599b5, d33c9ab7-c74a-4e7f-a140-e9b9655ccc66]
+20:18:05.093 [qtp2025955363-15] WARN  c.c.s.controller.CheckOutController - {"zipCodeShip":"7570","cityShip":"Barcs"," telephoneNumber":"203988338","countryBill":"Hungary","fullName":"Attila Kincsei","OrderId":"606d9598-db89-46ff-a750-0d4730d21708","countryShip":"Hungary","cityBill":"Barcs","emailAddress":"akincsei@gmail.com","OrderStatus":"PendingUnshippedCancelled","Amazon Fire":"2","zipCodeBill":"7570","addressShip":"Magyar utca 5","Lenovo IdeaPad Miix 700":"17","addressBill":"Magyar utca 5"}
+{"zipCodeShip":"7570","cityShip":"Barcs"," telephoneNumber":"203988338","countryBill":"Hungary","fullName":"Attila Kincsei","OrderId":"606d9598-db89-46ff-a750-0d4730d21708","countryShip":"Hungary","cityBill":"Barcs","emailAddress":"akincsei@gmail.com","OrderStatus":"PendingUnshippedCancelled","Amazon Fire":"2","zipCodeBill":"7570","addressShip":"Magyar utca 5","Lenovo IdeaPad Miix 700":"17","addressBill":"Magyar utca 5"}
+20:18:05.201 [qtp2025955363-15] WARN  c.c.s.controller.ProductController - Print this every time / or /index recieves a get request

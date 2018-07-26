@@ -5,6 +5,10 @@ import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.implementation.JSON.OrderDaoJson;
 import com.codecool.shop.dao.implementation.OrderDaoMem;
 import com.codecool.shop.model.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -20,6 +24,8 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/checkout"})
 public class CheckOutController extends HttpServlet {
+
+    private static final Logger logger = LoggerFactory.getLogger(CheckOutController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -51,6 +57,11 @@ public class CheckOutController extends HttpServlet {
 
         OrderDao writeOrderDataToFile = new OrderDaoJson();
         writeOrderDataToFile.add(order);
+
+        OrderDao serializeOrder = new OrderDaoJson();
+        String serializedOrder = ((OrderDaoJson) serializeOrder).orderToJsonString(order);
+        logger.warn(serializedOrder);
+        System.out.println(serializedOrder);
 
         resp.sendRedirect("/payment");
     }

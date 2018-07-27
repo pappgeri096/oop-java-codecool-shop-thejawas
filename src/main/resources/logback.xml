@@ -13,7 +13,7 @@
             <fileNamePattern>log/WebshopLogger.%d{yyyy-MM-dd}.%d{HH:mm:ss.SSS}.log</fileNamePattern>
 
             <!-- Keep 7 days' worth of history -->
-            <maxHistory>1</maxHistory>
+            <maxHistory>3</maxHistory>
         </rollingPolicy>
 
         <encoder>
@@ -22,7 +22,7 @@
     </appender>
 
     <!-- Configure so that it outputs to both console and log file -->
-    <root level="WARN">
+    <root level="DEBUG">
         <appender-ref ref="FILE" />
         <appender-ref ref="STDOUT" />
     </root>

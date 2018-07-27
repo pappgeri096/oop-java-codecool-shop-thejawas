@@ -58,10 +58,11 @@ public class CheckOutController extends HttpServlet {
         OrderDao writeOrderDataToFile = new OrderDaoJson();
         writeOrderDataToFile.add(order);
 
-        OrderDao serializeOrder = new OrderDaoJson();
-        String serializedOrder = ((OrderDaoJson) serializeOrder).orderToJsonString(order);
-        logger.warn(serializedOrder);
-        System.out.println(serializedOrder);
+//        OrderDao serializeOrder = new OrderDaoJson();
+//        String serializedOrder = ((OrderDaoJson) serializeOrder).orderToJsonString(order);
+//        logger.warn(serializedOrder);
+
+        logger.debug("CHECKOUT FOR NEW PRODUCT ORDER");
 
         resp.sendRedirect("/payment");
     }

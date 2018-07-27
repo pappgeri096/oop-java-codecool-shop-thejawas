@@ -19,16 +19,22 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 
 @WebServlet(urlPatterns = {"/paypal"})
 public class PaypalController extends HttpServlet {
 
-    private String clientID = "AWTqmvOfxu2VnNifNQblRmD8ty6zvuam7Hh_k36MHk8sbYuZdEtR3gneLyuK_3A7E_AzZm0AWr-rNVA3";
-    private String SecretID = "ECYgXqdlLBxQsCHhdwMt4yz1LU5O5n6chmJe3EHrhGftsUOiN5PbmergN_0_lqQcFl-JzzC1ep68JG5I";
-    private OrderDao orderDataStore = OrderDaoMem.getInstance();;
-    private Order order = orderDataStore.getCurrent();;
+    private String clientID;
+    private String SecretID;
+    private OrderDao orderDataStore;
+    private Order order;
+
+    public PaypalController() {
+        this.clientID = "AWTqmvOfxu2VnNifNQblRmD8ty6zvuam7Hh_k36MHk8sbYuZdEtR3gneLyuK_3A7E_AzZm0AWr-rNVA3";
+        SecretID = "ECYgXqdlLBxQsCHhdwMt4yz1LU5O5n6chmJe3EHrhGftsUOiN5PbmergN_0_lqQcFl-JzzC1ep68JG5I";
+        this.orderDataStore = OrderDaoMem.getInstance();
+        this.order = orderDataStore.getCurrent();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,82 +42,36 @@ public class PaypalController extends HttpServlet {
         if(order.getUserDataMap().size()==0 || order.getProductNameAndQuantityMap().size()==0)
             resp.sendRedirect("/");
 
-        ShippingAddress address = new ShippingAddress();
-        //address.setRecipientName("Janos Istvan");
-        address.setPhone(order.getUserDataMap().get("telephoneNumber"));
-        address.setCountryCode("HU");
-        address.setCity(order.getUserDataMap().get("cityBill"));
-        address.setLine1(order.getUserDataMap().get("addressBill"));
-        address.setPostalCode(order.getUserDataMap().get("zipCodeBill"));
-        address.setState(order.getUserDataMap().get("Pest"));
+        //execute payment
+        payment(resp);
+
+
+    }
+
+    private void payment(HttpServletResponse resp) throws IOException {
+        ShippingAddress address = getAddress();
 
         List items = new ArrayList();
+        getItems(items);
 
-        for (Map.Entry<String, Integer> entry : order.getProductNameAndQuantityMap().entrySet()) {
+        ItemList list = getItemList(address, items);
 
+        Amount amount = getAmount();
 
-            String name = entry.getKey();
-            String quantity = Integer.toString(entry.getValue());
-            String price = "1.1";
+        List<Transaction> transactions = getTransactions(list, amount);
 
-            for(LineItem item  : order.getLineItemList()){
-                if(item.getProduct().getName().equals(name)){
-                    price = String.valueOf(item.getProduct().getDefaulPrice());
-                    break;
-                }
+        PayerInfo info = getPayerInfo(address);
 
-            }
+        Payer payer = getPayer(info);
 
-            Item item = new Item();
-            item.setName(name);
-            item.setPrice(Double.toString(Integer.parseInt(quantity)*Double.parseDouble(price)));
-            item.setCategory("PHYSICAL");
-            item.setQuantity(quantity);
-            item.setCurrency("USD");
-            items.add(item);
-        }
+        RedirectUrls redirectUrls = getRedirectUrls();
 
+        Payment payment = getPayment(transactions, payer, redirectUrls);
 
-        ItemList list = new ItemList();
-        list.setItems(items);
-        list.setShippingAddress(address);
+        executePayment(resp, payment);
+    }
 
-
-        Amount amount = new Amount();
-        amount.setCurrency("USD");
-        amount.setTotal(Float.toString(order.getPriceOfAllProducts()));
-
-
-        Transaction transaction = new Transaction();
-        transaction.setAmount(amount);
-        transaction.setItemList(list);
-        transaction.setDescription("Payment page");
-        //transaction.setInvoiceNumber(Integer.toString(ThreadLocalRandom.current().nextInt(1000000000, 999999999 + 1)));
-        List<Transaction> transactions = new ArrayList<Transaction>();
-        transactions.add(transaction);
-
-
-        PayerInfo info = new PayerInfo();
-        info.setLastName("Bill");
-        info.setFirstName("Gates");
-        info.setBillingAddress(address);
-
-        Payer payer = new Payer();
-        payer.setPayerInfo(info);
-        payer.setPaymentMethod("paypal");
-
-        RedirectUrls redirectUrls = new RedirectUrls();
-        redirectUrls.setCancelUrl("http://localhost:8080/cancel");
-        redirectUrls.setReturnUrl("http://localhost:8080/done");
-
-
-        Payment payment = new Payment();
-        payment.setIntent("sale");
-        payment.setPayer(payer);
-        payment.setTransactions(transactions);
-        payment.setRedirectUrls(redirectUrls);
-
-
+    private void executePayment(HttpServletResponse resp, Payment payment) throws IOException {
         try {
             APIContext apiContext = new APIContext(clientID, SecretID, "sandbox");
             Payment createdPayment = payment.create(apiContext);
@@ -127,8 +87,104 @@ public class PaypalController extends HttpServlet {
         } catch (PayPalRESTException e) {
             System.err.println(e.getDetails());
         }
+    }
+
+    private Payment getPayment(List<Transaction> transactions, Payer payer, RedirectUrls redirectUrls) {
+        Payment payment = new Payment();
+        payment.setIntent("sale");
+        payment.setPayer(payer);
+        payment.setTransactions(transactions);
+        payment.setRedirectUrls(redirectUrls);
+        return payment;
+    }
+
+    private RedirectUrls getRedirectUrls() {
+        RedirectUrls redirectUrls = new RedirectUrls();
+        redirectUrls.setCancelUrl("http://localhost:8080/cancel");
+        redirectUrls.setReturnUrl("http://localhost:8080/done");
+        return redirectUrls;
+    }
+
+    private Payer getPayer(PayerInfo info) {
+        Payer payer = new Payer();
+        payer.setPayerInfo(info);
+        payer.setPaymentMethod("paypal");
+        return payer;
+    }
+
+    private PayerInfo getPayerInfo(ShippingAddress address) {
+        PayerInfo info = new PayerInfo();
+        info.setLastName("Bill");
+        info.setFirstName("Gates");
+        info.setBillingAddress(address);
+        return info;
+    }
+
+    private List<Transaction> getTransactions(ItemList list, Amount amount) {
+        Transaction transaction = new Transaction();
+        transaction.setAmount(amount);
+        transaction.setItemList(list);
+        transaction.setDescription("Payment page");
+        //transaction.setInvoiceNumber(Integer.toString(ThreadLocalRandom.current().nextInt(1000000000, 999999999 + 1)));
+        List<Transaction> transactions = new ArrayList<Transaction>();
+        transactions.add(transaction);
+        return transactions;
+    }
+
+    private Amount getAmount() {
+        Amount amount = new Amount();
+        amount.setCurrency("USD");
+        amount.setTotal(Float.toString(order.getPriceOfAllProducts()));
+        return amount;
+    }
+
+    private ItemList getItemList(ShippingAddress address, List items) {
+        ItemList list = new ItemList();
+        list.setItems(items);
+        list.setShippingAddress(address);
+        return list;
+    }
+
+    private void getItems(List items) {
+        for (Map.Entry<String, Integer> entry : order.getProductNameAndQuantityMap().entrySet()) {
 
 
+            String name = entry.getKey();
+            String quantity = Integer.toString(entry.getValue());
+            String price = "1.1";
+
+            for(LineItem item  : order.getLineItemList()){
+                if(item.getProduct().getName().equals(name)){
+                    price = String.valueOf(item.getProduct().getDefaulPrice());
+                    break;
+                }
+
+            }
+
+            addItem(items, name, quantity, price);
+        }
+    }
+
+    private void addItem(List items, String name, String quantity, String price) {
+        Item item = new Item();
+        item.setName(name);
+        item.setPrice(Double.toString(Integer.parseInt(quantity)*Double.parseDouble(price)));
+        item.setCategory("PHYSICAL");
+        item.setQuantity(quantity);
+        item.setCurrency("USD");
+        items.add(item);
+    }
+
+    private ShippingAddress getAddress() {
+        ShippingAddress address = new ShippingAddress();
+        //address.setRecipientName("Janos Istvan");
+        address.setPhone(order.getUserDataMap().get("telephoneNumber"));
+        address.setCountryCode("HU");
+        address.setCity(order.getUserDataMap().get("cityBill"));
+        address.setLine1(order.getUserDataMap().get("addressBill"));
+        address.setPostalCode(order.getUserDataMap().get("zipCodeBill"));
+        address.setState(order.getUserDataMap().get("Pest"));
+        return address;
     }
 
 }

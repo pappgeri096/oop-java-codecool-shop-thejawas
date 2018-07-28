@@ -16,6 +16,8 @@ import java.util.*;
  * */
 public class OrderDaoJson implements OrderDao {
 
+    String uuidString;
+
     /**
      * writes single order data to json file
      * creates UUID for each order and gives the file this UUID as name
@@ -25,7 +27,7 @@ public class OrderDaoJson implements OrderDao {
      * */
     @Override
     public void add(Order order) {
-        String uuidString = createUuid();
+        uuidString = createUuid();
         Map<String, String> orderDataMap = joinMaps(order, uuidString);
 
         String filePathAndName = "target/orders/Order_" + uuidString + ".json";
@@ -85,7 +87,6 @@ public class OrderDaoJson implements OrderDao {
      * */
     String createUuid() {
         List<String> allOrderIds = getAllOrderIds();
-        System.out.println(allOrderIds);
         boolean exists = false;
         String newUuid;
         do {
@@ -190,6 +191,11 @@ public class OrderDaoJson implements OrderDao {
         }
         return listAsString;
     }
+
+    public String getUuidString() {
+        return uuidString;
+    }
+
 
     public String orderToJsonString(Order order) {
         String uuidString = createUuid();

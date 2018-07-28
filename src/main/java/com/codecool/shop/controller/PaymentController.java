@@ -23,11 +23,10 @@ public class PaymentController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        paymentLogger.debug("PAYMENT ROOT");
-
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("payment/index.html", context, resp.getWriter());
+        paymentLogger.trace("Get request received for PAYMENT page");
     }
 
 }

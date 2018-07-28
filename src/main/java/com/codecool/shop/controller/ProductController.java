@@ -1,5 +1,11 @@
 package com.codecool.shop.controller;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.core.util.StatusPrinter;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
@@ -10,7 +16,6 @@ import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.Product;
-import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -21,22 +26,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import ch.qos.logback.classic.Level;
-import java.util.logging.*;
+
 
 @WebServlet(urlPatterns = {"/", "/index"})
 public class ProductController extends HttpServlet {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
+    private static final ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProductController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // SET TO RUN ONLY ONCE
-        LOGGER.debug("NEW SESSION STARTED");
-
-
 
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
@@ -51,7 +49,11 @@ public class ProductController extends HttpServlet {
 
         if (productParameter != null) {
             int productId = Integer.parseInt(productParameter);
-            orderDataStore.getCurrent().addProduct((productDataStore.getBy(productId)));
+            Product productToAdd = productDataStore.getBy(productId);
+            orderDataStore.getCurrent().addProduct(productToAdd);
+
+            logger.trace("{} successfully added to cart", productToAdd.getName());
+
         }
         String supplierParameter = req.getParameter("supplier");
         WebContext context = new WebContext(req, resp, req.getServletContext());

@@ -23,11 +23,11 @@ public class PaymentCanceledController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        paymentCanceledLogger.debug("CANCEL ROOT (PAYMENT CANCELED CONTROLLER)");
-
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("payment/canceled.html", context, resp.getWriter());
+
+        paymentCanceledLogger.error("Payment cancelled by PayPal. See details above at line containing [ERROR com.paypal.base.HttpConnection logger].");
     }
 
 }

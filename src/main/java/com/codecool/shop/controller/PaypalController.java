@@ -15,10 +15,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.FormattingTuple;
+import org.slf4j.helpers.MessageFormatter;
 
 
 @WebServlet(urlPatterns = {"/paypal"})
@@ -28,6 +35,8 @@ public class PaypalController extends HttpServlet {
     private String SecretID;
     private OrderDao orderDataStore;
     private Order order;
+    private static final Logger paypalLogger = LoggerFactory.getLogger(PaymentController.class);
+
 
     public PaypalController() {
         this.clientID = "AWTqmvOfxu2VnNifNQblRmD8ty6zvuam7Hh_k36MHk8sbYuZdEtR3gneLyuK_3A7E_AzZm0AWr-rNVA3";
@@ -39,12 +48,18 @@ public class PaypalController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        if(order.getUserDataMap().size()==0 || order.getProductNameAndQuantityMap().size()==0)
+        if (order.getUserDataMap().size() == 0 || order.getProductNameAndQuantityMap().size() == 0) {
             resp.sendRedirect("/");
+            paypalLogger.debug("Empty user data or product quantity");
+            paypalLogger.debug(
+                    "User data size: {}. Product quantity: {}",
+                    order.getUserDataMap().size(),
+                    order.getProductNameAndQuantityMap().size());
+        }
 
         //execute payment
         payment(resp);
-
+        paypalLogger.debug("Customer is now redirected to paypal.com");
 
     }
 
@@ -80,12 +95,13 @@ public class PaypalController extends HttpServlet {
             while (links.hasNext()) {
                 Links link = (Links) links.next();
                 if (link.getRel().equalsIgnoreCase("approval_url")) {
-                    // REDIRECT USER TO link.getHref()
                     resp.sendRedirect(link.getHref());
+                    paypalLogger.debug("Payment approved by PayPal");
                 }
             }
         } catch (PayPalRESTException e) {
-            System.err.println(e.getDetails());
+            paypalLogger.error("PayPal REST exception: {}", e.getDetails().getMessage());
+            resp.sendRedirect("/cancel");
         }
     }
 
@@ -153,8 +169,8 @@ public class PaypalController extends HttpServlet {
             String quantity = Integer.toString(entry.getValue());
             String price = "1.1";
 
-            for(LineItem item  : order.getLineItemList()){
-                if(item.getProduct().getName().equals(name)){
+            for (LineItem item : order.getLineItemList()) {
+                if (item.getProduct().getName().equals(name)) {
                     price = String.valueOf(item.getProduct().getDefaulPrice());
                     break;
                 }
@@ -168,7 +184,11 @@ public class PaypalController extends HttpServlet {
     private void addItem(List items, String name, String quantity, String price) {
         Item item = new Item();
         item.setName(name);
-        item.setPrice(Double.toString(Integer.parseInt(quantity)*Double.parseDouble(price)));
+
+        Double totalPrice = Integer.parseInt(quantity) * Double.parseDouble(price);
+        BigDecimal totalPriceRounded = new BigDecimal(totalPrice);
+        totalPriceRounded = totalPriceRounded.setScale(2, RoundingMode.HALF_UP);
+        item.setPrice(totalPriceRounded.toString());
         item.setCategory("PHYSICAL");
         item.setQuantity(quantity);
         item.setCurrency("USD");

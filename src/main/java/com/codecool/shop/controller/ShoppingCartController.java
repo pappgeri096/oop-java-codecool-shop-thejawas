@@ -15,17 +15,26 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @WebServlet(urlPatterns = {"/cart"})
 public class ShoppingCartController extends HttpServlet {
+
+    private static final Logger cartLogger = LoggerFactory.getLogger(PaymentController.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         OrderDao orderDataStore = OrderDaoMem.getInstance();
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("order", orderDataStore.getCurrent());
         engine.process("product/cart.html", context, resp.getWriter());
+
+        cartLogger.trace("Shopping cart editor page displayed");
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -38,10 +47,13 @@ public class ShoppingCartController extends HttpServlet {
                 int newQuantity = Integer.parseInt(req.getParameter(String.valueOf(lineItem.id)));
                 if (newQuantity < 1) {
                     lineItemList.remove(lineItem);
+                    cartLogger.trace("{} is removed from shopping cart.", lineItem.getProduct().getName());
                     repeat = true;
                     break;
+
                 } else if (newQuantity != lineItem.getQuantity()){
                     lineItem.setQuantity(newQuantity);
+                    cartLogger.trace("New quantity for {} is set to {}", lineItem.getProduct().getName(), newQuantity);
                 }
             }
         }
@@ -50,6 +62,7 @@ public class ShoppingCartController extends HttpServlet {
             resp.sendRedirect("/review");
         }else {
             resp.sendRedirect("/");
+            cartLogger.trace("All products were removed from shopping cart.");
         }
 
     }

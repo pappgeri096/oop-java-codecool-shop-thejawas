@@ -25,13 +25,14 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/checkout"})
 public class CheckOutController extends HttpServlet {
 
-    private static final Logger logger = LoggerFactory.getLogger(CheckOutController.class);
+    private static final Logger checkoutLogger = LoggerFactory.getLogger(CheckOutController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("product/checkout.html", context, resp.getWriter());
+        checkoutLogger.trace("Get request received for CHECKOUT page");
     }
 
     @Override
@@ -60,9 +61,10 @@ public class CheckOutController extends HttpServlet {
 
 //        OrderDao serializeOrder = new OrderDaoJson();
 //        String serializedOrder = ((OrderDaoJson) serializeOrder).orderToJsonString(order);
-//        logger.warn(serializedOrder);
+//        checkoutLogger.warn(serializedOrder);
 
-        logger.debug("CHECKOUT FOR NEW PRODUCT ORDER");
+        String uuidString = ((OrderDaoJson) writeOrderDataToFile).getUuidString();
+        checkoutLogger.trace("User data is saved in json file. Order ID: {}", uuidString);
 
         resp.sendRedirect("/payment");
     }

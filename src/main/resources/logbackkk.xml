@@ -2,7 +2,7 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>[%d{HH:mm:ss.SSS}] |%-5level| %logger{36} [%line] %-4relative [%thread] - %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -17,12 +17,12 @@
         </rollingPolicy>
 
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>[%d{HH:mm:ss.SSS}] %-4relative [%thread] %-5level %logger{36} [%file:%line] - %msg%n</pattern>
         </encoder>
     </appender>
 
     <!-- Configure so that it outputs to both console and log file -->
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="FILE" />
         <appender-ref ref="STDOUT" />
     </root>

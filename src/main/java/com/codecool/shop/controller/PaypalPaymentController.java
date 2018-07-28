@@ -11,11 +11,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
 
 
 @WebServlet(urlPatterns = {"/done"})
 public class PaypalPaymentController extends HttpServlet {
 
+    private static final Logger paypalPaymentLogger = LoggerFactory.getLogger(PaymentController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,14 +32,19 @@ public class PaypalPaymentController extends HttpServlet {
 
         PaymentExecution paymentExecution = new PaymentExecution();
         paymentExecution.setPayerId(req.getParameter("PayerID"));
+
         try {
             APIContext apiContext = new APIContext(clientId, clientSecret, "sandbox");
             Payment createdPayment = payment.execute(apiContext, paymentExecution);
             resp.sendRedirect("/success");
 
+            paypalPaymentLogger.debug("Payment is successful. PayPal payment ID: {}", createdPayment.getId());
+//            String successMessage = MessageFormatter.format("PayPal paymentId: {}", createdPayment.getId()).getMessage();
+//            paypalPaymentLogger.debug(successMessage);
+
         } catch (PayPalRESTException e) {
             System.err.println(e.getDetails());
-            resp.sendRedirect("/cancel");
+            paypalPaymentLogger.error("PayPal REST exception. Details: {}", e.getDetails());
         }
 
     }

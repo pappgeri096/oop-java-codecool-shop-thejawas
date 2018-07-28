@@ -28,8 +28,6 @@ public class PaymentPayedController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        paymentPayedLogger.debug("SUCCESS ROOT (PAYMENT PAYED CONTROLLER)");
-
         OrderDao orderDataStore = OrderDaoMem.getInstance();
         List<LineItem> lineItemList = orderDataStore.getCurrent().getLineItemList();
         lineItemList.clear();
@@ -37,6 +35,7 @@ public class PaymentPayedController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("payment/payed.html", context, resp.getWriter());
+        paymentPayedLogger.debug("Payment approved by PayPal");
     }
 
 }

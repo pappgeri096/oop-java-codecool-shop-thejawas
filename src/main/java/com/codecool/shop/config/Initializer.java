@@ -56,16 +56,16 @@ public class Initializer implements ServletContextListener {
 
 
         //setting up products and printing it
-        productDataStore.add(new Product(1,"Amazon Fire", 49.91f, "USD", "Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support.", tablet, amazon));
-        productDataStore.add(new Product(2,"Lenovo IdeaPad Miix 700", 479.11f, "USD", "Keyboard cover is included. Fanless Core m5 processor. Full-size USB ports. Adjustable kickstand.", tablet, lenovo));
-        productDataStore.add(new Product(3,"Amazon Fire HD 8", 89.21f, "USD", "Amazon's latest Fire HD 8 tablet is a great value for media consumption.", tablet, amazon));
+        productDataStore.add(new Product("Amazon Fire", 49.91f, "USD", "Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support.", tablet, amazon));
+        productDataStore.add(new Product("Lenovo IdeaPad Miix 700", 479.11f, "USD", "Keyboard cover is included. Fanless Core m5 processor. Full-size USB ports. Adjustable kickstand.", tablet, lenovo));
+        productDataStore.add(new Product("Amazon Fire HD 8", 89.21f, "USD", "Amazon's latest Fire HD 8 tablet is a great value for media consumption.", tablet, amazon));
 
-        productDataStore.add(new Product(4,"Health Energy", 19.99f, "USD", "Coming from mother Earth, this is the most efficient energy on the market, if you want to recover from any illness or just stay healthy, our first class Health Energy is just for you.", energy, earth));
-        productDataStore.add(new Product(5,"Life Energy", 99.99f, "USD", "We are selling the most healthiest life energy available on Planet Earth. Get your package now, and get revitalized.", energy, universe));
-        productDataStore.add(new Product(6,"Money Energy", 199.89f, "USD", "You wanna get rich quick? Then, order this money energy package right now and become rich in no time. It is handy, quick to absorb and recommended by 9 out of 10 rich people", energy, earth));
+        productDataStore.add(new Product("Health Energy", 19.99f, "USD", "Coming from mother Earth, this is the most efficient energy on the market, if you want to recover from any illness or just stay healthy, our first class Health Energy is just for you.", energy, earth));
+        productDataStore.add(new Product("Life Energy", 99.99f, "USD", "We are selling the most healthiest life energy available on Planet Earth. Get your package now, and get revitalized.", energy, universe));
+        productDataStore.add(new Product("Money Energy", 199.89f, "USD", "You wanna get rich quick? Then, order this money energy package right now and become rich in no time. It is handy, quick to absorb and recommended by 9 out of 10 rich people", energy, earth));
 
-        productDataStore.add(new Product(7,"Maiden Body Pillow", 80.33f, "USD", "Maiden body pillow, designed to fulfill all your desires.", bodyPillow, ebay));
-        productDataStore.add(new Product(8,"Levi Body Pillow", 50.76f, "USD", "A body pillow of Levi, designed to fulfill all your desires.", bodyPillow, ebay));
-        productDataStore.add(new Product(9,"Sebastian Body Pillow", 40.43f, "USD", "A body pillow of Sebastian, designed to fulfill all your desires.", bodyPillow, ebay));
+        productDataStore.add(new Product("Maiden Body Pillow", 80.33f, "USD", "Maiden body pillow, designed to fulfill all your desires.", bodyPillow, ebay));
+        productDataStore.add(new Product("Levi Body Pillow", 50.76f, "USD", "A body pillow of Levi, designed to fulfill all your desires.", bodyPillow, ebay));
+        productDataStore.add(new Product("Sebastian Body Pillow", 40.43f, "USD", "A body pillow of Sebastian, designed to fulfill all your desires.", bodyPillow, ebay));
     }
 }

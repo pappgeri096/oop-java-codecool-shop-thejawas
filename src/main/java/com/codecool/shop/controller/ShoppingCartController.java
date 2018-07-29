@@ -34,7 +34,7 @@ public class ShoppingCartController extends HttpServlet {
         context.setVariable("order", orderDataStore.getCurrent());
         engine.process("product/cart.html", context, resp.getWriter());
 
-        cartLogger.trace("Shopping cart editor page displayed");
+        cartLogger.info("Shopping cart editor page displayed");
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -47,13 +47,13 @@ public class ShoppingCartController extends HttpServlet {
                 int newQuantity = Integer.parseInt(req.getParameter(String.valueOf(lineItem.id)));
                 if (newQuantity < 1) {
                     lineItemList.remove(lineItem);
-                    cartLogger.trace("{} is removed from shopping cart.", lineItem.getProduct().getName());
+                    cartLogger.info("{} is removed from shopping cart.", lineItem.getProduct().getName());
                     repeat = true;
                     break;
 
                 } else if (newQuantity != lineItem.getQuantity()){
                     lineItem.setQuantity(newQuantity);
-                    cartLogger.trace("New quantity for {} is set to {}", lineItem.getProduct().getName(), newQuantity);
+                    cartLogger.info("New quantity for {} is set to {}", lineItem.getProduct().getName(), newQuantity);
                 }
             }
         }
@@ -62,7 +62,7 @@ public class ShoppingCartController extends HttpServlet {
             resp.sendRedirect("/review");
         }else {
             resp.sendRedirect("/");
-            cartLogger.trace("All products were removed from shopping cart.");
+            cartLogger.info("All products were removed from shopping cart.");
         }
 
     }

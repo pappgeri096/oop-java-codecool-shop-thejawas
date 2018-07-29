@@ -56,10 +56,9 @@ public class PaypalController extends HttpServlet {
                     order.getUserDataMap().size(),
                     order.getProductNameAndQuantityMap().size());
         }
-
+        paypalLogger.info("Customer is now redirected to paypal.com");
         //execute payment
         payment(resp);
-        paypalLogger.debug("Customer is now redirected to paypal.com");
 
     }
 
@@ -96,11 +95,11 @@ public class PaypalController extends HttpServlet {
                 Links link = (Links) links.next();
                 if (link.getRel().equalsIgnoreCase("approval_url")) {
                     resp.sendRedirect(link.getHref());
-                    paypalLogger.debug("Payment approved by PayPal");
+                    paypalLogger.info("Payment approved by PayPal");
                 }
             }
         } catch (PayPalRESTException e) {
-            paypalLogger.error("PayPal REST exception: {}", e.getDetails().getMessage());
+            paypalLogger.error("Payment is not approved by ", e);
             resp.sendRedirect("/cancel");
         }
     }

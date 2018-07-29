@@ -38,13 +38,10 @@ public class PaypalPaymentController extends HttpServlet {
             Payment createdPayment = payment.execute(apiContext, paymentExecution);
             resp.sendRedirect("/success");
 
-            paypalPaymentLogger.debug("Payment is successful. PayPal payment ID: {}", createdPayment.getId());
-//            String successMessage = MessageFormatter.format("PayPal paymentId: {}", createdPayment.getId()).getMessage();
-//            paypalPaymentLogger.debug(successMessage);
-
+            paypalPaymentLogger.info("Payment is successful. PayPal payment ID: {}", createdPayment.getId());
         } catch (PayPalRESTException e) {
             System.err.println(e.getDetails());
-            paypalPaymentLogger.error("PayPal REST exception. Details: {}", e.getDetails());
+            paypalPaymentLogger.error("PayPal REST exception (DUPLICATE??)", e);
         }
 
     }

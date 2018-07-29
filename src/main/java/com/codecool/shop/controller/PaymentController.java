@@ -26,7 +26,7 @@ public class PaymentController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("payment/index.html", context, resp.getWriter());
-        paymentLogger.trace("Get request received for PAYMENT page");
+        paymentLogger.info("Get request received for PAYMENT page");
     }
 
 }

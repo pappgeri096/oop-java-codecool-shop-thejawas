@@ -30,6 +30,6 @@ public class ReviewController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("order", orderDataStore.getCurrent());
         engine.process("product/review.html", context, resp.getWriter());
-        reviewLogger.trace("Get request received for SHOPPING CART REVIEW page");
+        reviewLogger.info("Get request received for SHOPPING CART REVIEW page");
     }
 }

@@ -32,7 +32,7 @@ public class CheckOutController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("product/checkout.html", context, resp.getWriter());
-        checkoutLogger.trace("Get request received for CHECKOUT page");
+        checkoutLogger.info("Get request received for CHECKOUT page");
     }
 
     @Override
@@ -64,7 +64,7 @@ public class CheckOutController extends HttpServlet {
 //        checkoutLogger.warn(serializedOrder);
 
         String uuidString = ((OrderDaoJson) writeOrderDataToFile).getUuidString();
-        checkoutLogger.trace("User data is saved in json file. Order ID: {}", uuidString);
+        checkoutLogger.info("User data is saved in json file. Order ID: {}", uuidString);
 
         resp.sendRedirect("/payment");
     }

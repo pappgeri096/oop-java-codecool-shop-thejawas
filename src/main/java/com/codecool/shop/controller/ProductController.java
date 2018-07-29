@@ -1,10 +1,6 @@
 package com.codecool.shop.controller;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.core.util.StatusPrinter;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.ProductCategoryDao;
@@ -31,7 +27,7 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/", "/index"})
 public class ProductController extends HttpServlet {
 
-    private static final ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProductController.class);
+    private static final ch.qos.logback.classic.Logger productControllerLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProductController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -52,7 +48,7 @@ public class ProductController extends HttpServlet {
             Product productToAdd = productDataStore.getBy(productId);
             orderDataStore.getCurrent().addProduct(productToAdd);
 
-            logger.trace("{} successfully added to cart", productToAdd.getName());
+            productControllerLogger.info("{} successfully added to cart", productToAdd.getName());
 
         }
         String supplierParameter = req.getParameter("supplier");

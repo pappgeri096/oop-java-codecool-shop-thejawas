@@ -17,6 +17,10 @@ public class Product extends BaseModel {
         this.setProductCategory(productCategory);
     }
 
+//    public String getProductNameById(int id) {
+//        return (this.id == id) ? this.name : null;
+//    }
+
     public float getDefaultPrice() {
         return defaultPrice;
     }
@@ -40,6 +44,9 @@ public class Product extends BaseModel {
     public void setPrice(float price, String currency) {
         this.defaultPrice = price;
         this.defaultCurrency = Currency.getInstance(currency);
+    }
+    public float getDefaulPrice(){
+        return defaultPrice;
     }
 
     public ProductCategory getProductCategory() {

@@ -1,0 +1,142 @@
+[16:53:44.636] 4489 [qtp379115456-16] TRACE c.c.s.controller.ProductController [ProductController.java:55] - Amazon Fire successfully added to cart
+[16:53:45.534] 5387 [qtp379115456-16] TRACE c.c.s.controller.ProductController [ProductController.java:55] - Lenovo IdeaPad Miix 700 successfully added to cart
+[16:53:46.981] 6834 [qtp379115456-16] TRACE c.c.s.controller.ProductController [ProductController.java:55] - Amazon Fire HD 8 successfully added to cart
+[16:53:50.569] 10422 [qtp379115456-16] TRACE c.c.s.controller.ProductController [ProductController.java:55] - Money Energy successfully added to cart
+[16:53:51.999] 11852 [qtp379115456-16] TRACE c.c.s.controller.PaymentController [ShoppingCartController.java:37] - Shopping cart editor page displayed
+[16:54:03.680] 23533 [qtp379115456-16] TRACE c.c.s.controller.PaymentController [ShoppingCartController.java:50] - Lenovo IdeaPad Miix 700 is removed from shopping cart.
+[16:54:03.681] 23534 [qtp379115456-16] TRACE c.c.s.controller.PaymentController [ShoppingCartController.java:50] - Amazon Fire HD 8 is removed from shopping cart.
+[16:54:03.681] 23534 [qtp379115456-16] TRACE c.c.s.controller.PaymentController [ShoppingCartController.java:56] - New quantity for Money Energy is set to 3
+[16:54:03.690] 23543 [qtp379115456-13] TRACE c.c.s.controller.PaymentController [ReviewController.java:33] - Get request received for SHOPPING CART REVIEW page
+[16:54:07.598] 27451 [qtp379115456-13] TRACE c.c.s.controller.CheckOutController [CheckOutController.java:35] - Get request received for CHECKOUT page
+[16:54:19.699] 39552 [qtp379115456-13] TRACE c.c.s.controller.CheckOutController [CheckOutController.java:67] - User data is saved in json file. Order ID: 48f11b14-cdee-4072-8842-a91e63569549
+[16:54:19.713] 39566 [qtp379115456-15] TRACE c.c.s.controller.PaymentController [PaymentController.java:29] - Get request received for PAYMENT page
+[16:54:22.460] 42313 [qtp379115456-15] DEBUG com.paypal.base.ConfigManager [ConfigManager.java:95] - sdk_config.properties not present. Skipping...
+[16:54:22.668] 42521 [qtp379115456-15] DEBUG c.p.base.rest.OAuthTokenCredential [OAuthTokenCredential.java:378] - request header: {Authorization=Basic QVdUcW12T2Z4dTJWbk5pZk5RYmxSbUQ4dHk2enZ1YW03SGhfazM2TUhrOHNiWXVaZEV0UjNnbmVMeXVLXzNBN0VfQXpabTBBV3Itck5WQTM6RUNZZ1hxZGxMQnhRc0NIaGR3TXQ0eXoxTFU1TzVuNmNobUplM0VIcmhHZnRzVU9pTjVQYm1lcmdOXzBfbHFRY0ZsLUp6ekMxZXA2OEpHNUk=, Accept=application/json, User-Agent=PayPalSDK/PayPal-Java-SDK 1.14.0 (v=1.8.0_181; vendor=Oracle Corporation; bit=64; os=Linux 4.15.0-29-generic), Content-Type=application/x-www-form-urlencoded}
+[16:54:22.669] 42522 [qtp379115456-15] DEBUG c.p.base.rest.OAuthTokenCredential [OAuthTokenCredential.java:379] - request body: grant_type=client_credentials
+[16:54:22.670] 42523 [qtp379115456-15] DEBUG com.paypal.base.HttpConnection [HttpConnection.java:225] - curl command: 
+curl --verbose --request POST 'https://api.sandbox.paypal.com/v1/oauth2/token' \
+  --header "Authorization:Basic QVdUcW12T2Z4dTJWbk5pZk5RYmxSbUQ4dHk2enZ1YW03SGhfazM2TUhrOHNiWXVaZEV0UjNnbmVMeXVLXzNBN0VfQXpabTBBV3Itck5WQTM6RUNZZ1hxZGxMQnhRc0NIaGR3TXQ0eXoxTFU1TzVuNmNobUplM0VIcmhHZnRzVU9pTjVQYm1lcmdOXzBfbHFRY0ZsLUp6ekMxZXA2OEpHNUk=" \
+  --header "Accept:application/json" \
+  --header "User-Agent:PayPalSDK/PayPal-Java-SDK 1.14.0 (v=1.8.0_181; vendor=Oracle Corporation; bit=64; os=Linux 4.15.0-29-generic)" \
+  --header "Content-Type:application/x-www-form-urlencoded" \
+  --data 'grant_type=client_credentials'
+[16:54:23.650] 43503 [qtp379115456-15] DEBUG c.p.base.rest.OAuthTokenCredential [OAuthTokenCredential.java:385] - response header: {paypal-debug-id=[67e1f0cf785cc], null=[HTTP/1.1 200 OK], Paypal-Debug-Id=[67e1f0cf785cc], Server=[Apache], Connection=[close], Vary=[Authorization], Set-Cookie=[X-PP-SILOVER=; Expires=Thu, 01 Jan 1970 00:00:01 GMT, X-PP-SILOVER=name%3DSANDBOX3.API.1%26silo_version%3D1880%26app%3Dapiplatformproxyserv%26TIME%3D2676186203%26HTTP_X_PP_AZ_LOCATOR%3Dsandbox.slc; Expires=Sat, 28 Jul 2018 15:24:23 GMT; domain=.paypal.com; path=/; Secure; HttpOnly], HTTP_X_PP_AZ_LOCATOR=[sandbox.slc], Content-Length=[876], X-PAYPAL-TOKEN-SERVICE=[IAAS], Date=[Sat, 28 Jul 2018 14:54:23 GMT], Content-Type=[application/json]}
+[16:54:23.651] 43504 [qtp379115456-15] DEBUG c.p.base.rest.OAuthTokenCredential [OAuthTokenCredential.java:386] - response: {"scope":"https://api.paypal.com/v1/payments/.* https://uri.paypal.com/services/payments/refund https://uri.paypal.com/services/applications/webhooks https://uri.paypal.com/services/payments/payment/authcapture https://uri.paypal.com/payments/payouts https://api.paypal.com/v1/vault/credit-card/.* https://uri.paypal.com/services/disputes/read-seller https://uri.paypal.com/services/subscriptions https://uri.paypal.com/services/disputes/read-buyer https://api.paypal.com/v1/vault/credit-card openid https://uri.paypal.com/services/disputes/update-seller https://uri.paypal.com/services/payments/realtimepayment","nonce":"2018-07-28T14:15:04Z8qYZl1g4ApkL5-DCBkth0SdOsWUA_Zw2cs0xmbA5hiI","access_token":"A21AAHBtkgkrlXjYdp6jV7cINU0EIt5XGjDScVm1yIvpkltNuxQ6r71LL7IURvLS_2FZmOEwKKlB_dokJvTqPtSz8CecPPS1A","token_type":"Bearer","app_id":"APP-80W284485P519543T","expires_in":30041}
+[16:54:23.665] 43518 [qtp379115456-15] DEBUG com.paypal.base.rest.PayPalResource [PayPalResource.java:412] - request header: {Authorization=Bearer A21AAHBtkgkrlXjYdp6jV7cINU0EIt5XGjDScVm1yIvpkltNuxQ6r71LL7IURvLS_2FZmOEwKKlB_dokJvTqPtSz8CecPPS1A, User-Agent=PayPalSDK/  (v=1.8.0_181; vendor=Oracle Corporation; bit=64; os=Linux 4.15.0-29-generic), PayPal-Request-Id=f8182ac9-f151-4917-8292-948a6e0b6e90, Accept=application/json, Content-Type=application/json}
+[16:54:23.666] 43519 [qtp379115456-15] DEBUG com.paypal.base.rest.PayPalResource [PayPalResource.java:413] - request body: {
+  "intent": "sale",
+  "payer": {
+    "payment_method": "paypal",
+    "payer_info": {
+      "first_name": "Gates",
+      "last_name": "Bill",
+      "billing_address": {
+        "line1": "Magyar utca 5",
+        "city": "Barcs",
+        "country_code": "HU",
+        "postal_code": "7570"
+      }
+    }
+  },
+  "transactions": [
+    {
+      "amount": {
+        "currency": "USD",
+        "total": "649.57996"
+      },
+      "description": "Payment page",
+      "item_list": {
+        "items": [
+          {
+            "name": "Money Energy",
+            "quantity": "3",
+            "price": "599.67",
+            "currency": "USD",
+            "category": "PHYSICAL"
+          },
+          {
+            "name": "Amazon Fire",
+            "quantity": "1",
+            "price": "49.91",
+            "currency": "USD",
+            "category": "PHYSICAL"
+          }
+        ],
+        "shipping_address": {
+          "line1": "Magyar utca 5",
+          "city": "Barcs",
+          "country_code": "HU",
+          "postal_code": "7570"
+        }
+      }
+    }
+  ],
+  "redirect_urls": {
+    "return_url": "http://localhost:8080/done",
+    "cancel_url": "http://localhost:8080/cancel"
+  }
+}
+[16:54:23.666] 43519 [qtp379115456-15] DEBUG com.paypal.base.HttpConnection [HttpConnection.java:225] - curl command: 
+curl --verbose --request POST 'https://api.sandbox.paypal.com/v1/payments/payment' \
+  --header "Authorization:Bearer A21AAHBtkgkrlXjYdp6jV7cINU0EIt5XGjDScVm1yIvpkltNuxQ6r71LL7IURvLS_2FZmOEwKKlB_dokJvTqPtSz8CecPPS1A" \
+  --header "User-Agent:PayPalSDK/  (v=1.8.0_181; vendor=Oracle Corporation; bit=64; os=Linux 4.15.0-29-generic)" \
+  --header "PayPal-Request-Id:f8182ac9-f151-4917-8292-948a6e0b6e90" \
+  --header "Accept:application/json" \
+  --header "Content-Type:application/json" \
+  --data '{
+  "intent": "sale",
+  "payer": {
+    "payment_method": "paypal",
+    "payer_info": {
+      "first_name": "Gates",
+      "last_name": "Bill",
+      "billing_address": {
+        "line1": "Magyar utca 5",
+        "city": "Barcs",
+        "country_code": "HU",
+        "postal_code": "7570"
+      }
+    }
+  },
+  "transactions": [
+    {
+      "amount": {
+        "currency": "USD",
+        "total": "649.57996"
+      },
+      "description": "Payment page",
+      "item_list": {
+        "items": [
+          {
+            "name": "Money Energy",
+            "quantity": "3",
+            "price": "599.67",
+            "currency": "USD",
+            "category": "PHYSICAL"
+          },
+          {
+            "name": "Amazon Fire",
+            "quantity": "1",
+            "price": "49.91",
+            "currency": "USD",
+            "category": "PHYSICAL"
+          }
+        ],
+        "shipping_address": {
+          "line1": "Magyar utca 5",
+          "city": "Barcs",
+          "country_code": "HU",
+          "postal_code": "7570"
+        }
+      }
+    }
+  ],
+  "redirect_urls": {
+    "return_url": "http://localhost:8080/done",
+    "cancel_url": "http://localhost:8080/cancel"
+  }
+}'
+[16:54:24.564] 44417 [qtp379115456-15] ERROR com.paypal.base.HttpConnection [HttpConnection.java:153] - Response code: 400	Error response: {"name":"VALIDATION_ERROR","details":[{"field":"transactions.amount","issue":"Currency amount must be non-negative number, may optionally contain exactly 2 decimal places separated by '.', optional thousands separator ',', limited to 7 digits before the decimal point and currency which is a valid ISO Currency Code"}],"message":"Invalid request - see details","information_link":"https://developer.paypal.com/docs/api/payments/#errors","debug_id":"20941ac95d84b"}
+[16:54:24.569] 44422 [qtp379115456-15] ERROR c.c.s.controller.PaymentController [PaypalController.java:103] - PayPal REST exception. Details: Invalid request - see details
+[16:54:24.570] 44423 [qtp379115456-15] DEBUG c.c.s.controller.PaymentController [PaypalController.java:62] - Customer is now redirected to paypal.com
+[16:54:24.577] 44430 [qtp379115456-13] ERROR c.c.s.c.PaymentCanceledController [PaymentCanceledController.java:30] - Payment cancelled by PayPal. See details above at line containing [ERROR com.paypal.base.HttpConnection logger].

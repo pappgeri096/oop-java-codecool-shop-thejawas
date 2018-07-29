@@ -8,6 +8,7 @@ import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.dao.implementation.OrderDaoMem;
+import com.codecool.shop.dao.implementation.postgresql.ProductDaoJdbc;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
@@ -23,6 +24,8 @@ public class Initializer implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ProductDao productDataStore = ProductDaoMem.getInstance();
+        ProductDao productDatabaseStorage = ProductDaoJdbc.getSingletonInstance();
+
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
         OrderDao orderDataStore = OrderDaoMem.getInstance();
@@ -67,5 +70,7 @@ public class Initializer implements ServletContextListener {
         productDataStore.add(new Product("Maiden Body Pillow", 80.33f, "USD", "Maiden body pillow, designed to fulfill all your desires.", bodyPillow, ebay));
         productDataStore.add(new Product("Levi Body Pillow", 50.76f, "USD", "A body pillow of Levi, designed to fulfill all your desires.", bodyPillow, ebay));
         productDataStore.add(new Product("Sebastian Body Pillow", 40.43f, "USD", "A body pillow of Sebastian, designed to fulfill all your desires.", bodyPillow, ebay));
+
+//        productDatabaseStorage.add(new Product("DB test product 3", 11.22f, "USD", "test description", tablet, amazon));
     }
 }

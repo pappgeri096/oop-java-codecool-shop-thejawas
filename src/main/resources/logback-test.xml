@@ -1,7 +1,5 @@
 <configuration debug="true" scan="true" scanperiod="2 seconds">
 
-    <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss" timeReference="contextBirth"/>
-
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
@@ -12,6 +10,7 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- Daily rollover -->
             <fileNamePattern>log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html</fileNamePattern>
@@ -20,6 +19,7 @@
             <maxHistory>3</maxHistory>
             <totalSizeCap>30MB</totalSizeCap>
         </rollingPolicy>
+
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="ch.qos.logback.classic.html.HTMLLayout">
                 <!--<pattern>%relative%thread%mdc%level%logger%msg</pattern>-->
@@ -27,10 +27,6 @@
                 <outputPatternAsHeader>true</outputPatternAsHeader>
             </layout>
         </encoder>
-
-
-        <pattern>[%d{HH:mm:ss.SSS}] %-5level %logger{36} [%file:%line] - %msg %n</pattern>
-        <outputPatternAsHeader>true</outputPatternAsHeader>
     </appender>
 
     <logger name="com.paypal.base" level="TRACE">

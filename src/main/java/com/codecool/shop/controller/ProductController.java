@@ -1,5 +1,6 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.implementation.postgresql.ProductDaoJdbc;
 import org.slf4j.LoggerFactory;
 
 import com.codecool.shop.dao.OrderDao;
@@ -33,6 +34,7 @@ public class ProductController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         ProductDao productDataStore = ProductDaoMem.getInstance();
+        ProductDao productDatabaseStorage = ProductDaoJdbc.getSingletonInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
         OrderDao orderDataStore = OrderDaoMem.getInstance();

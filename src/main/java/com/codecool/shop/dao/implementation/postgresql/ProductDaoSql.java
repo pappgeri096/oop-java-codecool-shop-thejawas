@@ -13,20 +13,20 @@ import java.util.List;
 /**
  * Created by ani on 2016.11.13..
  */
-public class ProductDaoJdbc implements ProductDao {
+public class ProductDaoSql implements ProductDao {
 
     private static final String DATABASE = "jdbc:postgresql://localhost:5432/jawas_webshop";
     private static final String DB_USER = "akincsei";
     private static final String DB_PASSWORD = "assklyuelleis_6";
 
-    private static ProductDaoJdbc singletonInstance = null;
+    private static ProductDaoSql singletonInstance = null;
 
-    private ProductDaoJdbc() {
+    private ProductDaoSql() {
     }
 
-    public static ProductDaoJdbc getSingletonInstance() {
+    public static ProductDaoSql getSingletonInstance() {
         if (singletonInstance == null) {
-            singletonInstance = new ProductDaoJdbc();
+            singletonInstance = new ProductDaoSql();
         }
         return singletonInstance;
     }
@@ -38,7 +38,7 @@ public class ProductDaoJdbc implements ProductDao {
 
         String productName = product.getName();
         String productDescription = product.getDescription();
-        float productDefaultPrice = product.getDefaulPrice();
+        double productDefaultPrice = product.getDefaulPrice();
         String productDefaultCurrency = String.valueOf(product.getDefaultCurrency());
         int productCategoryId = product.getProductCategory().getId(); // TODO: get id from database
         int supplierId = product.getSupplier().getId(); // TODO: get id from database
@@ -127,7 +127,7 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     private void insertWithValidation(
-            String prePreparedQuery, String name, String description, float defaultPrice,
+            String prePreparedQuery, String name, String description, double defaultPrice,
             String defaultCurrency, int productCategoryId, int supplierId) {
 
         try {
@@ -141,7 +141,7 @@ public class ProductDaoJdbc implements ProductDao {
         ) {
             pstmt.setString(1, name);
             pstmt.setString(2, description);
-            pstmt.setFloat(3, defaultPrice);
+            pstmt.setDouble(3, defaultPrice);
             pstmt.setString(4, defaultCurrency);
             pstmt.setInt(5, productCategoryId);
             pstmt.setInt(6, supplierId);

@@ -22,13 +22,13 @@ public class OrderDaoJson implements OrderDao {
      * writes single order data to json file
      * creates UUID for each order and gives the file this UUID as name
      *
-     * @param order
+     * @param objectType
      *
      * */
     @Override
-    public void add(Order order) {
+    public void add(Order objectType) {
         uuidString = createUuid();
-        Map<String, String> orderDataMap = joinMaps(order, uuidString);
+        Map<String, String> orderDataMap = joinMaps(objectType, uuidString);
 
         String filePathAndName = "target/orders/Order_" + uuidString + ".json";
 

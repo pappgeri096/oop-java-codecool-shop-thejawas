@@ -1,4 +1,4 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.implementation.Memory;
 
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.model.Order;
@@ -22,14 +22,15 @@ public class OrderDaoMem implements OrderDao {
         return instance;
     }
 
+    @Override
     public Order getCurrent(){
         return data.get(data.size()-1);
     }
 
     @Override
-    public void add(Order order) {
-        order.setId(data.size() + 1);
-        data.add(order);
+    public void add(Order objectType) {
+        objectType.setId(data.size() + 1);
+        data.add(objectType);
     }
 
     @Override

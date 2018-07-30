@@ -56,7 +56,7 @@
         <p style="width: 100px"  th:text="${(lineitem.getQuantity())} +' items'"></p>
     </div>
 <br>
-<p th:text="'Total: ' + ${order.getPriceOfAllProducts()}"> </p>
+<p th:text="'Total: ' + ${order.getTotalPrice()}"> </p>
         <br>
 <a href="/cart"><button type="submit" class="btn btn-secondary .float-right"> Edit </button></a> <a href="/checkout"><button type="submit" class="btn btn-secondary .float-right"> Proceed </button></a>
 

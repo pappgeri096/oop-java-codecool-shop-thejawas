@@ -1,5 +1,8 @@
 package com.codecool.shop.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class LineItem {
     private static int idCounter=1;
     public int id;
@@ -34,6 +37,8 @@ public class LineItem {
     }
 
     public String getSumPrice(){
-        return String.valueOf(product.getDefaulPrice()*quantity)+" "+ product.getDefaultCurrency();
+        BigDecimal bigDecimalSubtotal = new BigDecimal(product.getDefaulPrice() * quantity);
+        BigDecimal subtotal = bigDecimalSubtotal.setScale(2, RoundingMode.HALF_UP);
+        return subtotal.toString() + " " + product.getDefaultCurrency();
     }
 }

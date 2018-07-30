@@ -2,7 +2,7 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.OrderDaoMem;
+import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
 import com.codecool.shop.model.LineItem;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -57,7 +57,7 @@ public class ShoppingCartController extends HttpServlet {
                 }
             }
         }
-        orderDataStore.getCurrent().makeProductsMaps();
+        orderDataStore.getCurrent().createProductsMaps();
         if (orderDataStore.getCurrent().getLineItemList().size()>0) {
             resp.sendRedirect("/review");
         }else {

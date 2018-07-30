@@ -3,7 +3,7 @@ package com.codecool.shop.controller;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.implementation.JSON.OrderDaoJson;
-import com.codecool.shop.dao.implementation.OrderDaoMem;
+import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
 import com.codecool.shop.model.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +54,7 @@ public class CheckOutController extends HttpServlet {
                 userData.add(req.getParameter(formName));
             }
         }
-        order.setUserData(userData);
+        order.createUserDataMap(userData);
 
         OrderDao writeOrderDataToFile = new OrderDaoJson();
         writeOrderDataToFile.add(order);

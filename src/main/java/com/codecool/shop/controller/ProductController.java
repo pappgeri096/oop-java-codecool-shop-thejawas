@@ -1,17 +1,17 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.dao.implementation.postgresql.ProductDaoJdbc;
+import com.codecool.shop.dao.implementation.postgresql.ProductDaoSql;
 import org.slf4j.LoggerFactory;
 
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.dao.implementation.OrderDaoMem;
-import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
+import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
+import com.codecool.shop.dao.implementation.Memory.ProductCategoryDaoMem;
+import com.codecool.shop.dao.implementation.Memory.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
 import com.codecool.shop.model.Product;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -34,7 +34,7 @@ public class ProductController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         ProductDao productDataStore = ProductDaoMem.getInstance();
-        ProductDao productDatabaseStorage = ProductDaoJdbc.getSingletonInstance();
+        ProductDao productDatabaseStorage = ProductDaoSql.getSingletonInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
         OrderDao orderDataStore = OrderDaoMem.getInstance();

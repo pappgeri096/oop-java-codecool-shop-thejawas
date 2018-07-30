@@ -6,15 +6,12 @@ import com.codecool.shop.model.ProductCategory;
 
 import java.util.List;
 
-public interface ProductDao {
+public interface ProductDao extends BaseDAO<Product> {
 
-    void add(Product product);
-    Product find(int id);
-    void remove(int id);
-
-    List<Product> getAll();
     List<Product> getBy(Supplier supplier);
+
     List<Product> getBy(ProductCategory productCategory);
+
     Product getBy(int id);
 
 }

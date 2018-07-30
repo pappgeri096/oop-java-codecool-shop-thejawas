@@ -147,10 +147,9 @@ public class PaypalController extends HttpServlet {
     }
 
     private Amount getAmount() {
-        float sumPrice = (float) (Math.round(order.getPriceOfAllProducts()*100.0)/100.0);
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal(Float.toString(sumPrice));
+        amount.setTotal(Float.toString(order.getPriceOfAllProducts()));
         return amount;
     }
 

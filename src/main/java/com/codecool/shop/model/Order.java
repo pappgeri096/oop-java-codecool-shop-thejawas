@@ -22,7 +22,7 @@ public class Order {
                 wasProductFound = true;
             }
         }
-        if (!wasProductFound){
+        if (!wasProductFound) {
             lineItemList.add(new LineItem(product));
         }
 
@@ -64,16 +64,17 @@ public class Order {
     }
 
 
-    public void makeProductsMaps(){
-        for (LineItem lineItem:lineItemList) {
-            productNameAndQuantityMap.put(lineItem.getProduct().name,lineItem.getQuantity());
+    public void makeProductsMaps() {
+        for (LineItem lineItem : lineItemList) {
+            productNameAndQuantityMap.put(lineItem.getProduct().name, lineItem.getQuantity());
         }
     }
-    public float getPriceOfAllProducts(){
+
+    public float getPriceOfAllProducts() {
         float sumPrice = 0;
         Currency currency = null;
         for (LineItem lineItem : lineItemList) {
-            sumPrice = sumPrice +lineItem.getProduct().getDefaultPrice()*lineItem.getQuantity();
+            sumPrice = sumPrice + lineItem.getProduct().getDefaultPrice() * lineItem.getQuantity();
             currency = lineItem.getProduct().getDefaultCurrency();
         }
 

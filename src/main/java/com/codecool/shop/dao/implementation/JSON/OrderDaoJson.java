@@ -2,6 +2,7 @@ package com.codecool.shop.dao.implementation.JSON;
 
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.model.Order;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -15,6 +16,8 @@ import java.util.*;
  * */
 public class OrderDaoJson implements OrderDao {
 
+    String uuidString;
+
     /**
      * writes single order data to json file
      * creates UUID for each order and gives the file this UUID as name
@@ -24,7 +27,7 @@ public class OrderDaoJson implements OrderDao {
      * */
     @Override
     public void add(Order order) {
-        String uuidString = createUuid();
+        uuidString = createUuid();
         Map<String, String> orderDataMap = joinMaps(order, uuidString);
 
         String filePathAndName = "target/orders/Order_" + uuidString + ".json";
@@ -84,7 +87,6 @@ public class OrderDaoJson implements OrderDao {
      * */
     String createUuid() {
         List<String> allOrderIds = getAllOrderIds();
-        System.out.println(allOrderIds);
         boolean exists = false;
         String newUuid;
         do {
@@ -166,4 +168,47 @@ public class OrderDaoJson implements OrderDao {
     public void remove(int id) {
 
     }
+
+    public String mapToJsonString(Map map) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String carAsString = "";
+        try {
+            carAsString = objectMapper.writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return carAsString;
+    }
+
+    public String listToJsonString(List list) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String listAsString = "";
+        try {
+            listAsString = objectMapper.writeValueAsString(list);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return listAsString;
+    }
+
+    public String getUuidString() {
+        return uuidString;
+    }
+
+
+    public String orderToJsonString(Order order) {
+        String uuidString = createUuid();
+        Map<String, String> orderDataMap = joinMaps(order, uuidString);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String orderAsString = "";
+        try {
+            orderAsString = objectMapper.writeValueAsString(orderDataMap);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return orderAsString;
+    }
+
 }

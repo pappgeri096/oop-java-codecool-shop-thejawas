@@ -1,0 +1,44 @@
+<configuration debug="true" scan="true" scanperiod="2 seconds">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <withJansi>true</withJansi>
+            <pattern>[%magenta(%d{HH:mm:ss.SSS})] [%highlight(%-5level)] %boldBlue(%logger{36}) [%boldRed(%file):%red(%line)] - %msg %n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- Daily rollover -->
+            <fileNamePattern>log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html</fileNamePattern>
+            <!-- Keep 7 days' worth of history -->
+            <maxFileSize>3MB</maxFileSize>
+            <maxHistory>3</maxHistory>
+            <totalSizeCap>30MB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.html.HTMLLayout">
+                <!--<pattern>%relative%thread%mdc%level%logger%msg</pattern>-->
+                <pattern>%d{HH:mm:ss.SSS}%-5level%logger{50}%file%line%msg</pattern>
+                <outputPatternAsHeader>true</outputPatternAsHeader>
+            </layout>
+        </encoder>
+    </appender>
+
+    <logger name="com.paypal.base" level="TRACE">
+        <appender-ref ref="FILE" />
+    </logger>
+
+
+    <logger name="com.codecool.shop.controller" level="ALL" additivity="false">
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

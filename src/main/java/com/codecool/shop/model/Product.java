@@ -17,6 +17,10 @@ public class Product extends BaseModel {
         this.setProductCategory(productCategory);
     }
 
+//    public String getProductNameById(int id) {
+//        return (this.id == id) ? this.name : null;
+//    }
+
     public float getDefaultPrice() {
         return defaultPrice;
     }

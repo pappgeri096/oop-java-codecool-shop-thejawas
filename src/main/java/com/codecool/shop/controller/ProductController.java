@@ -1,5 +1,8 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.implementation.postgresql.ProductDaoJdbc;
+import org.slf4j.LoggerFactory;
+
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
@@ -19,17 +22,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @WebServlet(urlPatterns = {"/", "/index"})
 public class ProductController extends HttpServlet {
+
+    private static final ch.qos.logback.classic.Logger productControllerLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProductController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         ProductDao productDataStore = ProductDaoMem.getInstance();
+        ProductDao productDatabaseStorage = ProductDaoJdbc.getSingletonInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
         OrderDao orderDataStore = OrderDaoMem.getInstance();
@@ -42,7 +47,11 @@ public class ProductController extends HttpServlet {
 
         if (productParameter != null) {
             int productId = Integer.parseInt(productParameter);
-            orderDataStore.getCurrent().addProduct((productDataStore.getBy(productId)));
+            Product productToAdd = productDataStore.getBy(productId);
+            orderDataStore.getCurrent().addProduct(productToAdd);
+
+            productControllerLogger.info("{} successfully added to cart", productToAdd.getName());
+
         }
         String supplierParameter = req.getParameter("supplier");
         WebContext context = new WebContext(req, resp, req.getServletContext());
@@ -54,7 +63,6 @@ public class ProductController extends HttpServlet {
             }
         } else if (supplierParameter != null) {
             int supplierId = Integer.parseInt(supplierParameter);
-
             if (supplierId > 0 && supplierId <= supplierDataStore.getAll().size()) {
                 productList = productDataStore.getBy(supplierDataStore.find(supplierId));
             }

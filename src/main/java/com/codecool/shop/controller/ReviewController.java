@@ -13,8 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 @WebServlet(urlPatterns = {"/review"})
 public class ReviewController extends HttpServlet {
+
+    private static final Logger reviewLogger = LoggerFactory.getLogger(PaymentController.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         OrderDao orderDataStore = OrderDaoMem.getInstance();
@@ -23,5 +30,6 @@ public class ReviewController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("order", orderDataStore.getCurrent());
         engine.process("product/review.html", context, resp.getWriter());
+        reviewLogger.info("Get request received for SHOPPING CART REVIEW page");
     }
 }

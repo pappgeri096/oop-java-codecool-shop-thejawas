@@ -1,0 +1,35 @@
+<configuration debug="true" scan="true" scanperiod="2 seconds">
+
+    <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss" timeReference="contextBirth"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>[%magenta(%d{HH:mm:ss.SSS})] [%highlight(%-5level)] %boldBlue(%logger{36}) [%boldRed(%file):%red(%line)] - %msg %n</pattern>
+        </encoder>
+    </appender>
+
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.html.HTMLLayout">
+                <pattern>%relative%thread%mdc%level%logger%msg</pattern>
+            </layout>
+        </encoder>
+        <file>log/order_logs/test.html</file>
+    </appender>
+
+    <logger name="com.paypal.base" level="TRACE">
+        <appender-ref ref="FILE" />
+    </logger>
+
+
+    <logger name="com.codecool.shop.controller" level="ALL" additivity="false">
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

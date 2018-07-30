@@ -5,6 +5,10 @@ import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.implementation.JSON.OrderDaoJson;
 import com.codecool.shop.dao.implementation.OrderDaoMem;
 import com.codecool.shop.model.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -21,11 +25,14 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/checkout"})
 public class CheckOutController extends HttpServlet {
 
+    private static final Logger checkoutLogger = LoggerFactory.getLogger(CheckOutController.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("product/checkout.html", context, resp.getWriter());
+        checkoutLogger.info("Get request received for CHECKOUT page");
     }
 
     @Override
@@ -51,6 +58,13 @@ public class CheckOutController extends HttpServlet {
 
         OrderDao writeOrderDataToFile = new OrderDaoJson();
         writeOrderDataToFile.add(order);
+
+//        OrderDao serializeOrder = new OrderDaoJson();
+//        String serializedOrder = ((OrderDaoJson) serializeOrder).orderToJsonString(order);
+//        checkoutLogger.warn(serializedOrder);
+
+        String uuidString = ((OrderDaoJson) writeOrderDataToFile).getUuidString();
+        checkoutLogger.info("User data is saved in json file. Order ID: {}", uuidString);
 
         resp.sendRedirect("/payment");
     }

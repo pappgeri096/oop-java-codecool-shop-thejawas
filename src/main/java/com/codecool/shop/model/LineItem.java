@@ -36,8 +36,8 @@ public class LineItem {
         quantity++;
     }
 
-    public String getSumPrice(){
-        BigDecimal bigDecimalSubtotal = new BigDecimal(product.getDefaulPrice() * quantity);
+    public String getSubTotalPrice(){
+        BigDecimal bigDecimalSubtotal = product.getDefaulPrice().multiply(new BigDecimal(quantity));
         BigDecimal subtotal = bigDecimalSubtotal.setScale(2, RoundingMode.HALF_UP);
         return subtotal.toString() + " " + product.getDefaultCurrency();
     }

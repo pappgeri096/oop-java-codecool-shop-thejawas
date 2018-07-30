@@ -182,9 +182,6 @@ public class PaypalController extends HttpServlet {
         Item item = new Item();
         item.setName(name);
 
-        Double totalPrice = Integer.parseInt(quantity) * Double.parseDouble(price);
-        BigDecimal totalPriceRounded = new BigDecimal(totalPrice);
-        totalPriceRounded = totalPriceRounded.setScale(2, RoundingMode.HALF_UP);
         item.setPrice(price);
         item.setCategory("PHYSICAL");
         item.setQuantity(quantity);
@@ -194,7 +191,6 @@ public class PaypalController extends HttpServlet {
 
     private ShippingAddress getAddress() {
         ShippingAddress address = new ShippingAddress();
-        //address.setRecipientName("Janos Istvan");
         address.setPhone(order.getUserDataMap().get("telephoneNumber"));
         address.setCountryCode("HU");
         address.setCity(order.getUserDataMap().get("cityBill"));

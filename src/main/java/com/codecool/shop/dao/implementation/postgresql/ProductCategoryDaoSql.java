@@ -7,11 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductCategoryDaoSql implements ProductCategoryDao {
-
-    private static final String DATABASE = "jdbc:postgresql://localhost:5432/jawas_webshop";
-    private static final String DB_USER = "jawas";
-    private static final String DB_PASSWORD = "jawas";
+public class ProductCategoryDaoSql extends BaseDaoSql implements ProductCategoryDao {
 
     private static ProductCategoryDaoSql instance = null;
 
@@ -29,16 +25,50 @@ public class ProductCategoryDaoSql implements ProductCategoryDao {
 
     @Override
     public void add(ProductCategory objectType) {
+        String prePreparedQuery = "INSERT INTO product_category (id, name, description, department) " +
+                "VALUES (DEFAULT, ?, ?, ?);";
+
+        insertProductCategoryWithValidation(
+                prePreparedQuery,
+                objectType.getName(),
+                objectType.getDescription(),
+                objectType.getDepartment()
+        );
 
     }
 
     @Override
     public ProductCategory find(int id) {
-        return null;
+        ProductCategory categoryObject = null;
+
+        String query = "SELECT * FROM product_category WHERE id = '" + id + "';";
+
+
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query);
+        ) {
+            if (resultSet.next()) {
+                int idFromDB = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String description = resultSet.getString("description");
+                String department = resultSet.getString("department");
+                categoryObject = new ProductCategory(idFromDB, name, description, department);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return categoryObject;
+
     }
 
     @Override
     public void remove(int id) {
+        String query = "DELETE FROM product_category WHERE id ='" + id + "';";
+
+        deleteRecordFromDatabase(query);
 
     }
 
@@ -71,38 +101,24 @@ public class ProductCategoryDaoSql implements ProductCategoryDao {
 
     }
 
-    ProductCategory getProductCategoryObjectById(int id) {
-
-        ProductCategory categoryObject = null;
-
-        String query = "SELECT * FROM product_category WHERE id = '" + id + "';";
-
+    private void insertProductCategoryWithValidation(String prePreparedQuery, String name, String description, String department) {
 
         try (Connection connection = getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query);
+             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery);
         ) {
-            if (resultSet.next()) {
-                int idFromDB = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                String description = resultSet.getString("description");
-                String department = resultSet.getString("department");
-                categoryObject = new ProductCategory(idFromDB, name, description, department);
-            }
+            Class.forName("org.postgresql.Driver");
+            pstmt.setString(1, name);
+            pstmt.setString(2, description);
+            pstmt.setString(3, department);
 
+            pstmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
-        return categoryObject;
-    }
-
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-                DATABASE,
-                DB_USER,
-                DB_PASSWORD);
     }
 
 }

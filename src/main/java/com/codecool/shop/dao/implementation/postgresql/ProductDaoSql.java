@@ -21,8 +21,8 @@ import java.util.List;
 public class ProductDaoSql implements ProductDao {
 
     private static final String DATABASE = "jdbc:postgresql://localhost:5432/jawas_webshop";
-    private static final String DB_USER = "akincsei";
-    private static final String DB_PASSWORD = "assklyuelleis_6";
+    private static final String DB_USER = "jawas";
+    private static final String DB_PASSWORD = "jawas";
 
     private static ProductDaoSql singletonInstance = null;
 

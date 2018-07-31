@@ -57,7 +57,7 @@
     <form action="/cart" method="post">
     <div id="products" class="col-10 row" th:each="lineitem,iterStat : ${order.getLineItemList()}">
         <h4 class="group inner list-group-item-heading" th:text="${lineitem.getProduct().name}">Product name</h4>
-        <p class="lead" th:text="${lineitem.getProduct().getPrice()}+ ' / '+ ${lineitem.getSumPrice()}">100 USD</p>
+        <p class="lead" th:text="${lineitem.getProduct().getPrice()}+ ' / '+ ${lineitem.getSubTotalPrice()}">100 USD</p>
         <input style="width: 100px" type="number" th:name="${lineitem.id}" value="1" th:attr="value=${(lineitem.getQuantity())}">
     </div>
         <br>

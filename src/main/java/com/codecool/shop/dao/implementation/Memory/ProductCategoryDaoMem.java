@@ -9,6 +9,10 @@ import java.util.List;
 
 public class ProductCategoryDaoMem implements ProductCategoryDao {
 
+    public void setData(List<ProductCategory> data) {
+        this.data = data;
+    }
+
     private List<ProductCategory> data = new ArrayList<>();
     private static ProductCategoryDaoMem instance = null;
 
@@ -26,7 +30,6 @@ public class ProductCategoryDaoMem implements ProductCategoryDao {
 
     @Override
     public void add(ProductCategory category) {
-        category.setId(data.size() + 1);
         data.add(category);
     }
 

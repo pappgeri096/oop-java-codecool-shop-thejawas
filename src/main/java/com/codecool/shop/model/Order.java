@@ -63,14 +63,13 @@ public class Order {
         }
     }
     public double getTotalPrice(){
-        double sumPrice = 0;
+        BigDecimal sumPrice = BigDecimal.valueOf(0);
         for (LineItem lineItem : lineItemList) {
-            sumPrice = sumPrice +lineItem.getProduct().getDefaultPrice()*lineItem.getQuantity();
+            sumPrice = lineItem.getProduct().getDefaultPrice().multiply(new BigDecimal(lineItem.getQuantity())).add(sumPrice);
         }
-        BigDecimal totalPriceRounded = new BigDecimal(sumPrice);
-        totalPriceRounded = totalPriceRounded.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal totalPriceRounded = sumPrice.setScale(2, RoundingMode.HALF_UP);
 
-        return Double.valueOf(totalPriceRounded.toString());
+        return totalPriceRounded.doubleValue();
     }
 
     public Map<String, String> getUserDataMap() {

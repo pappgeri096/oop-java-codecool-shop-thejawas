@@ -1,39 +1,38 @@
 package com.codecool.shop.dao.implementation.postgresql;
 
-import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.model.ProductCategory;
+import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.model.Supplier;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductCategoryDaoSql implements ProductCategoryDao {
+public class SupplierDaoSql implements SupplierDao {
 
     private static final String DATABASE = "jdbc:postgresql://localhost:5432/jawas_webshop";
     private static final String DB_USER = "akincsei";
     private static final String DB_PASSWORD = "assklyuelleis_6";
 
-    private static ProductCategoryDaoSql instance = null;
+    private static SupplierDaoSql instance = null;
 
-    /* A private Constructor prevents any other class from instantiating.
-     */
-    private ProductCategoryDaoSql() {
+    private SupplierDaoSql() {
     }
 
-    public static ProductCategoryDaoSql getInstance() {
+    public static SupplierDaoSql getInstance() {
         if (instance == null) {
-            instance = new ProductCategoryDaoSql();
+            instance = new SupplierDaoSql();
         }
         return instance;
     }
 
+
     @Override
-    public void add(ProductCategory objectType) {
+    public void add(Supplier objectType) {
 
     }
 
     @Override
-    public ProductCategory find(int id) {
+    public Supplier find(int id) {
         return null;
     }
 
@@ -43,11 +42,10 @@ public class ProductCategoryDaoSql implements ProductCategoryDao {
     }
 
     @Override
-    public List<ProductCategory> getAll() {
+    public List<Supplier> getAll() {
+        String query = "SELECT * FROM supplier;";
 
-        String query = "SELECT * FROM product_category;";
-
-        List<ProductCategory> resultList = new ArrayList<>();
+        List<Supplier> resultList = new ArrayList<>();
 
 
         try (Connection connection = getConnection();
@@ -55,13 +53,12 @@ public class ProductCategoryDaoSql implements ProductCategoryDao {
              ResultSet resultSet = statement.executeQuery(query);
         ) {
             while (resultSet.next()) {
-                ProductCategory category = new ProductCategory(
+                Supplier supplier = new Supplier(
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
-                        resultSet.getString("description"),
-                        resultSet.getString("department")
+                        resultSet.getString("description")
                 );
-                resultList.add(category);
+                resultList.add(supplier);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -71,11 +68,11 @@ public class ProductCategoryDaoSql implements ProductCategoryDao {
 
     }
 
-    ProductCategory getProductCategoryObjectById(int id) {
+    // TODO: TRY TO OUTSOURCE INTO GETRESULTSET() METHOD WITH QUERY PARAMETER
+    Supplier getSupplierObjectById(int id) {
+        Supplier supplierObject = null;
 
-        ProductCategory categoryObject = null;
-
-        String query = "SELECT * FROM product_category WHERE id = '" + id + "';";
+        String query = "SELECT * FROM supplier WHERE id ='" + id + "';";
 
 
         try (Connection connection = getConnection();
@@ -86,8 +83,7 @@ public class ProductCategoryDaoSql implements ProductCategoryDao {
                 int idFromDB = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 String description = resultSet.getString("description");
-                String department = resultSet.getString("department");
-                categoryObject = new ProductCategory(idFromDB, name, description, department);
+                supplierObject = new Supplier(idFromDB, name, description);
             }
 
 
@@ -95,8 +91,9 @@ public class ProductCategoryDaoSql implements ProductCategoryDao {
             e.printStackTrace();
         }
 
-        return categoryObject;
+        return supplierObject;
     }
+
 
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(
@@ -104,5 +101,6 @@ public class ProductCategoryDaoSql implements ProductCategoryDao {
                 DB_USER,
                 DB_PASSWORD);
     }
+
 
 }

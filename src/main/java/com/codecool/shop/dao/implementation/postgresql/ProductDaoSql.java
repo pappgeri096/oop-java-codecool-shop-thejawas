@@ -18,11 +18,7 @@ import java.util.List;
 /**
  * Created by ani on 2016.11.13..
  */
-public class ProductDaoSql implements ProductDao {
-
-    private static final String DATABASE = "jdbc:postgresql://localhost:5432/jawas_webshop";
-    private static final String DB_USER = "jawas";
-    private static final String DB_PASSWORD = "jawas";
+public class ProductDaoSql extends BaseDaoSql implements ProductDao {
 
     private static ProductDaoSql singletonInstance = null;
 
@@ -41,54 +37,45 @@ public class ProductDaoSql implements ProductDao {
         String prePreparedQuery = "INSERT INTO product (id, name, description, default_price, default_currency, product_category_id, supplier_id) " +
                 "VALUES (DEFAULT, ?, ?, ?, ?, ?, ?);";
 
-        String productName = product.getName();
-        String productDescription = product.getDescription();
-        BigDecimal productDefaultPrice = product.getDefaulPrice();
-        String productDefaultCurrency = String.valueOf(product.getDefaultCurrency());
-        int productCategoryId = product.getProductCategory().getId(); // TODO: get id from database
-        int supplierId = product.getSupplier().getId(); // TODO: get id from database
-
-        insertWithValidation(
-                prePreparedQuery, productName, productDescription, productDefaultPrice,
-                productDefaultCurrency, productCategoryId, supplierId
+        insertProductWithValidation(
+                prePreparedQuery,
+                product.getName(),
+                product.getDescription(),
+                product.getDefaulPrice(),
+                String.valueOf(product.getDefaultCurrency()),
+                product.getProductCategory().getId(),
+                product.getSupplier().getId()
         );
-
     }
 
     @Override
     public Product find(int id) {
-        return null;
+        String query = "SELECT * FROM product WHERE id ='" + id + "';";
+        return constructProductFromSqlData(query);
     }
+
 
     @Override
     public void remove(int id) {
+        String query = "DELETE FROM product WHERE id ='" + id + "';";
 
+        deleteRecordFromDatabase(query);
     }
 
     @Override
     public List<Product> getAll() {
+        String query = "SELECT * FROM product;";
+
         ProductCategoryDao productCategoryDaoMem = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDaoMem = SupplierDaoMem.getInstance();
 
-        String query = "SELECT * FROM product;";
-
         List<Product> resultList = new ArrayList<>();
-
-
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query);
         ) {
             while (resultSet.next()) {
-                Product product = new Product(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getBigDecimal("default_price"),
-                        resultSet.getString("default_currency"),
-                        resultSet.getString("description"),
-                        productCategoryDaoMem.find(resultSet.getInt("product_category_id")),
-                        supplierDaoMem.find(resultSet.getInt("supplier_id"))
-                );
+                Product product = constructProductFromSqlData(productCategoryDaoMem, supplierDaoMem, resultSet);
                 resultList.add(product);
             }
         } catch (SQLException e) {
@@ -98,7 +85,50 @@ public class ProductDaoSql implements ProductDao {
         return resultList;
 
     }
+    /**
+     * Use this overloaded method to create only ONE product object from SQL records
+     * */
+    private Product constructProductFromSqlData(String query) {
+        Product product = null;
+        ProductCategoryDao productCategoryDaoMem = ProductCategoryDaoMem.getInstance();
+        SupplierDao supplierDaoMem = SupplierDaoMem.getInstance();
 
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query);
+        ) {
+            if (resultSet.next()) {
+                product = new Product(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getBigDecimal("default_price"),
+                        resultSet.getString("default_currency"),
+                        resultSet.getString("description"),
+                        productCategoryDaoMem.find(resultSet.getInt("product_category_id")),
+                        supplierDaoMem.find(resultSet.getInt("supplier_id"))
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return product;
+    }
+
+    /**
+     * Use this overloaded method to create several product objects in a while loop object from SQL records
+     * */
+    private Product constructProductFromSqlData(ProductCategoryDao productCategoryDao, SupplierDao supplierDao, ResultSet resultSet) throws SQLException {
+        return new Product(
+                resultSet.getInt("id"),
+                resultSet.getString("name"),
+                resultSet.getBigDecimal("default_price"),
+                resultSet.getString("default_currency"),
+                resultSet.getString("description"),
+                productCategoryDao.find(resultSet.getInt("product_category_id")),
+                supplierDao.find(resultSet.getInt("supplier_id"))
+        );
+    }
 
     @Override
     public List<Product> getBy(Supplier supplier) {
@@ -115,19 +145,13 @@ public class ProductDaoSql implements ProductDao {
         return null;
     }
 
-    private void insertWithValidation(
-            String prePreparedQuery, String name, String description, BigDecimal defaultPrice,
+    private void insertProductWithValidation(String prePreparedQuery, String name, String description, BigDecimal defaultPrice,
             String defaultCurrency, int productCategoryId, int supplierId) {
-
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
         try (Connection connection = getConnection();
              PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery);
         ) {
+            Class.forName("org.postgresql.Driver");
             pstmt.setString(1, name);
             pstmt.setString(2, description);
             pstmt.setBigDecimal(3, defaultPrice);
@@ -139,14 +163,10 @@ public class ProductDaoSql implements ProductDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
     }
 
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-                DATABASE,
-                DB_USER,
-                DB_PASSWORD);
-    }
 }

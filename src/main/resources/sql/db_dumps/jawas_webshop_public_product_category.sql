@@ -1,3 +1,0 @@
-INSERT INTO public.product_category (id, name, description, department) VALUES (1, 'Tablet', 'A tablet computer, commonly shortened to tablet, is a thin, flat mobile computer with a touchscreen display.', 'Hardware');
-INSERT INTO public.product_category (id, name, description, department) VALUES (2, 'Energy', 'Paranormal energies.', 'Esoteric');
-INSERT INTO public.product_category (id, name, description, department) VALUES (3, 'Body Pillow', 'Confortable Pillows.', 'Bedlinen');

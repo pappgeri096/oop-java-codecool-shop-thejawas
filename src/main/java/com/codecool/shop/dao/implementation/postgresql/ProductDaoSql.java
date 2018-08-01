@@ -85,9 +85,25 @@ public class ProductDaoSql extends BaseDaoSql implements ProductDao {
         return resultList;
 
     }
+
+    @Override
+    public List<Product> getBy(Supplier supplier) {
+        return null;
+    }
+
+    @Override
+    public List<Product> getBy(ProductCategory productCategory) {
+        return null;
+    }
+
+    @Override
+    public Product getBy(int id) {
+        return null;
+    }
+
     /**
      * Use this overloaded method to create only ONE product object from SQL records
-     * */
+     */
     private Product constructProductFromSqlData(String query) {
         Product product = null;
         ProductCategoryDao productCategoryDaoMem = ProductCategoryDaoMem.getInstance();
@@ -117,7 +133,7 @@ public class ProductDaoSql extends BaseDaoSql implements ProductDao {
 
     /**
      * Use this overloaded method to create several product objects in a while loop object from SQL records
-     * */
+     */
     private Product constructProductFromSqlData(ProductCategoryDao productCategoryDao, SupplierDao supplierDao, ResultSet resultSet) throws SQLException {
         return new Product(
                 resultSet.getInt("id"),
@@ -130,28 +146,14 @@ public class ProductDaoSql extends BaseDaoSql implements ProductDao {
         );
     }
 
-    @Override
-    public List<Product> getBy(Supplier supplier) {
-        return null;
-    }
 
-    @Override
-    public List<Product> getBy(ProductCategory productCategory) {
-        return null;
-    }
-
-    @Override
-    public Product getBy(int id) {
-        return null;
-    }
-
-    private void insertProductWithValidation(String prePreparedQuery, String name, String description, BigDecimal defaultPrice,
-            String defaultCurrency, int productCategoryId, int supplierId) {
-
+    private int insertProductWithValidation(String prePreparedQuery, String name, String description, BigDecimal defaultPrice,
+                                            String defaultCurrency, int productCategoryId, int supplierId) {
+        int recordsAffected = 0;
         try (Connection connection = getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery);
-        ) {
+             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery)) {
             Class.forName("org.postgresql.Driver");
+
             pstmt.setString(1, name);
             pstmt.setString(2, description);
             pstmt.setBigDecimal(3, defaultPrice);
@@ -159,14 +161,31 @@ public class ProductDaoSql extends BaseDaoSql implements ProductDao {
             pstmt.setInt(5, productCategoryId);
             pstmt.setInt(6, supplierId);
 
-            pstmt.executeUpdate();
+            recordsAffected = pstmt.executeUpdate();
 
         } catch (SQLException e) {
+            System.out.println("Malformed SQL query. Query is rolled back");
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
+        return recordsAffected;
     }
 
+    public int getLastRecordsId(String query) {
+        int lastItemsId = 0;
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query);
+        ) {
+            if (resultSet.next()) {
+                lastItemsId = resultSet.getInt("max");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println(lastItemsId);
+        return lastItemsId;
+    }
 }

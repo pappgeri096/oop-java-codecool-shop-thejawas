@@ -29,16 +29,26 @@
         </encoder>
     </appender>
 
+    <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+        <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+            <driverClass>org.postgresql.Driver</driverClass>
+            <url>jdbc:postgresql://localhost:5432/jawas_webshop</url>
+            <user>jawas</user>
+            <password>jawas</password>
+        </connectionSource>
+    </appender>
+
     <logger name="com.paypal.base" level="TRACE">
         <appender-ref ref="FILE" />
     </logger>
 
-
     <logger name="com.codecool.shop.controller" level="ALL" additivity="false">
         <appender-ref ref="FILE" />
+        <appender-ref ref="DB" />
     </logger>
 
     <root level="DEBUG">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="DB" />
     </root>
 </configuration>

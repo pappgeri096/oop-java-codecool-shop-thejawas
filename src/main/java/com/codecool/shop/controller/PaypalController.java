@@ -147,7 +147,7 @@ public class PaypalController extends HttpServlet {
     private Amount getAmount() {
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal(Double.toString(order.getTotalPrice()));
+        amount.setTotal(Double.toString(order.getTotalPrice().doubleValue()));
         return amount;
     }
 

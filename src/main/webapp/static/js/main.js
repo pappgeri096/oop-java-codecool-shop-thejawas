@@ -17,16 +17,16 @@ function togglePaymentOptions() {
             }
         }
 
-        // if(e.target.classList.contains("credit-card")){
-        //     paypalContainer.style.display = "none";
-        //
-        //     if(creditCardContainer.style.display == "block"){
-        //         creditCardContainer.style.display = "none";
-        //     }else{
-        //         creditCardContainer.style.display = "block";
-        //     }
-        //
-        // }
+        if(e.target.classList.contains("credit-card")){
+            paypalContainer.style.display = "none";
+
+            if(creditCardContainer.style.display == "block"){
+                creditCardContainer.style.display = "none";
+            }else{
+                creditCardContainer.style.display = "block";
+            }
+
+        }
 
 
 

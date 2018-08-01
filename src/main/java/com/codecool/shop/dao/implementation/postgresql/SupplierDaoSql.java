@@ -7,11 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupplierDaoSql implements SupplierDao {
-
-    private static final String DATABASE = "jdbc:postgresql://localhost:5432/jawas_webshop";
-    private static final String DB_USER = "jawas";
-    private static final String DB_PASSWORD = "jawas";
+public class SupplierDaoSql extends BaseDaoSql implements SupplierDao {
 
     private static SupplierDaoSql instance = null;
 
@@ -28,16 +24,47 @@ public class SupplierDaoSql implements SupplierDao {
 
     @Override
     public void add(Supplier objectType) {
+        String prePreparedQuery = "INSERT INTO supplier (id, name, description) " +
+                "VALUES (DEFAULT, ?, ?);";
 
+        insertSupplierWithValidation(
+                prePreparedQuery,
+                objectType.getName(),
+                objectType.getDescription()
+        );
     }
 
     @Override
     public Supplier find(int id) {
-        return null;
+        Supplier supplierObject = null;
+
+        String query = "SELECT * FROM supplier WHERE id ='" + id + "';";
+
+
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query);
+        ) {
+            if (resultSet.next()) {
+                int idFromDB = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String description = resultSet.getString("description");
+                supplierObject = new Supplier(idFromDB, name, description);
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return supplierObject;
     }
 
     @Override
     public void remove(int id) {
+        String query = "DELETE FROM supplier WHERE id ='" + id + "';";
+
+        deleteRecordFromDatabase(query);
 
     }
 
@@ -68,38 +95,25 @@ public class SupplierDaoSql implements SupplierDao {
 
     }
 
-    // TODO: TRY TO OUTSOURCE INTO GETRESULTSET() METHOD WITH QUERY PARAMETER
-    Supplier getSupplierObjectById(int id) {
-        Supplier supplierObject = null;
-
-        String query = "SELECT * FROM supplier WHERE id ='" + id + "';";
-
+    private void insertSupplierWithValidation(String prePreparedQuery, String name, String description) {
 
         try (Connection connection = getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query);
+             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery);
         ) {
-            if (resultSet.next()) {
-                int idFromDB = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                String description = resultSet.getString("description");
-                supplierObject = new Supplier(idFromDB, name, description);
-            }
+            Class.forName("org.postgresql.Driver");
+            pstmt.setString(1, name);
+            pstmt.setString(2, description);
 
+            pstmt.executeUpdate();
 
         } catch (SQLException e) {
+            System.out.println("SQL exception");
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("ClassNotFound exception");
             e.printStackTrace();
         }
 
-        return supplierObject;
-    }
-
-
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-                DATABASE,
-                DB_USER,
-                DB_PASSWORD);
     }
 
 

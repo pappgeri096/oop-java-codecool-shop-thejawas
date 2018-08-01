@@ -40,7 +40,7 @@ public class BrainTreeController  extends HttpServlet {
 
         String nonce = req.getParameter("payment_method_nonce");;
         TransactionRequest request = new TransactionRequest()
-                .amount(new BigDecimal(Double.toString(order.getTotalPrice())))
+                .amount(order.getTotalPrice())
                 .paymentMethodNonce(nonce)
                 .options()
                 .submitForSettlement(true)

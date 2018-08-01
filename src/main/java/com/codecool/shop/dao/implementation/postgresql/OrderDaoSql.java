@@ -1,20 +1,14 @@
 package com.codecool.shop.dao.implementation.postgresql;
 
 import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
 import com.codecool.shop.model.LineItem;
 import com.codecool.shop.model.Order;
-import com.codecool.shop.model.Product;
 
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.List;
 
-public class OrderDaoSql implements OrderDao {
-
-    private static final String DATABASE = "jdbc:postgresql://localhost:5432/jawas_webshop";
-    private static final String DB_USER = "jawas";
-    private static final String DB_PASSWORD = "jawas";
+public class OrderDaoSql extends BaseDaoSql implements OrderDao {
 
     private static OrderDaoSql singletonInstance = null;
 
@@ -130,12 +124,5 @@ public class OrderDaoSql implements OrderDao {
             e.printStackTrace();
         }
 
-    }
-
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-                DATABASE,
-                DB_USER,
-                DB_PASSWORD);
     }
 }

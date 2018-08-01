@@ -11,11 +11,9 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class Email {
+public class EmailUtil {
 
-        public static void sendEmail(){
-            // Recipient's email ID needs to be mentioned.
-            String to = "pappgergo096@gmail.com";
+        public static void sendEmail(String email, String subject, String msg){
 
             // Sender's email ID needs to be mentioned
             String from = "thejawas@codecool.com";
@@ -48,14 +46,13 @@ public class Email {
 
                 // Set To: header field of the header.
                 message.setRecipients(Message.RecipientType.TO,
-                        InternetAddress.parse(to));
+                        InternetAddress.parse(email));
 
                 // Set Subject: header field
-                message.setSubject("Testing Subject");
+                message.setSubject(subject);
 
                 // Now set the actual message
-                message.setText("Hello, this is sample for to check send " +
-                        "email using JavaMailAPI ");
+                message.setText(msg);
 
                 // Send message
                 Transport.send(message);

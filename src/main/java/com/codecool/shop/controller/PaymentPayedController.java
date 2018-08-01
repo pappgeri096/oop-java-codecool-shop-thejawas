@@ -30,9 +30,10 @@ public class PaymentPayedController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-//        OrderDao orderDataStore = OrderDaoMem.getInstance();
-//        List<LineItem> lineItemList = orderDataStore.getCurrent().getLineItemList();
-//        lineItemList.clear();
+        OrderDao orderDataStore = OrderDaoMem.getInstance();
+        List<LineItem> lineItemList = orderDataStore.getCurrent().getLineItemList();
+
+        sendVerificationEmail(orderDataStore, lineItemList);
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
@@ -40,6 +41,26 @@ public class PaymentPayedController extends HttpServlet {
         OrderDaoSql.getSingletonInstance().add(OrderDaoMem.getInstance().getCurrent());
         OrderDaoMem.getInstance().add(new Order());
         paymentPayedLogger.info("Payment approved by PayPal");
+
+    }
+
+    private void sendVerificationEmail(OrderDao orderDataStore, List<LineItem> lineItemList) {
+        String subject = "Order#"+orderDataStore.getCurrent().getId();
+        String email = orderDataStore.getCurrent().getUserDataMap().get("emailAddress");
+
+        StringBuilder message = new StringBuilder();
+
+        message.append("Name: ").append(orderDataStore.getCurrent().getUserDataMap().get("fullName")).append("\n");
+        message.append("EmailUtil: ").append(email).append("\n");
+        message.append("Items:");
+
+        for(LineItem item : lineItemList){
+            message.append(item.getProduct().getName()).append(" ");
+            message.append(item.getSubTotalPrice());
+        }
+
+
+        EmailUtil.sendEmail(email, subject, message.toString());
     }
 
 }

@@ -38,6 +38,7 @@ public class PaymentController extends HttpServlet {
         context.setVariable("token", token);
         engine.process("payment/index.html", context, resp.getWriter());
         paymentLogger.info("Get request received for PAYMENT page");
+        Email.sendEmail();
     }
 
 }

@@ -19,17 +19,24 @@ public class BaseDaoSql {
                 DB_PASSWORD);
     }
 
-    void deleteRecordFromDatabase(String query) {
+    boolean deleteRecordFromDatabase(String query) {
+
+        boolean success;
+
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
         ) {
             statement.executeUpdate(query);
             Class.forName("org.postgresql.Driver");
+            success = true;
         } catch (SQLException e) {
             e.printStackTrace();
+            success = false;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            success = false;
         }
+        return success;
     }
 
 

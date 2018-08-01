@@ -2,11 +2,11 @@ DROP TABLE IF EXISTS logging_event_property;
 DROP TABLE IF EXISTS logging_event_exception;
 DROP TABLE IF EXISTS logging_event;
 DROP TABLE IF EXISTS order_product;
-DROP TABLE IF EXISTS "order";
-DROP TABLE IF EXISTS "user";
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS product_category;
 DROP TABLE IF EXISTS supplier;
+DROP TABLE IF EXISTS "order";
+DROP TABLE IF EXISTS "user";
 
 
 CREATE TABLE public.logging_event

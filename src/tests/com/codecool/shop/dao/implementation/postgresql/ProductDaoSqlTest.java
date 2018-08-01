@@ -5,8 +5,6 @@ import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dao.implementation.Memory.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
 import com.codecool.shop.model.Product;
-import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.Supplier;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -30,6 +28,8 @@ class ProductDaoSqlTest {
     private static SupplierDaoMem supplierDaoMem = null;
     private static SupplierDao supplierDaoSql = null;
 
+    String queryForMaxId = "SELECT max(id) FROM product;";
+
     @BeforeAll
     private static void simulateInitializer() {
         productDaoSql = ProductDaoSql.getSingletonInstance();
@@ -51,8 +51,7 @@ class ProductDaoSqlTest {
     @Disabled
     @Test
     void add_AssertEqual_True() {
-        String query = "SELECT max(id) FROM product;";
-        int expectedId = productDaoSql.getLastRecordsId(query);
+        int expectedId = productDaoSql.getLastRecordsId(queryForMaxId);
 
         String expectedName = "test product";
         String expectedDescription = "test description";
@@ -108,15 +107,17 @@ class ProductDaoSqlTest {
     @Disabled
     @Test
     void remove() {
-        String query = "SELECT max(id) FROM product;";
-        int lastRecordsId = productDaoSql.getLastRecordsId(query);
+        int lastRecordsId = productDaoSql.getLastRecordsId(queryForMaxId);
         productDaoSql.remove(lastRecordsId);
-        int newLastRecordsId = productDaoSql.getLastRecordsId(query);
+        int newLastRecordsId = productDaoSql.getLastRecordsId(queryForMaxId);
         assertEquals(lastRecordsId, (newLastRecordsId + 1));
     }
 
     @Test
-    void getAll() {
+    void getAll_AssertProductListEqualsLastRecordsId() {
+        int lastRecordsId = productDaoSql.getLastRecordsId(queryForMaxId);
+        int lengthOfProductList = productDaoSql.getAll().size();
+        assertEquals(lastRecordsId, lengthOfProductList);
     }
 
     @Test
@@ -131,11 +132,4 @@ class ProductDaoSqlTest {
     void getBy2() {
     }
 
-    @Test
-    void getConnection() {
-    }
-
-    @Test
-    void deleteRecordFromDatabase() {
-    }
 }

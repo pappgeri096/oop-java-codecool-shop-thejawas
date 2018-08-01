@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS logging_event_property;
 DROP TABLE IF EXISTS logging_event_exception;
 DROP TABLE IF EXISTS logging_event;
-DROP TABLE IF EXISTS order_user;
+DROP TABLE IF EXISTS order_product;
 DROP TABLE IF EXISTS "order";
 DROP TABLE IF EXISTS "user";
 DROP TABLE IF EXISTS product;
@@ -97,16 +97,16 @@ CREATE TABLE public."order"
   user_id int NOT NULL,
   status varchar(50) NOT NULL,
   total_price numeric(100,2) NOT NULL,
-  CONSTRAINT fk_order_user_id FOREIGN KEY (user_id) REFERENCES public."user" (id)
+  CONSTRAINT fk_order_product_id FOREIGN KEY (user_id) REFERENCES public."user" (id)
 );
 COMMENT ON COLUMN public."order".status IS 'unshipped';
 
-CREATE TABLE public.order_user
+CREATE TABLE public.order_product
 (
   id bigserial PRIMARY KEY,
   order_id int NOT NULL,
   product_id bigint NOT NULL,
   product_quantity int NOT NULL,
-  CONSTRAINT order_user_fk_order_id FOREIGN KEY (order_id) REFERENCES public."order" (id),
-  CONSTRAINT order_user_fk_product_id FOREIGN KEY (product_id) REFERENCES public.product (id)
+  CONSTRAINT order_product_fk_order_id FOREIGN KEY (order_id) REFERENCES public."order" (id),
+  CONSTRAINT order_product_fk_product_id FOREIGN KEY (product_id) REFERENCES public.product (id)
 );

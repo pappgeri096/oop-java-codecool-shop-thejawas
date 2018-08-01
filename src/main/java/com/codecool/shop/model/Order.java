@@ -62,14 +62,14 @@ public class Order {
             productNameAndQuantityMap.put(lineItem.getProduct().name,lineItem.getQuantity());
         }
     }
-    public double getTotalPrice(){
+    public BigDecimal getTotalPrice(){
         BigDecimal sumPrice = BigDecimal.valueOf(0);
         for (LineItem lineItem : lineItemList) {
             sumPrice = lineItem.getProduct().getDefaultPrice().multiply(new BigDecimal(lineItem.getQuantity())).add(sumPrice);
         }
         BigDecimal totalPriceRounded = sumPrice.setScale(2, RoundingMode.HALF_UP);
 
-        return totalPriceRounded.doubleValue();
+        return totalPriceRounded;
     }
 
     public Map<String, String> getUserDataMap() {

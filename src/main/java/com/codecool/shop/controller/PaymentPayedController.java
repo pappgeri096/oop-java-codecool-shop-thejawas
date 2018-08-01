@@ -30,9 +30,10 @@ public class PaymentPayedController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-//        OrderDao orderDataStore = OrderDaoMem.getInstance();
-//        List<LineItem> lineItemList = orderDataStore.getCurrent().getLineItemList();
-//        lineItemList.clear();
+        OrderDao orderDataStore = OrderDaoMem.getInstance();
+        List<LineItem> lineItemList = orderDataStore.getCurrent().getLineItemList();
+
+        EmailUtil.sendVerificationEmail();
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
@@ -40,6 +41,9 @@ public class PaymentPayedController extends HttpServlet {
         OrderDaoSql.getSingletonInstance().add(OrderDaoMem.getInstance().getCurrent());
         OrderDaoMem.getInstance().add(new Order());
         paymentPayedLogger.info("Payment approved by PayPal");
+
     }
+
+
 
 }

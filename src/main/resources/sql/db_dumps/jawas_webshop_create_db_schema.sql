@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS "user";
 CREATE TABLE public.logging_event
 (
   event_id          bigserial PRIMARY KEY,
-  timestamp         bigint       NOT NULL,
+  timestmp         bigint       NOT NULL,
   formatted_message text         NOT NULL,
   logger_name       varchar(254) NOT NULL,
   level_string      varchar(254) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE public.logging_event
   caller_filename   varchar(254) NOT NULL,
   caller_class      varchar(254) NOT NULL,
   caller_method     varchar(254) NOT NULL,
-  caller_line       char         NOT NULL
+  caller_line       varchar(254) NOT NULL
 );
 
 CREATE TABLE public.logging_event_property

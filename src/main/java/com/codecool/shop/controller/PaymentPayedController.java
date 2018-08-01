@@ -33,7 +33,7 @@ public class PaymentPayedController extends HttpServlet {
         OrderDao orderDataStore = OrderDaoMem.getInstance();
         List<LineItem> lineItemList = orderDataStore.getCurrent().getLineItemList();
 
-        sendVerificationEmail(orderDataStore, lineItemList);
+        EmailUtil.sendVerificationEmail();
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
@@ -44,23 +44,6 @@ public class PaymentPayedController extends HttpServlet {
 
     }
 
-    private void sendVerificationEmail(OrderDao orderDataStore, List<LineItem> lineItemList) {
-        String subject = "Order#"+orderDataStore.getCurrent().getId();
-        String email = orderDataStore.getCurrent().getUserDataMap().get("emailAddress");
 
-        StringBuilder message = new StringBuilder();
-
-        message.append("Name: ").append(orderDataStore.getCurrent().getUserDataMap().get("fullName")).append("\n");
-        message.append("EmailUtil: ").append(email).append("\n");
-        message.append("Items:");
-
-        for(LineItem item : lineItemList){
-            message.append(item.getProduct().getName()).append(" ");
-            message.append(item.getSubTotalPrice());
-        }
-
-
-        EmailUtil.sendEmail(email, subject, message.toString());
-    }
 
 }

@@ -1,6 +1,11 @@
 package com.codecool.shop.controller;
 
 
+import com.codecool.shop.dao.OrderDao;
+import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
+import com.codecool.shop.model.LineItem;
+
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -13,7 +18,7 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailUtil {
 
-        public static void sendEmail(String email, String subject, String msg){
+        private static void sendEmail(String email, String subject, String msg){
 
             // Sender's email ID needs to be mentioned
             String from = "thejawas@codecool.com";
@@ -63,5 +68,28 @@ public class EmailUtil {
                 throw new RuntimeException(e);
             }
         }
+
+    static void sendVerificationEmail() {
+
+        OrderDao orderDataStore = OrderDaoMem.getInstance();
+        List<LineItem> lineItemList = orderDataStore.getCurrent().getLineItemList();
+
+        String subject = "Order#"+orderDataStore.getCurrent().getId();
+        String email = orderDataStore.getCurrent().getUserDataMap().get("emailAddress");
+
+        StringBuilder message = new StringBuilder();
+
+        message.append("Name: ").append(orderDataStore.getCurrent().getUserDataMap().get("fullName")).append("\n");
+        message.append("Email: ").append(email).append("\n");
+        message.append("Items:");
+
+        for(LineItem item : lineItemList){
+            message.append(item.getProduct().getName()).append(" ");
+            message.append(item.getSubTotalPrice()).append("\n");
+        }
+
+
+        sendEmail(email, subject, message.toString());
+    }
 
 }

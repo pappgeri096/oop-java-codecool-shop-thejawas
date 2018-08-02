@@ -1,5 +1,6 @@
 package com.codecool.shop.dao.implementation.Memory;
 
+import com.codecool.shop.dao.implementation.Memory.ProductCategoryDaoMem;
 import com.codecool.shop.model.ProductCategory;
 import org.junit.jupiter.api.Test;
 

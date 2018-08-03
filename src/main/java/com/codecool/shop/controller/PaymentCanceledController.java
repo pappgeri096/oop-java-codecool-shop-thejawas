@@ -27,7 +27,7 @@ public class PaymentCanceledController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("payment/canceled.html", context, resp.getWriter());
 
-        paymentCanceledLogger.error("Payment cancelled by PayPal. See details above at line containing [ERROR com.paypal.base.HttpConnection logger].");
+        paymentCanceledLogger.error("Payment cancelled by online payment service provider. See details above at line containing [ERROR com.paypal.base.HttpConnection logger].");
     }
 
 }

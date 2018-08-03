@@ -2,7 +2,7 @@ package com.codecool.shop.controller;
 
 
 import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.OrderDaoMem;
+import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
 import com.codecool.shop.model.LineItem;
 import com.codecool.shop.model.Order;
 import com.paypal.api.payments.*;
@@ -24,8 +24,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.helpers.FormattingTuple;
-import org.slf4j.helpers.MessageFormatter;
 
 
 @WebServlet(urlPatterns = {"/paypal"})
@@ -149,7 +147,7 @@ public class PaypalController extends HttpServlet {
     private Amount getAmount() {
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal(Float.toString(order.getPriceOfAllProducts()));
+        amount.setTotal(Double.toString(order.getTotalPrice().doubleValue()));
         return amount;
     }
 
@@ -184,10 +182,7 @@ public class PaypalController extends HttpServlet {
         Item item = new Item();
         item.setName(name);
 
-        Double totalPrice = Integer.parseInt(quantity) * Double.parseDouble(price);
-        BigDecimal totalPriceRounded = new BigDecimal(totalPrice);
-        totalPriceRounded = totalPriceRounded.setScale(2, RoundingMode.HALF_UP);
-        item.setPrice(totalPriceRounded.toString());
+        item.setPrice(price);
         item.setCategory("PHYSICAL");
         item.setQuantity(quantity);
         item.setCurrency("USD");
@@ -196,7 +191,6 @@ public class PaypalController extends HttpServlet {
 
     private ShippingAddress getAddress() {
         ShippingAddress address = new ShippingAddress();
-        //address.setRecipientName("Janos Istvan");
         address.setPhone(order.getUserDataMap().get("telephoneNumber"));
         address.setCountryCode("HU");
         address.setCity(order.getUserDataMap().get("cityBill"));

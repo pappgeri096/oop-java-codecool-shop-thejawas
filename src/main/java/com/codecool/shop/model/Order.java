@@ -1,5 +1,7 @@
 package com.codecool.shop.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class Order {
@@ -32,7 +34,7 @@ public class Order {
         this.id = id;
     }
 
-    public void setUserData(List<String> userData) {
+    public void createUserDataMap(List<String> userData) {
         for (int i = 0; i < 11; i++) {
             this.userDataMap.put(checkoutData.get(i), userData.get(i));
         }
@@ -46,15 +48,6 @@ public class Order {
         return numberOfItems;
     }
 
-    public int getProductQuantity(int id) {
-        for (LineItem lineItem : lineItemList) {
-            if (lineItem.getProduct().getId() == id) {
-                return lineItem.getQuantity();
-            }
-        }
-        return 0;
-    }
-
     public int getId() {
         return this.id;
     }
@@ -64,20 +57,19 @@ public class Order {
     }
 
 
-    public void makeProductsMaps(){
+    public void createProductsMaps(){
         for (LineItem lineItem:lineItemList) {
             productNameAndQuantityMap.put(lineItem.getProduct().name,lineItem.getQuantity());
         }
     }
-    public float getPriceOfAllProducts(){
-        float sumPrice = 0;
-        Currency currency = null;
+    public BigDecimal getTotalPrice(){
+        BigDecimal sumPrice = BigDecimal.valueOf(0);
         for (LineItem lineItem : lineItemList) {
-            sumPrice = sumPrice +lineItem.getProduct().getDefaultPrice()*lineItem.getQuantity();
-            currency = lineItem.getProduct().getDefaultCurrency();
+            sumPrice = lineItem.getProduct().getDefaultPrice().multiply(new BigDecimal(lineItem.getQuantity())).add(sumPrice);
         }
+        BigDecimal totalPriceRounded = sumPrice.setScale(2, RoundingMode.HALF_UP);
 
-        return sumPrice;
+        return totalPriceRounded;
     }
 
     public Map<String, String> getUserDataMap() {
@@ -90,7 +82,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return String.format("id: %1$d, ",
+        return String.format("Order ID: %1$d, ",
                 this.id);
 
     }

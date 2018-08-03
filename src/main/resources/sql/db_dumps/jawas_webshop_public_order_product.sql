@@ -1,0 +1,14 @@
+INSERT INTO public.order_product (id, order_id, product_id, product_quantity) VALUES (DEFAULT, 2, 1, 1);
+INSERT INTO public.order_product (id, order_id, product_id, product_quantity) VALUES (DEFAULT, 2, 2, 2);
+INSERT INTO public.order_product (id, order_id, product_id, product_quantity) VALUES (DEFAULT, 3, 1, 2);
+INSERT INTO public.order_product (id, order_id, product_id, product_quantity) VALUES (DEFAULT, 3, 2, 1);
+INSERT INTO public.order_product (id, order_id, product_id, product_quantity) VALUES (DEFAULT, 4, 3, 1);
+INSERT INTO public.order_product (id, order_id, product_id, product_quantity) VALUES (DEFAULT, 5, 3, 1);
+INSERT INTO public.order_product (id, order_id, product_id, product_quantity) VALUES (DEFAULT, 6, 1, 2);
+INSERT INTO public.order_product (id, order_id, product_id, product_quantity) VALUES (DEFAULT, 6, 2, 1);
+INSERT INTO public.order_product (id, order_id, product_id, product_quantity) VALUES (DEFAULT, 7, 1, 1);
+INSERT INTO public.order_product (id, order_id, product_id, product_quantity) VALUES (DEFAULT, 7, 2, 1);
+INSERT INTO public.order_product (id, order_id, product_id, product_quantity) VALUES (DEFAULT, 8, 1, 1);
+INSERT INTO public.order_product (id, order_id, product_id, product_quantity) VALUES (DEFAULT, 9, 1, 1);
+INSERT INTO public.order_product (id, order_id, product_id, product_quantity) VALUES (DEFAULT, 10, 1, 2);
+INSERT INTO public.order_product (id, order_id, product_id, product_quantity) VALUES (DEFAULT, 10, 2, 1);

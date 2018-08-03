@@ -1,4 +1,4 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.implementation.Memory;
 
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.model.Supplier;
@@ -23,9 +23,12 @@ public class SupplierDaoMem implements SupplierDao {
         return instance;
     }
 
+    public void setData(List<Supplier> data) {
+        this.data = data;
+    }
+
     @Override
     public void add(Supplier supplier) {
-        supplier.setId(data.size() + 1);
         data.add(supplier);
     }
 

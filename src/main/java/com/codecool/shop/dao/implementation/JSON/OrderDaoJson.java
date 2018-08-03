@@ -22,15 +22,15 @@ public class OrderDaoJson implements OrderDao {
      * writes single order data to json file
      * creates UUID for each order and gives the file this UUID as name
      *
-     * @param order
+     * @param objectType
      *
      * */
     @Override
-    public void add(Order order) {
+    public void add(Order objectType) {
         uuidString = createUuid();
-        Map<String, String> orderDataMap = joinMaps(order, uuidString);
+        Map<String, String> orderDataMap = joinMaps(objectType, uuidString);
 
-        String filePathAndName = "target/orders/Order_" + uuidString + ".json";
+        String filePathAndName = "log/json_orders/Order_" + uuidString + ".json";
 
         ObjectMapper orderMapper = new ObjectMapper();
         try {
@@ -110,7 +110,7 @@ public class OrderDaoJson implements OrderDao {
 
         ObjectMapper orderIdWriter = new ObjectMapper();
         try {
-            orderIdWriter.writeValue(new FileOutputStream("target/orders/OrderIdHistory.json"), orderIdHistory);
+            orderIdWriter.writeValue(new FileOutputStream("log/json_orders/OrderIdHistory.json"), orderIdHistory);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -123,7 +123,7 @@ public class OrderDaoJson implements OrderDao {
         TypeReference<List<String>> listTypeReference = new TypeReference<List<String>>(){};
         ObjectMapper orderIdReader = new ObjectMapper();
         try {
-            orderIdHistory = orderIdReader.readValue(new File("target/orders/OrderIdHistory.json"), listTypeReference);
+            orderIdHistory = orderIdReader.readValue(new File("log/json_orders/OrderIdHistory.json"), listTypeReference);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -148,7 +148,7 @@ public class OrderDaoJson implements OrderDao {
         }
 
         orderDataMap.put("OrderId", uuidString);
-        orderDataMap.put("OrderStatus", "PendingUnshippedCancelled");
+        orderDataMap.put("OrderStatus", "Unshipped");
 
         return orderDataMap;
     }

@@ -1,0 +1,10 @@
+INSERT INTO public."order" (id, user_id, status, total_price) VALUES (DEFAULT, 1, 'unshipped', 1008.13);
+INSERT INTO public."order" (id, user_id, status, total_price) VALUES (DEFAULT, 1, 'unshipped', 578.93);
+INSERT INTO public."order" (id, user_id, status, total_price) VALUES (DEFAULT, 1, 'unshipped', 89.21);
+INSERT INTO public."order" (id, user_id, status, total_price) VALUES (DEFAULT, 1, 'unshipped', 89.21);
+INSERT INTO public."order" (id, user_id, status, total_price) VALUES (DEFAULT, 1, 'unshipped', 578.93);
+INSERT INTO public."order" (id, user_id, status, total_price) VALUES (DEFAULT, 1, 'unshipped', 529.02);
+INSERT INTO public."order" (id, user_id, status, total_price) VALUES (DEFAULT, 1, 'unshipped', 49.91);
+INSERT INTO public."order" (id, user_id, status, total_price) VALUES (DEFAULT, 1, 'unshipped', 49.91);
+INSERT INTO public."order" (id, user_id, status, total_price) VALUES (DEFAULT, 1, 'unshipped', 578.93);
+INSERT INTO public."order" (id, user_id, status, total_price) VALUES (DEFAULT, 1, 'unshipped', 101.52);

@@ -40,7 +40,7 @@ public class PaymentPayedController extends HttpServlet {
         engine.process("payment/payed.html", context, resp.getWriter());
         OrderDaoSql.getSingletonInstance().add(OrderDaoMem.getInstance().getCurrent());
         OrderDaoMem.getInstance().add(new Order());
-        paymentPayedLogger.info("Payment approved by PayPal");
+        paymentPayedLogger.info("Payment approved by online payment service provider");
 
     }
 

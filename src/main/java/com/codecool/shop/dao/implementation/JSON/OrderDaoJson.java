@@ -171,13 +171,13 @@ public class OrderDaoJson implements OrderDao {
 
     public String mapToJsonString(Map map) {
         ObjectMapper objectMapper = new ObjectMapper();
-        String carAsString = "";
+        String mapAsString = "";
         try {
-            carAsString = objectMapper.writeValueAsString(map);
+            mapAsString = objectMapper.writeValueAsString(map);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return carAsString;
+        return mapAsString;
     }
 
     public String listToJsonString(List list) {
@@ -210,5 +210,7 @@ public class OrderDaoJson implements OrderDao {
         }
         return orderAsString;
     }
+
+    
 
 }

@@ -38,16 +38,19 @@
         </connectionSource>
     </appender>
 
-    <logger name="com.paypal.base" level="TRACE">
+    <logger name="com.paypal.base" level="TRACE" additivity="false">
         <appender-ref ref="FILE" />
     </logger>
 
-    <logger name="com.codecool.shop.controller" level="ALL" additivity="false">
+    <logger name="com.codecool.shop.controller" level="trace" additivity="false">
         <appender-ref ref="FILE" />
+    </logger>
+
+    <logger name="org" level="trace" additivity="false">
         <appender-ref ref="DB" />
     </logger>
 
-    <root level="DEBUG">
+    <root level="debug">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="DB" />
     </root>

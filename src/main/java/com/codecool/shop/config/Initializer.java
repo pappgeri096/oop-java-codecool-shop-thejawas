@@ -29,7 +29,6 @@ public class Initializer implements ServletContextListener {
         ProductCategoryDao productCategoryDaoSql = ProductCategoryDaoSql.getInstance();
         productCategoryDaoMem.setData(productCategoryDaoSql.getAll());
 
-
         SupplierDaoMem supplierDaoMem = SupplierDaoMem.getInstance();
         SupplierDao supplierDaoSql = SupplierDaoSql.getInstance();
         supplierDaoMem.setData(supplierDaoSql.getAll());

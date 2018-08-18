@@ -60,7 +60,7 @@ public class CheckOutController extends HttpServlet {
         writeOrderDataToFile.add(order);
 
 //        OrderDao serializeOrder = new OrderDaoJson();
-//        String serializedOrder = ((OrderDaoJson) serializeOrder).orderToJsonString(order);
+//        String serializedOrder = ((OrderDaoJson) serializeOrder).serializeOrder(order);
 //        checkoutLogger.warn(serializedOrder);
 
         String uuidString = ((OrderDaoJson) writeOrderDataToFile).getUuidString();

@@ -1,7 +1,18 @@
 package com.codecool.shop.dao.implementation.JSON;
 
 import com.codecool.shop.dao.OrderDao;
+import com.codecool.shop.dao.ProductCategoryDao;
+import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.implementation.Memory.ProductCategoryDaoMem;
+import com.codecool.shop.dao.implementation.Memory.ProductDaoMem;
+import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
+import com.codecool.shop.dao.implementation.postgresql.ProductCategoryDaoSql;
+import com.codecool.shop.dao.implementation.postgresql.ProductDaoSql;
+import com.codecool.shop.dao.implementation.postgresql.SupplierDaoSql;
 import com.codecool.shop.model.Order;
+
+import com.codecool.shop.model.Product;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -197,7 +208,7 @@ public class OrderDaoJson implements OrderDao {
     }
 
 
-    public String orderToJsonString(Order order) {
+    public String serializeOrder(Order order) {
         String uuidString = createUuid();
         Map<String, String> orderDataMap = joinMaps(order, uuidString);
 
@@ -211,6 +222,49 @@ public class OrderDaoJson implements OrderDao {
         return orderAsString;
     }
 
-    
+    public String serializeProduct(Product product) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String serializedProduct = "";
+        try {
+            serializedProduct = objectMapper.writeValueAsString(product);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return serializedProduct;
+    }
+
+
+    public String serializeProductList() {
+
+        ProductDaoSql productDaoSql = ProductDaoSql.getSingletonInstance();
+        List<Product> productList = productDaoSql.getAll();
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (Product product : productList) {
+            String serializedProduct = serializeProduct(product);
+            stringBuilder.append(serializedProduct);
+        }
+
+        return stringBuilder.toString();
+    }
+
+    public static void main(String[] args) {
+        ProductCategoryDaoMem productCategoryDaoMem = ProductCategoryDaoMem.getInstance();
+        ProductCategoryDao productCategoryDaoSql = ProductCategoryDaoSql.getInstance();
+        productCategoryDaoMem.setData(productCategoryDaoSql.getAll());
+
+
+        SupplierDaoMem supplierDaoMem = SupplierDaoMem.getInstance();
+        SupplierDao supplierDaoSql = SupplierDaoSql.getInstance();
+        supplierDaoMem.setData(supplierDaoSql.getAll());
+
+        ProductDaoMem productDaoMem = ProductDaoMem.getInstance();
+        ProductDao productDaoSql = ProductDaoSql.getSingletonInstance();
+        productDaoMem.setData(productDaoSql.getAll());
+
+        OrderDaoJson testJSON = new OrderDaoJson();
+        System.out.println(testJSON.serializeProductList());
+    }
 
 }

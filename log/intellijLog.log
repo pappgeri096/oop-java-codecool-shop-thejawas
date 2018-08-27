@@ -1,0 +1,93 @@
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building codecoolshop 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] >>> jetty-maven-plugin:9.4.11.v20180605:run (default-cli) > test-compile @ codecoolshop >>>
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ codecoolshop ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 8 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.7.0:compile (default-compile) @ codecoolshop ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ codecoolshop ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/akincsei/IntelliJ/4TW-codecoolShop/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.7.0:testCompile (default-testCompile) @ codecoolshop ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] <<< jetty-maven-plugin:9.4.11.v20180605:run (default-cli) < test-compile @ codecoolshop <<<
+[INFO] 
+[INFO] --- jetty-maven-plugin:9.4.11.v20180605:run (default-cli) @ codecoolshop ---
+[INFO] webAppSourceDirectory not set. Trying src/main/webapp
+[INFO] Reload Mechanic: manual
+[INFO] nonBlocking:false
+[INFO] Classes = /home/akincsei/IntelliJ/4TW-codecoolShop/target/classes
+[INFO] Configuring Jetty for project: codecoolshop
+[INFO] Logging initialized @3285ms to org.eclipse.jetty.util.log.Slf4jLog
+[INFO] Context path = /
+[INFO] Tmp directory = /home/akincsei/IntelliJ/4TW-codecoolShop/target/tmp
+[INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
+[INFO] Web overrides =  none
+[INFO] web.xml file = file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/WEB-INF/web.xml
+[INFO] Webapp directory = /home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp
+[INFO] jetty-9.4.11.v20180605; built: 2018-06-05T18:24:03.829Z; git: d5fc0523cfa96bfebfbda19606cad384d772f04c; jvm 1.8.0_181-b13
+[WARNING] Unknown asm implementation version, assuming version 393216
+[INFO] Scanning elapsed time=579ms
+[WARNING] com.codecool.shop.config.TemplateEngineUtil does not implement one of the servlet listener interfaces
+10:00:13,011 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+10:00:13,011 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
+10:00:13,011 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [file:/home/akincsei/IntelliJ/4TW-codecoolShop/target/classes/logback.xml]
+10:00:13,057 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+10:00:13,060 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+10:00:13,065 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+10:00:13,067 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@7:24 - no applicable action for [withJansi], current ElementPath  is [[configuration][appender][encoder][withJansi]]
+10:00:13,086 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+10:00:13,089 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [FILE]
+10:00:13,093 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@553846997 - setting totalSizeCap to 30 MB
+10:00:13,095 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@553846997 - Archive files will be limited to [3 MB] each.
+10:00:13,098 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@553846997 - No compression will be used
+10:00:13,099 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@553846997 - Will use the pattern log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html for the active file
+10:00:13,103 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@4eba373c - The date pattern is 'yyyy-MM-dd' from file name pattern 'log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html'.
+10:00:13,103 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@4eba373c - Roll-over at midnight.
+10:00:13,107 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@4eba373c - Setting initial period to Fri Aug 03 10:00:13 CEST 2018
+10:00:13,112 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@27:40 - no applicable action for [outputPatternAsHeader], current ElementPath  is [[configuration][appender][encoder][layout][outputPatternAsHeader]]
+10:00:13,113 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - Active log file name: log/order_logs/2018-08-03/OrderLog.StartedAt.10:00.hours.0.html
+10:00:13,113 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - File property is set to [null]
+10:00:13,115 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.classic.db.DBAppender]
+10:00:13,122 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [DB]
+10:00:13,192 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@c755b2 - Driver name=PostgreSQL JDBC Driver
+10:00:13,192 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@c755b2 - Driver version=42.2.4
+10:00:13,192 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@c755b2 - supportsGetGeneratedKeys=true
+10:00:13,194 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.paypal.base] to TRACE
+10:00:13,194 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [com.paypal.base] to false
+10:00:13,194 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.paypal.base]
+10:00:13,195 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.codecool.shop.controller] to TRACE
+10:00:13,195 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [com.codecool.shop.controller] to false
+10:00:13,195 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.codecool.shop.controller]
+10:00:13,195 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [org] to TRACE
+10:00:13,195 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [org] to false
+10:00:13,195 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [DB] to Logger[org]
+10:00:13,195 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to DEBUG
+10:00:13,195 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+10:00:13,195 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [DB] to Logger[ROOT]
+10:00:13,195 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+10:00:13,196 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@142213d5 - Registering current configuration as safe fallback point
+10:00:12,986 |-INFO in ch.qos.logback.classic.servlet.LogbackServletContainerInitializer@47ad69f7 - Adding an instance of  class ch.qos.logback.classic.servlet.LogbackServletContextListener to the current web-app
+[INFO] DefaultSessionIdManager workerName=node0
+[INFO] No SessionScavenger set, using defaults
+[INFO] node0 Scavenging every 660000ms
+[INFO] Started o.e.j.m.p.JettyWebAppContext@2a9bc08f{CodecoolShop Application,/,file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/,AVAILABLE}{file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/}
+[INFO] Started ServerConnector@354e7004{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+[INFO] Started @5004ms
+[INFO] Started Jetty Server
+[INFO] Console reloading is ENABLED. Hit ENTER on the console to restart the context.
+Aug 03, 2018 10:01:01 AM com.braintreegateway.util.Http httpDo
+INFO: [Braintree] [3/Aug/2018 10:01:01 +0200]] POST /merchants/r63vmkrc39s63j9m/client_token
+Aug 03, 2018 10:01:37 AM com.braintreegateway.util.Http httpDo
+INFO: [Braintree] [3/Aug/2018 10:01:37 +0200]] POST /merchants/r63vmkrc39s63j9m/transactions
+Sent message successfully....

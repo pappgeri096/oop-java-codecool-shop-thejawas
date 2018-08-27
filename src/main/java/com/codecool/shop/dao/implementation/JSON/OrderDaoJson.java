@@ -264,7 +264,11 @@ public class OrderDaoJson implements OrderDao {
         productDaoMem.setData(productDaoSql.getAll());
 
         OrderDaoJson testJSON = new OrderDaoJson();
-        System.out.println(testJSON.serializeProductList());
+//        System.out.println(testJSON.serializeProductList());
+
+
+        System.out.println(productDaoMem.getBy(1).getProductCategory().getDescription());
+
     }
 
 }

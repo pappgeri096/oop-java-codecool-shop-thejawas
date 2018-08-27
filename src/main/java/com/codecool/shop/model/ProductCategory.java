@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ProductCategory extends BaseModel {
     private String department;
-    private List<Product> products;
+    private transient List<Product> products;
 
     public ProductCategory(int id, String name, String department, String description) {
         super(id, name, description);
@@ -16,6 +16,8 @@ public class ProductCategory extends BaseModel {
     public String getDepartment() {
         return department;
     }
+
+
 
     public void setDepartment(String department) {
         this.department = department;

@@ -8,6 +8,8 @@ import com.codecool.shop.model.Order;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,15 +17,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 @WebServlet(urlPatterns = {"/paypal"})
@@ -160,7 +157,6 @@ public class PaypalController extends HttpServlet {
 
     private void getItems(List items) {
         for (Map.Entry<String, Integer> entry : order.getProductNameAndQuantityMap().entrySet()) {
-
 
             String name = entry.getKey();
             String quantity = Integer.toString(entry.getValue());

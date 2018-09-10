@@ -1,8 +1,6 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.dao.implementation.postgresql.ProductDaoSql;
-import org.slf4j.LoggerFactory;
-
+import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
@@ -10,9 +8,9 @@ import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
 import com.codecool.shop.dao.implementation.Memory.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.Memory.ProductDaoMem;
-import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
 import com.codecool.shop.model.Product;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 

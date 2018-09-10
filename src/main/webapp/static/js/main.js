@@ -10,7 +10,7 @@ function togglePaymentOptions() {
         if(e.target.classList.contains("paypal")){
             creditCardContainer.style.display = "none";
 
-            if(paypalContainer.style.display == "block"){
+            if(paypalContainer.style.display === "block"){
                 paypalContainer.style.display = "none";
             }else{
                 paypalContainer.style.display = "block";
@@ -20,7 +20,7 @@ function togglePaymentOptions() {
         if(e.target.classList.contains("credit-card")){
             paypalContainer.style.display = "none";
 
-            if(creditCardContainer.style.display == "block"){
+            if(creditCardContainer.style.display === "block"){
                 creditCardContainer.style.display = "none";
             }else{
                 creditCardContainer.style.display = "block";

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class BaseDaoSql {
+class BaseDaoSql {
 
     private static final String DATABASE = "jdbc:postgresql://localhost:5432/jawas_webshop";
     private static final String DB_USER = "jawas";
@@ -19,24 +19,16 @@ public class BaseDaoSql {
                 DB_PASSWORD);
     }
 
-    boolean deleteRecordFromDatabase(String query) {
-
-        boolean success;
+    void deleteRecordFromDatabase(String query) {
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
         ) {
             statement.executeUpdate(query);
             Class.forName("org.postgresql.Driver");
-            success = true;
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-            success = false;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            success = false;
         }
-        return success;
     }
 
 

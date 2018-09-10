@@ -12,7 +12,7 @@ public class TemplateEngineUtil {
 
     private static final String TEMPLATE_ENGINE_ATTR = "com.thymeleafexamples.thymeleaf3.TemplateEngineInstance";
 
-    public static void storeTemplateEngine(ServletContext context, TemplateEngine engine) {
+    static void storeTemplateEngine(ServletContext context, TemplateEngine engine) {
         context.setAttribute(TEMPLATE_ENGINE_ATTR, engine);
     }
 

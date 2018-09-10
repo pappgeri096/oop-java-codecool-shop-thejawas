@@ -22,11 +22,10 @@ public class BrainTreeController  extends HttpServlet {
             "zt4qsvng8hnygtg8",
             "8fbed28cb5f457cbe3ff1359091f18af"
     );
-    private OrderDao orderDataStore;
     private Order order;
 
     public BrainTreeController() {
-        this.orderDataStore = OrderDaoMem.getInstance();
+        OrderDao orderDataStore = OrderDaoMem.getInstance();
         this.order = orderDataStore.getCurrent();
     }
 

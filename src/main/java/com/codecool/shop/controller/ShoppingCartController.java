@@ -4,6 +4,7 @@ import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
 import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.WsOrder;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -31,15 +32,16 @@ public class ShoppingCartController extends HttpServlet {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        context.setVariable("order", orderDataStore.getCurrent());
+        context.setVariable("orderMem", orderDataStore.getCurrent());
         engine.process("product/cart.html", context, resp.getWriter());
 
         cartLogger.info("Shopping cart editor page displayed");
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
-        List<LineItem> lineItemList = orderDataStore.getCurrent().getLineItemList();
+        OrderDao orderDaoMem = OrderDaoMem.getInstance();
+        WsOrder currentOrder = orderDaoMem.getCurrent();
+        List<LineItem> lineItemList = currentOrder.getLineItemList();
         boolean repeat = true;
         while (repeat) {
             repeat = false;
@@ -57,8 +59,8 @@ public class ShoppingCartController extends HttpServlet {
                 }
             }
         }
-        orderDataStore.getCurrent().createProductsMaps();
-        if (orderDataStore.getCurrent().getLineItemList().size()>0) {
+        ((OrderDaoMem) orderDaoMem).createProductNameAndQuantityMaps();
+        if (currentOrder.getLineItemList().size()>0) {
             resp.sendRedirect("/review");
         }else {
             resp.sendRedirect("/");

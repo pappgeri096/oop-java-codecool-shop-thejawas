@@ -50,13 +50,13 @@
         </div>
     </div>
 </nav>
-    <div id="products" class="col-10 row" th:each="lineitem,iterStat : ${order.getLineItemList()}">
+    <div id="products" class="col-10 row" th:each="lineitem,iterStat : ${orderMem.getLineItemList()}">
         <h4 class="group inner list-group-item-heading" th:text="${lineitem.getProduct().name}">Product name</h4>
         <p class="lead" th:text="${lineitem.getProduct().getPrice()}+ ' / '+ ${lineitem.getSubTotalPrice()}">100 USD</p>
         <p style="width: 100px"  th:text="${(lineitem.getQuantity())} +' items'"></p>
     </div>
 <br>
-<p th:text="'Total: ' + ${order.getTotalPrice()}"> </p>
+<p th:text="'Total: ' + ${totalPrice}"> </p>
         <br>
 <a href="/cart"><button type="submit" class="btn btn-secondary .float-right"> Edit </button></a> <a href="/checkout"><button type="submit" class="btn btn-secondary .float-right"> Proceed </button></a>
 

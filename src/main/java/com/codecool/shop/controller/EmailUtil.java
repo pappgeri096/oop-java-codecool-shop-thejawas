@@ -4,8 +4,10 @@ package com.codecool.shop.controller;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
 import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.WsOrder;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -18,7 +20,11 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailUtil {
 
-    private String from;
+//    private OrderDao orderDaoMem;
+//    private WsOrder currentOrder;
+//    private Map<String, String> userDataMap;
+//    private Map<String, Integer> productNameAndQuantityMap;
+
 
     private static void sendEmail(String email, String subject, String msg){
 
@@ -86,15 +92,19 @@ public class EmailUtil {
 
     static void sendVerificationEmail() {
 
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
-        List<LineItem> lineItemList = orderDataStore.getCurrent().getLineItemList();
+        OrderDao orderDaoMem = OrderDaoMem.getInstance();
+        WsOrder currentOrder = orderDaoMem.getCurrent();
+        Map<String, String> userDataMap = ((OrderDaoMem) orderDaoMem).getUserDataMap();
 
-        String subject = "Order#"+orderDataStore.getCurrent().getId();
-        String email = orderDataStore.getCurrent().getUserDataMap().get("emailAddress");
+
+        List<LineItem> lineItemList = currentOrder.getLineItemList();
+
+        String subject = "Order#"+ currentOrder.getId();
+        String email = userDataMap.get("emailAddress");
 
         StringBuilder message = new StringBuilder();
 
-        message.append("Name: ").append(orderDataStore.getCurrent().getUserDataMap().get("fullName")).append("\n");
+        message.append("Name: ").append(userDataMap.get("fullName")).append("\n");
         message.append("Email: ").append(email).append("\n");
         message.append("Items:");
 

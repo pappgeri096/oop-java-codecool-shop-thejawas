@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductCategoryDaoSql extends BaseDaoSql implements ProductCategoryDao {
+public class ProductCategoryDaoSql extends DaoSqlConnectionDML implements ProductCategoryDao {
 
     private static ProductCategoryDaoSql instance = null;
 

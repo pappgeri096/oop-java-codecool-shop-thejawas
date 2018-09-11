@@ -15,7 +15,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.SQLException;
 import java.util.Currency;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +32,7 @@ class ProductDaoSqlTest {
 
     @BeforeAll
     private static void simulateInitializer() {
-        productDaoSql = ProductDaoSql.getSingletonInstance();
+        productDaoSql = ProductDaoSql.getInstance();
         productCategoryDaoMem = ProductCategoryDaoMem.getInstance();
         productCategoryDaoSql = ProductCategoryDaoSql.getInstance();
         productCategoryDaoMem.setData(productCategoryDaoSql.getAll());

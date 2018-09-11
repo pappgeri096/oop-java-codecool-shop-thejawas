@@ -1,21 +1,22 @@
 package com.codecool.shop.dao.implementation.postgresql;
 
 import com.codecool.shop.dao.OrderDao;
+import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
+import com.codecool.shop.model.WsOrder;
 import com.codecool.shop.model.LineItem;
-import com.codecool.shop.model.Order;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.*;
-import java.util.List;
+import java.util.*;
 
-public class OrderDaoSql extends BaseDaoSql implements OrderDao {
-
+public class OrderDaoSql extends DaoSqlConnectionDML implements OrderDao {
     private static OrderDaoSql singletonInstance = null;
 
     private OrderDaoSql() {
     }
 
-    public static OrderDaoSql getSingletonInstance() {
+    public static OrderDaoSql getInstance() {
         if (singletonInstance == null) {
             singletonInstance = new OrderDaoSql();
         }
@@ -23,48 +24,92 @@ public class OrderDaoSql extends BaseDaoSql implements OrderDao {
     }
 
     @Override
-    public Order getCurrent() {
-        return null;
+    public WsOrder getCurrent() {
+        String query = "SELECT * FROM order WHERE id ='" + getCurrentOrderId() + "';";
+        return null; // TODO----------------------------------
+    }
+
+    List<WsOrder> getOrdersBy(int userId) {
+        String query = "SELECT\n" +
+                "  \"order\".id AS id_from_order,\n" +
+                "  p.name,\n" +
+                "  p.default_price,\n" +
+                "  op.product_quantity\n" +
+                "FROM \"order\"\n" +
+                "  FULL OUTER JOIN order_product op on \"order\".id = op.order_id\n" +
+                "  FULL OUTER JOIN product p on op.product_id = p.id\n" +
+                "WHERE \"order\".user_id = 1\n" +
+                "ORDER BY id_from_order;";
+        return getOrders(query);
+    }
+
+    private List<WsOrder> getOrders(String query) {
+        List<WsOrder> resultList = new ArrayList<>();
+
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query);
+        ) {
+            while (resultSet.next()) {
+                WsOrder order = new WsOrder();
+                resultList.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultList;
     }
 
     @Override
-    public void add(Order order) {
+    public void add(WsOrder wsOrder) {
         String prePreparedQuery = "INSERT INTO public.order (id, user_id, status, total_price)" +
                 "VALUES (DEFAULT, ?, ?, ?);";
 
         int userId = 1;
         String status = "unshipped";
-        BigDecimal totalPrice = order.getTotalPrice();
+        BigDecimal totalPrice = OrderDaoMem.getInstance().getTotalPrice(); // TODO: USES MEMORA: REWRITE
 
         addToOrderSql(prePreparedQuery, userId, status, totalPrice);
 
-        int orderId = getOrder_id();
-        for (LineItem lineItem:order.getLineItemList()) {
+        int orderId = getCurrentOrderId();
+        for (LineItem lineItem: wsOrder.getLineItemList()) {
 
             prePreparedQuery = "INSERT INTO public.order_product (id, order_id, product_id, product_quantity) " +
                     "VALUES (DEFAULT, ?, ?, ?);";
             int product_id = lineItem.getProduct().getId();
             int product_quantity = lineItem.getQuantity();
-            addToOrder_ProductSql(prePreparedQuery,orderId,product_id,product_quantity);
+            addToOrder_ProductSql(prePreparedQuery, orderId, product_id, product_quantity);
         }
     }
 
     @Override
-    public Order find(int id) {
-        return null;
+    public BigDecimal getTotalPrice() { // TODO: USES MEMORA: REWRITE
+        BigDecimal sumPrice = BigDecimal.valueOf(0);
+        for (LineItem lineItem : getCurrent().getLineItemList()) {
+            sumPrice = lineItem.getProduct().getDefaultPrice().multiply(new BigDecimal(lineItem.getQuantity())).add(sumPrice);
+        }
+        BigDecimal totalPriceRounded = sumPrice.setScale(2, RoundingMode.HALF_UP);
+
+        return totalPriceRounded;
+    }
+
+
+    @Override
+    public WsOrder find(int id) {
+        return null; // TODO----------------------------------
     }
 
     @Override
     public void remove(int id) {
-
+        // TODO----------------------------------
     }
 
     @Override
-    public List<Order> getAll() {
-        return null;
+    public List<WsOrder> getAll() {
+        return null; // TODO----------------------------------
     }
 
-    private void addToOrderSql(String prePreparedQuery, int userId, String status,BigDecimal totalprice) {
+    private void addToOrderSql(String prePreparedQuery, int userId, String status, BigDecimal totalprice) {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
@@ -85,7 +130,7 @@ public class OrderDaoSql extends BaseDaoSql implements OrderDao {
         }
 
     }
-    private int getOrder_id(){
+    private int getCurrentOrderId(){
         String query = "SELECT MAX(id) FROM public.order;";
 
         int orderId = 0;

@@ -5,7 +5,7 @@ import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
 import com.codecool.shop.dao.implementation.postgresql.OrderDaoSql;
 import com.codecool.shop.model.LineItem;
-import com.codecool.shop.model.Order;
+import com.codecool.shop.model.WsOrder;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -30,16 +30,16 @@ public class PaymentPayedController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
-        List<LineItem> lineItemList = orderDataStore.getCurrent().getLineItemList();
+        OrderDao orderDataMem = OrderDaoMem.getInstance();
+        OrderDao orderDaoSql = OrderDaoSql.getInstance();
 
         EmailUtil.sendVerificationEmail();
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("payment/payed.html", context, resp.getWriter());
-        OrderDaoSql.getSingletonInstance().add(OrderDaoMem.getInstance().getCurrent());
-        OrderDaoMem.getInstance().add(new Order());
+        orderDaoSql.add(orderDataMem.getCurrent());
+        orderDataMem.add(new WsOrder());
         paymentPayedLogger.info("Payment approved by online payment service provider");
 
     }

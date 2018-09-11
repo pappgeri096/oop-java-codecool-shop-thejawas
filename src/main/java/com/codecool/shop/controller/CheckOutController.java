@@ -4,7 +4,7 @@ import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.implementation.JSON.OrderDaoJson;
 import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.Order;
+import com.codecool.shop.model.WsOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +38,7 @@ public class CheckOutController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         OrderDao orderDataStore = OrderDaoMem.getInstance();
-        Order order = orderDataStore.getCurrent();
+        WsOrder orderMem = orderDataStore.getCurrent();
         List<String> userData = new ArrayList<>();
         List<String> formNames = Arrays.asList("name", "email", "phonenumber", "countryBill",
                 "cityBill", "zipcodeBill",
@@ -54,17 +54,17 @@ public class CheckOutController extends HttpServlet {
                 userData.add(req.getParameter(formName));
             }
         }
-        order.createUserDataMap(userData);
+        ((OrderDaoMem) orderDataStore).createUserDataMap(userData);
 
-        OrderDao writeOrderDataToFile = new OrderDaoJson();
-        writeOrderDataToFile.add(order);
+        OrderDaoJson writeOrderDataToFile = new OrderDaoJson();
+        writeOrderDataToFile.add(orderMem);
 
 //        OrderDao serializeOrder = new OrderDaoJson();
-//        String serializedOrder = ((OrderDaoJson) serializeOrder).orderToJsonString(order);
+//        String serializedOrder = ((OrderDaoJson) serializeOrder).orderToJsonString(orderMem);
 //        checkoutLogger.warn(serializedOrder);
 
         String uuidString = ((OrderDaoJson) writeOrderDataToFile).getUuidString();
-        checkoutLogger.info("User data is saved in json file. Order ID: {}", uuidString);
+        checkoutLogger.info("User data is saved in json file. OrderFromMemory ID: {}", uuidString);
 
         resp.sendRedirect("/payment");
     }

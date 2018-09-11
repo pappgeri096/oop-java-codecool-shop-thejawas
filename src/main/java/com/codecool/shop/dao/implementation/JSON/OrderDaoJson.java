@@ -1,7 +1,8 @@
 package com.codecool.shop.dao.implementation.JSON;
 
 import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.model.Order;
+import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
+import com.codecool.shop.model.WsOrder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,12 +10,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
  * OrderDaoJson class implements OrderDao class.
  * */
-public class OrderDaoJson implements OrderDao {
+public class OrderDaoJson {
 
     String uuidString;
 
@@ -25,10 +27,9 @@ public class OrderDaoJson implements OrderDao {
      * @param objectType
      *
      * */
-    @Override
-    public void add(Order objectType) {
+    public void add(WsOrder objectType) {
         uuidString = createUuid();
-        Map<String, String> orderDataMap = joinMaps(objectType, uuidString);
+        Map<String, String> orderDataMap = joinMaps(uuidString);
 
         String filePathAndName = "log/json_orders/Order_" + uuidString + ".json";
 
@@ -44,11 +45,6 @@ public class OrderDaoJson implements OrderDao {
     /**
      * finds file corresponding to one order based on UUID generated in the add() method
      * */
-    @Override
-    public Order find(int id) {
-        return null;
-    }
-
     public Map<String, String> find(String id) {
 
         StringBuilder sb = new StringBuilder();
@@ -63,14 +59,6 @@ public class OrderDaoJson implements OrderDao {
             e.printStackTrace();
         }
         return orderMap;
-    }
-
-    /**
-     * Reads orders from all files and adds them to a list of orders
-     * */
-    @Override
-    public List<Order> getAll() {
-        return null;
     }
 
     public List<Map<String, String>> getAllOrders() {
@@ -131,9 +119,10 @@ public class OrderDaoJson implements OrderDao {
     }
 
 
-    Map<String, String> joinMaps(Order order, String uuidString) {
-        Map<String, Integer> productNameAndQuantityMap = order.getProductNameAndQuantityMap();
-        Map<String, String> userDataMap = order.getUserDataMap();
+    Map<String, String> joinMaps(String uuidString) {
+        OrderDao orderDaoMem = OrderDaoMem.getInstance();
+        Map<String, Integer> productNameAndQuantityMap = ((OrderDaoMem) orderDaoMem).getProductNameAndQuantityMap();
+        Map<String, String> userDataMap = ((OrderDaoMem) orderDaoMem).getUserDataMap();
 
 
         Map<String, String> orderDataMap = new HashMap<>();
@@ -156,19 +145,6 @@ public class OrderDaoJson implements OrderDao {
     /**
      * Gets current order from filelist? or ???
      * */
-    @Override
-    public Order getCurrent() {
-        return null;
-    }
-
-    /**
-     * deletes file from server based on UUID
-     * */
-    @Override
-    public void remove(int id) {
-
-    }
-
     public String mapToJsonString(Map map) {
         ObjectMapper objectMapper = new ObjectMapper();
         String carAsString = "";
@@ -197,9 +173,9 @@ public class OrderDaoJson implements OrderDao {
     }
 
 
-    public String orderToJsonString(Order order) {
+    public String orderToJsonString(WsOrder orderFromMemory) {
         String uuidString = createUuid();
-        Map<String, String> orderDataMap = joinMaps(order, uuidString);
+        Map<String, String> orderDataMap = joinMaps(uuidString);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String orderAsString = "";

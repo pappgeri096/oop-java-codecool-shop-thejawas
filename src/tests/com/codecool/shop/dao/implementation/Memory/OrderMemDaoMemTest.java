@@ -1,29 +1,29 @@
 package com.codecool.shop.dao.implementation.Memory;
 
-import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.Order;
+import com.codecool.shop.dao.OrderDao;
+import com.codecool.shop.model.order_model.OrderFromMemory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class OrderDaoMemTest {
-    private OrderDaoMem orderDaoMem = OrderDaoMem.getInstance();
+class OrderMemDaoMemTest {
+    private OrderDao orderDaoMem = OrderDaoMem.getInstance();
 
 
     private void addOrder(){
-        Order order = new Order();
-        orderDaoMem.add(order);
+        OrderFromMemory orderFromMemory = new OrderFromMemory();
+        orderDaoMem.add(orderFromMemory);
     }
 
-    private Order addOrderAndReturn(){
-        Order order = new Order();
-        orderDaoMem.add(order);
-        return order;
+    private OrderFromMemory addOrderAndReturn(){
+        OrderFromMemory orderFromMemory = new OrderFromMemory();
+        orderDaoMem.add(orderFromMemory);
+        return orderFromMemory;
     }
 
     @Test
     void getInstanceTest() {
-        OrderDaoMem orderDaoMemTest = OrderDaoMem.getInstance();
+        OrderDao orderDaoMemTest = OrderDaoMem.getInstance();
         assertNotNull(orderDaoMemTest);
     }
 

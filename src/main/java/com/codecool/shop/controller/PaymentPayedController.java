@@ -4,8 +4,8 @@ import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
 import com.codecool.shop.dao.implementation.postgresql.OrderDaoSql;
-import com.codecool.shop.model.LineItem;
-import com.codecool.shop.model.Order;
+import com.codecool.shop.model.order_model.LineItem;
+import com.codecool.shop.model.order_model.OrderFromMemory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -39,7 +39,7 @@ public class PaymentPayedController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("payment/payed.html", context, resp.getWriter());
         OrderDaoSql.getSingletonInstance().add(OrderDaoMem.getInstance().getCurrent());
-        OrderDaoMem.getInstance().add(new Order());
+        OrderDaoMem.getInstance().add(new OrderFromMemory());
         paymentPayedLogger.info("Payment approved by online payment service provider");
 
     }

@@ -1,4 +1,6 @@
-package com.codecool.shop.model;
+package com.codecool.shop.model.order_model;
+
+import com.codecool.shop.model.Product;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

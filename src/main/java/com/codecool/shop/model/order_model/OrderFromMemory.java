@@ -1,21 +1,30 @@
-package com.codecool.shop.model;
+package com.codecool.shop.model.order_model;
+
+import com.codecool.shop.model.Product;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
-public class Order {
-    private int id;
+public class OrderFromMemory extends BaseOrder {
+
     Map<String, String> userDataMap = new HashMap<>();
     Map<String, Integer> productNameAndQuantityMap = new HashMap<>();
     private List<String> checkoutData = Arrays.asList("fullName", "emailAddress", " telephoneNumber", "countryBill", "cityBill", "zipCodeBill", "addressBill", "countryShip", "cityShip", "zipCodeShip", "addressShip");
 
-    private List<LineItem> lineItemList;
+    private List<LineItem> lineItemList = new ArrayList<>();
 
-    public Order() {
-        lineItemList = new ArrayList<>();
+    @Override
+    public int getId() {
+        return this.id;
     }
 
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
     public void addProduct(Product product) {
         boolean wasProductFound = false;
         for (LineItem lineItem : lineItemList) {
@@ -30,16 +39,19 @@ public class Order {
 
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    @Override
     public void createUserDataMap(List<String> userData) {
         for (int i = 0; i < 11; i++) {
             this.userDataMap.put(checkoutData.get(i), userData.get(i));
         }
     }
 
+    @Override
+    public Map<String, String> getUserDataMap() {
+        return userDataMap;
+    }
+
+    @Override
     public int getQuantityOfProducts() {
         int numberOfItems = 0;
         for (LineItem lineItem : lineItemList) {
@@ -48,21 +60,20 @@ public class Order {
         return numberOfItems;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
+    @Override
     public List<LineItem> getLineItemList() {
         return lineItemList;
     }
 
-
-    public void createProductsMaps(){
+    @Override
+    public void createProductNameAndQuantityMaps() {
         for (LineItem lineItem:lineItemList) {
-            productNameAndQuantityMap.put(lineItem.getProduct().name,lineItem.getQuantity());
+            productNameAndQuantityMap.put(lineItem.getProduct().getName(), lineItem.getQuantity());
         }
     }
-    public BigDecimal getTotalPrice(){
+
+    @Override
+    public BigDecimal getTotalPrice() {
         BigDecimal sumPrice = BigDecimal.valueOf(0);
         for (LineItem lineItem : lineItemList) {
             sumPrice = lineItem.getProduct().getDefaultPrice().multiply(new BigDecimal(lineItem.getQuantity())).add(sumPrice);
@@ -72,17 +83,14 @@ public class Order {
         return totalPriceRounded;
     }
 
-    public Map<String, String> getUserDataMap() {
-        return userDataMap;
-    }
-
+    @Override
     public Map<String, Integer> getProductNameAndQuantityMap() {
         return productNameAndQuantityMap;
     }
 
     @Override
     public String toString() {
-        return String.format("Order ID: %1$d, ",
+        return String.format("OrderFromMemory ID: %1$d, ",
                 this.id);
 
     }

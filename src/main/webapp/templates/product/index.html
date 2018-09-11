@@ -84,8 +84,7 @@
         </div>
     </div>
 </nav>
-<a class="navbar-form navbar-right shopping-cart" href="/cart"><i class="fas fa-cart-arrow-down fa-lg" th:text="${order.getQuantityOfProducts()}">0</i></a>
-<!--<i class="navbar-form navbar-right" th:text="${order.getQuantityOfProducts()}"></i>-->
+<a class="navbar-form navbar-right shopping-cart" href="/cart"><i class="fas fa-cart-arrow-down fa-lg" th:text="${orderMem.getQuantityOfProducts()}">0</i></a>
 <div id="products" class="row list-group">
 
     <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products}">
@@ -100,9 +99,7 @@
                         <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
                     </div>
                     <div class="col-xs-12 col-md-6">
-                        <a class="btn btn-success" href="/index?product=1"
-                        >Add
-                            to cart</a>
+                        <a class="btn btn-success" th:attr="href='/index?product=' + ${prod.id}">Add to cart</a>
                     </div>
                 </div>
             </div>

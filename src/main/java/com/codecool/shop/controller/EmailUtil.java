@@ -3,7 +3,7 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.order_model.LineItem;
 
 import java.util.List;
 import java.util.Properties;

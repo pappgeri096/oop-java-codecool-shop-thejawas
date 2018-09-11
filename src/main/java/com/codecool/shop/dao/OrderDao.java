@@ -1,10 +1,9 @@
 package com.codecool.shop.dao;
 
-import com.codecool.shop.model.Order;
+import com.codecool.shop.model.order_model.BaseOrder;
 
-import java.util.List;
 
-public interface OrderDao extends BaseDAO<Order> {
+public interface OrderDao extends BaseDAO<BaseOrder> {
 
-    Order getCurrent();
+    BaseOrder getCurrent();
 }

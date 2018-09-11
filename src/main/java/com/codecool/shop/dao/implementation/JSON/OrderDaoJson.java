@@ -1,7 +1,8 @@
 package com.codecool.shop.dao.implementation.JSON;
 
 import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.model.Order;
+import com.codecool.shop.model.order_model.BaseOrder;
+import com.codecool.shop.model.order_model.OrderFromMemory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,7 +27,7 @@ public class OrderDaoJson implements OrderDao {
      *
      * */
     @Override
-    public void add(Order objectType) {
+    public void add(BaseOrder objectType) {
         uuidString = createUuid();
         Map<String, String> orderDataMap = joinMaps(objectType, uuidString);
 
@@ -45,7 +46,7 @@ public class OrderDaoJson implements OrderDao {
      * finds file corresponding to one order based on UUID generated in the add() method
      * */
     @Override
-    public Order find(int id) {
+    public OrderFromMemory find(int id) {
         return null;
     }
 
@@ -69,7 +70,7 @@ public class OrderDaoJson implements OrderDao {
      * Reads orders from all files and adds them to a list of orders
      * */
     @Override
-    public List<Order> getAll() {
+    public List<BaseOrder> getAll() {
         return null;
     }
 
@@ -131,9 +132,9 @@ public class OrderDaoJson implements OrderDao {
     }
 
 
-    Map<String, String> joinMaps(Order order, String uuidString) {
-        Map<String, Integer> productNameAndQuantityMap = order.getProductNameAndQuantityMap();
-        Map<String, String> userDataMap = order.getUserDataMap();
+    Map<String, String> joinMaps(BaseOrder orderMem, String uuidString) {
+        Map<String, Integer> productNameAndQuantityMap = ((OrderFromMemory) orderMem).getProductNameAndQuantityMap();
+        Map<String, String> userDataMap = orderMem.getUserDataMap();
 
 
         Map<String, String> orderDataMap = new HashMap<>();
@@ -157,7 +158,7 @@ public class OrderDaoJson implements OrderDao {
      * Gets current order from filelist? or ???
      * */
     @Override
-    public Order getCurrent() {
+    public BaseOrder getCurrent() {
         return null;
     }
 
@@ -197,9 +198,9 @@ public class OrderDaoJson implements OrderDao {
     }
 
 
-    public String orderToJsonString(Order order) {
+    public String orderToJsonString(OrderFromMemory orderFromMemory) {
         String uuidString = createUuid();
-        Map<String, String> orderDataMap = joinMaps(order, uuidString);
+        Map<String, String> orderDataMap = joinMaps(orderFromMemory, uuidString);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String orderAsString = "";

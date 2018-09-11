@@ -3,7 +3,7 @@ package com.codecool.shop.controller;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.order_model.LineItem;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -31,7 +31,7 @@ public class ShoppingCartController extends HttpServlet {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        context.setVariable("order", orderDataStore.getCurrent());
+        context.setVariable("orderMem", orderDataStore.getCurrent());
         engine.process("product/cart.html", context, resp.getWriter());
 
         cartLogger.info("Shopping cart editor page displayed");
@@ -57,7 +57,7 @@ public class ShoppingCartController extends HttpServlet {
                 }
             }
         }
-        orderDataStore.getCurrent().createProductsMaps();
+        orderDataStore.getCurrent().createProductNameAndQuantityMaps();
         if (orderDataStore.getCurrent().getLineItemList().size()>0) {
             resp.sendRedirect("/review");
         }else {

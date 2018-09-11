@@ -28,7 +28,7 @@ public class ReviewController extends HttpServlet {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        context.setVariable("order", orderDataStore.getCurrent());
+        context.setVariable("orderMem", orderDataStore.getCurrent());
         engine.process("product/review.html", context, resp.getWriter());
         reviewLogger.info("Get request received for SHOPPING CART REVIEW page");
     }

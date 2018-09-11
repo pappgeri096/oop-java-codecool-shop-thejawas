@@ -1,21 +1,21 @@
 package com.codecool.shop.dao.implementation.Memory;
 
 import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.model.Order;
+import com.codecool.shop.model.order_model.BaseOrder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDaoMem implements OrderDao {
-    private List<Order> data = new ArrayList<>();
-    private static OrderDaoMem instance = null;
+    private List<BaseOrder> data = new ArrayList<>();
+    private static OrderDao instance = null;
 
     /* A private Constructor prevents any other class from instantiating.
      */
     private OrderDaoMem() {
     }
 
-    public static OrderDaoMem getInstance() {
+    public static OrderDao getInstance() {
         if (instance == null) {
             instance = new OrderDaoMem();
         }
@@ -23,18 +23,18 @@ public class OrderDaoMem implements OrderDao {
     }
 
     @Override
-    public Order getCurrent(){
-        return data.get(data.size()-1);
+    public BaseOrder getCurrent() {
+        return data.get(data.size() - 1);
     }
 
     @Override
-    public void add(Order objectType) {
+    public void add(BaseOrder objectType) {
         objectType.setId(data.size() + 1);
         data.add(objectType);
     }
 
     @Override
-    public Order find(int id) {
+    public BaseOrder find(int id) {
         return data.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
     }
 
@@ -44,7 +44,7 @@ public class OrderDaoMem implements OrderDao {
     }
 
     @Override
-    public List<Order> getAll() {
+    public List<BaseOrder> getAll() {
         return data;
     }
 }

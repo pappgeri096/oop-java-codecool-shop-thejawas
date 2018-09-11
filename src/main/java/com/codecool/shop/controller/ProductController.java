@@ -45,7 +45,7 @@ public class ProductController extends HttpServlet {
             Product productToAdd = productDaoSql.getBy(productId);
             orderDaoMem.getCurrent().addProduct(productToAdd);
 
-//            productControllerLogger.info("{} successfully added to cart", productToAdd.getName());
+            productControllerLogger.info("{} successfully added to cart", productToAdd.getName());
 
         }
 

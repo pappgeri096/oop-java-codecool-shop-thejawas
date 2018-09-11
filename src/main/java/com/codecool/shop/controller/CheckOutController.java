@@ -4,7 +4,7 @@ import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.implementation.JSON.OrderDaoJson;
 import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.order_model.BaseOrder;
+import com.codecool.shop.model.WsOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +38,7 @@ public class CheckOutController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         OrderDao orderDataStore = OrderDaoMem.getInstance();
-        BaseOrder orderMem = orderDataStore.getCurrent();
+        WsOrder orderMem = orderDataStore.getCurrent();
         List<String> userData = new ArrayList<>();
         List<String> formNames = Arrays.asList("name", "email", "phonenumber", "countryBill",
                 "cityBill", "zipcodeBill",
@@ -54,9 +54,9 @@ public class CheckOutController extends HttpServlet {
                 userData.add(req.getParameter(formName));
             }
         }
-        orderMem.createUserDataMap(userData);
+        ((OrderDaoMem) orderDataStore).createUserDataMap(userData);
 
-        OrderDao writeOrderDataToFile = new OrderDaoJson();
+        OrderDaoJson writeOrderDataToFile = new OrderDaoJson();
         writeOrderDataToFile.add(orderMem);
 
 //        OrderDao serializeOrder = new OrderDaoJson();

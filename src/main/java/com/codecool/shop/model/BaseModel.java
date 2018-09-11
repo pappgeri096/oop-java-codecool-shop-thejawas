@@ -1,6 +1,5 @@
 package com.codecool.shop.model;
 
-
 import java.lang.reflect.Field;
 
 public class BaseModel {
@@ -9,16 +8,15 @@ public class BaseModel {
     protected String name;
     protected String description;
 
-    public BaseModel(String name) {
-        this.name = name;
+    BaseModel() {
     }
 
-    public BaseModel(String name, String description) {
+    BaseModel(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public BaseModel(int id, String name, String description) {
+    BaseModel(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;

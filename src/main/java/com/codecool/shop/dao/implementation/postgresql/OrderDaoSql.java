@@ -1,24 +1,22 @@
 package com.codecool.shop.dao.implementation.postgresql;
 
 import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.model.order_model.BaseOrder;
-import com.codecool.shop.model.order_model.LineItem;
-import com.codecool.shop.model.order_model.OrderFromMemory;
-import com.codecool.shop.model.order_model.OrderFromSql;
+import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
+import com.codecool.shop.model.WsOrder;
+import com.codecool.shop.model.LineItem;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class OrderDaoSql extends BaseDaoSql implements OrderDao {
-
+public class OrderDaoSql extends DaoSqlConnectionDML implements OrderDao {
     private static OrderDaoSql singletonInstance = null;
 
     private OrderDaoSql() {
     }
 
-    public static OrderDaoSql getSingletonInstance() {
+    public static OrderDaoSql getInstance() {
         if (singletonInstance == null) {
             singletonInstance = new OrderDaoSql();
         }
@@ -26,12 +24,12 @@ public class OrderDaoSql extends BaseDaoSql implements OrderDao {
     }
 
     @Override
-    public OrderFromMemory getCurrent() {
+    public WsOrder getCurrent() {
         String query = "SELECT * FROM order WHERE id ='" + getCurrentOrderId() + "';";
         return null; // TODO----------------------------------
     }
 
-    List<BaseOrder> getOrdersBy(int userId) {
+    List<WsOrder> getOrdersBy(int userId) {
         String query = "SELECT\n" +
                 "  \"order\".id AS id_from_order,\n" +
                 "  p.name,\n" +
@@ -45,20 +43,15 @@ public class OrderDaoSql extends BaseDaoSql implements OrderDao {
         return getOrders(query);
     }
 
-    private List<BaseOrder> getOrders(String query) {
-        List<BaseOrder> resultList = new ArrayList<>();
+    private List<WsOrder> getOrders(String query) {
+        List<WsOrder> resultList = new ArrayList<>();
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query);
         ) {
             while (resultSet.next()) {
-                BaseOrder order = new OrderFromSql(
-                        resultSet.getInt("id_from_order"),
-                        resultSet.getString("name"),
-                        resultSet.getBigDecimal("default_price"),
-                        resultSet.getBigDecimal("product_quantity")
-                );
+                WsOrder order = new WsOrder();
                 resultList.add(order);
             }
         } catch (SQLException e) {
@@ -67,20 +60,19 @@ public class OrderDaoSql extends BaseDaoSql implements OrderDao {
         return resultList;
     }
 
-
     @Override
-    public void add(BaseOrder orderMem) {
+    public void add(WsOrder wsOrder) {
         String prePreparedQuery = "INSERT INTO public.order (id, user_id, status, total_price)" +
                 "VALUES (DEFAULT, ?, ?, ?);";
 
         int userId = 1;
         String status = "unshipped";
-        BigDecimal totalPrice = orderMem.getTotalPrice();
+        BigDecimal totalPrice = OrderDaoMem.getInstance().getTotalPrice(); // TODO: USES MEMORA: REWRITE
 
         addToOrderSql(prePreparedQuery, userId, status, totalPrice);
 
         int orderId = getCurrentOrderId();
-        for (LineItem lineItem: ((OrderFromMemory) orderMem).getLineItemList()) {
+        for (LineItem lineItem: wsOrder.getLineItemList()) {
 
             prePreparedQuery = "INSERT INTO public.order_product (id, order_id, product_id, product_quantity) " +
                     "VALUES (DEFAULT, ?, ?, ?);";
@@ -91,7 +83,19 @@ public class OrderDaoSql extends BaseDaoSql implements OrderDao {
     }
 
     @Override
-    public OrderFromMemory find(int id) {
+    public BigDecimal getTotalPrice() { // TODO: USES MEMORA: REWRITE
+        BigDecimal sumPrice = BigDecimal.valueOf(0);
+        for (LineItem lineItem : getCurrent().getLineItemList()) {
+            sumPrice = lineItem.getProduct().getDefaultPrice().multiply(new BigDecimal(lineItem.getQuantity())).add(sumPrice);
+        }
+        BigDecimal totalPriceRounded = sumPrice.setScale(2, RoundingMode.HALF_UP);
+
+        return totalPriceRounded;
+    }
+
+
+    @Override
+    public WsOrder find(int id) {
         return null; // TODO----------------------------------
     }
 
@@ -101,7 +105,7 @@ public class OrderDaoSql extends BaseDaoSql implements OrderDao {
     }
 
     @Override
-    public List<BaseOrder> getAll() {
+    public List<WsOrder> getAll() {
         return null; // TODO----------------------------------
     }
 

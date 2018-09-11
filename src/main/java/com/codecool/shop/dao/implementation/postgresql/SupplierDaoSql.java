@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupplierDaoSql extends BaseDaoSql implements SupplierDao {
+public class SupplierDaoSql extends DaoSqlConnectionDML implements SupplierDao {
 
     private static SupplierDaoSql instance = null;
 

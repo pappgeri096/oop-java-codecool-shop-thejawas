@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by ani on 2016.11.13..
  */
-public class ProductDaoSql extends BaseDaoSql implements ProductDao {
+public class ProductDaoSql extends DaoSqlConnectionDML implements ProductDao {
 
     private static ProductDaoSql singletonInstance = null;
 

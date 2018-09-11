@@ -1,9 +1,12 @@
 package com.codecool.shop.dao;
 
-import com.codecool.shop.model.order_model.BaseOrder;
+import com.codecool.shop.model.WsOrder;
+import java.math.BigDecimal;
 
 
-public interface OrderDao extends BaseDAO<BaseOrder> {
+public interface OrderDao extends BaseDAO<WsOrder> {
 
-    BaseOrder getCurrent();
+    WsOrder getCurrent();
+
+    BigDecimal getTotalPrice();
 }

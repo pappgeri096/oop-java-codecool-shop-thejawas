@@ -1,6 +1,4 @@
-package com.codecool.shop.model.order_model;
-
-import com.codecool.shop.model.Product;
+package com.codecool.shop.model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,7 +9,7 @@ public class LineItem {
     private Product product;
     private int quantity = 1;
 
-    public LineItem(Product product){
+    LineItem(Product product){
         this.product = product;
         id = idCounter;
         idCounter++;

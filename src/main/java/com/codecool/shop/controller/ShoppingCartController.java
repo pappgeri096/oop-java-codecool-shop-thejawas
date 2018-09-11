@@ -3,7 +3,8 @@ package com.codecool.shop.controller;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.order_model.LineItem;
+import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.WsOrder;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -38,8 +39,9 @@ public class ShoppingCartController extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
-        List<LineItem> lineItemList = orderDataStore.getCurrent().getLineItemList();
+        OrderDao orderDaoMem = OrderDaoMem.getInstance();
+        WsOrder currentOrder = orderDaoMem.getCurrent();
+        List<LineItem> lineItemList = currentOrder.getLineItemList();
         boolean repeat = true;
         while (repeat) {
             repeat = false;
@@ -57,8 +59,8 @@ public class ShoppingCartController extends HttpServlet {
                 }
             }
         }
-        orderDataStore.getCurrent().createProductNameAndQuantityMaps();
-        if (orderDataStore.getCurrent().getLineItemList().size()>0) {
+        ((OrderDaoMem) orderDaoMem).createProductNameAndQuantityMaps();
+        if (currentOrder.getLineItemList().size()>0) {
             resp.sendRedirect("/review");
         }else {
             resp.sendRedirect("/");

@@ -3,8 +3,8 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.order_model.BaseOrder;
-import com.codecool.shop.model.order_model.LineItem;
+import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.WsOrder;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
@@ -28,28 +28,32 @@ public class PaypalController extends HttpServlet {
 
     private String clientID;
     private String SecretID;
-    private OrderDao orderDataStore;
-    private BaseOrder orderMem;
+    private OrderDao orderDaoMem;
+    private WsOrder currentOrder;
+    private Map<String, String> userDataMap;
+    private Map<String, Integer> productNameAndQuantityMap;
     private static final Logger paypalLogger = LoggerFactory.getLogger(PaymentController.class);
 
 
     public PaypalController() {
         this.clientID = "AWTqmvOfxu2VnNifNQblRmD8ty6zvuam7Hh_k36MHk8sbYuZdEtR3gneLyuK_3A7E_AzZm0AWr-rNVA3";
         SecretID = "ECYgXqdlLBxQsCHhdwMt4yz1LU5O5n6chmJe3EHrhGftsUOiN5PbmergN_0_lqQcFl-JzzC1ep68JG5I";
-        this.orderDataStore = OrderDaoMem.getInstance();
-        this.orderMem = orderDataStore.getCurrent();
+        orderDaoMem = OrderDaoMem.getInstance();
+        currentOrder = orderDaoMem.getCurrent();
+        userDataMap = ((OrderDaoMem) orderDaoMem).getUserDataMap();
+        productNameAndQuantityMap = ((OrderDaoMem) orderDaoMem).getProductNameAndQuantityMap();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        if (orderMem.getUserDataMap().size() == 0 || orderMem.getProductNameAndQuantityMap().size() == 0) {
+        if (userDataMap.size() == 0 || productNameAndQuantityMap.size() == 0) {
             resp.sendRedirect("/");
             paypalLogger.debug("Empty user data or product quantity");
             paypalLogger.debug(
                     "User data size: {}. Product quantity: {}",
-                    orderMem.getUserDataMap().size(),
-                    orderMem.getProductNameAndQuantityMap().size());
+                    userDataMap.size(),
+                    productNameAndQuantityMap.size());
         }
         paypalLogger.info("Customer is now redirected to paypal.com");
         //execute payment
@@ -144,7 +148,7 @@ public class PaypalController extends HttpServlet {
     private Amount getAmount() {
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal(Double.toString(orderMem.getTotalPrice().doubleValue()));
+        amount.setTotal(Double.toString(orderDaoMem.getTotalPrice().doubleValue()));
         return amount;
     }
 
@@ -156,13 +160,13 @@ public class PaypalController extends HttpServlet {
     }
 
     private void getItems(List items) {
-        for (Map.Entry<String, Integer> entry : orderMem.getProductNameAndQuantityMap().entrySet()) {
+        for (Map.Entry<String, Integer> entry : productNameAndQuantityMap.entrySet()) {
 
             String name = entry.getKey();
             String quantity = Integer.toString(entry.getValue());
             String price = "1.1";
 
-            for (LineItem item : orderMem.getLineItemList()) {
+            for (LineItem item : currentOrder.getLineItemList()) {
                 if (item.getProduct().getName().equals(name)) {
                     price = String.valueOf(item.getProduct().getDefaulPrice());
                     break;
@@ -187,12 +191,12 @@ public class PaypalController extends HttpServlet {
 
     private ShippingAddress getAddress() {
         ShippingAddress address = new ShippingAddress();
-        address.setPhone(orderMem.getUserDataMap().get("telephoneNumber"));
+        address.setPhone(userDataMap.get("telephoneNumber"));
         address.setCountryCode("HU");
-        address.setCity(orderMem.getUserDataMap().get("cityBill"));
-        address.setLine1(orderMem.getUserDataMap().get("addressBill"));
-        address.setPostalCode(orderMem.getUserDataMap().get("zipCodeBill"));
-        address.setState(orderMem.getUserDataMap().get("Pest"));
+        address.setCity(userDataMap.get("cityBill"));
+        address.setLine1(userDataMap.get("addressBill"));
+        address.setPostalCode(userDataMap.get("zipCodeBill"));
+        address.setState(userDataMap.get("Pest"));
         return address;
     }
 

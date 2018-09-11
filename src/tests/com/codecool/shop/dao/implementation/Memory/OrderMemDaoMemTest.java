@@ -1,7 +1,7 @@
 package com.codecool.shop.dao.implementation.Memory;
 
 import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.model.order_model.OrderFromMemory;
+import com.codecool.shop.model.WsOrder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,12 +11,12 @@ class OrderMemDaoMemTest {
 
 
     private void addOrder(){
-        OrderFromMemory orderFromMemory = new OrderFromMemory();
+        WsOrder orderFromMemory = new WsOrder();
         orderDaoMem.add(orderFromMemory);
     }
 
-    private OrderFromMemory addOrderAndReturn(){
-        OrderFromMemory orderFromMemory = new OrderFromMemory();
+    private WsOrder addOrderAndReturn(){
+        WsOrder orderFromMemory = new WsOrder();
         orderDaoMem.add(orderFromMemory);
         return orderFromMemory;
     }

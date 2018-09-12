@@ -91,6 +91,26 @@ public class CartDaoSql extends DaoSqlConnectionDML implements CartDao {
         return sumPrice.setScale(2, RoundingMode.HALF_UP);
     }
 
+    @Override
+    public void createUserDataMap(List<String> userData) {
+
+    }
+
+    @Override
+    public Map<String, String> getUserDataMap() {
+        return null;
+    }
+
+    @Override
+    public void createProductNameAndQuantityMaps() {
+
+    }
+
+    @Override
+    public Map<String, Integer> getProductNameAndQuantityMap() {
+        return null;
+    }
+
 
     @Override
     public Cart find(int id) {

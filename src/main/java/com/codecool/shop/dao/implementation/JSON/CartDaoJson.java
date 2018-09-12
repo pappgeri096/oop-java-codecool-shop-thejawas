@@ -1,8 +1,8 @@
 package com.codecool.shop.dao.implementation.JSON;
 
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.WsOrder;
+import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.model.Cart;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,15 +10,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.*;
 
 /**
- * OrderDaoJson class implements OrderDao class.
+ * CartDaoJson class implements CartDao class.
  * */
-public class OrderDaoJson {
+public class CartDaoJson {
 
-    String uuidString;
+    private String uuidString;
 
     /**
      * writes single order data to json file
@@ -27,7 +26,7 @@ public class OrderDaoJson {
      * @param objectType
      *
      * */
-    public void add(WsOrder objectType) {
+    public void add(Cart objectType) {
         uuidString = createUuid();
         Map<String, String> orderDataMap = joinMaps(uuidString);
 
@@ -73,7 +72,7 @@ public class OrderDaoJson {
     /**
      * Creates UUID for order and order file name
      * */
-    String createUuid() {
+    private String createUuid() {
         List<String> allOrderIds = getAllOrderIds();
         boolean exists = false;
         String newUuid;
@@ -92,7 +91,7 @@ public class OrderDaoJson {
         return newUuid;
     }
 
-    List<String> writeNewId(String newId) {
+    private List<String> writeNewId(String newId) {
         List<String> orderIdHistory = getAllOrderIds();
         orderIdHistory.add(newId);
 
@@ -106,7 +105,7 @@ public class OrderDaoJson {
         return orderIdHistory;
     }
 
-    List<String> getAllOrderIds() {
+    private List<String> getAllOrderIds() {
         List<String> orderIdHistory = new ArrayList<>();
         TypeReference<List<String>> listTypeReference = new TypeReference<List<String>>(){};
         ObjectMapper orderIdReader = new ObjectMapper();
@@ -119,10 +118,10 @@ public class OrderDaoJson {
     }
 
 
-    Map<String, String> joinMaps(String uuidString) {
-        OrderDao orderDaoMem = OrderDaoMem.getInstance();
-        Map<String, Integer> productNameAndQuantityMap = ((OrderDaoMem) orderDaoMem).getProductNameAndQuantityMap();
-        Map<String, String> userDataMap = ((OrderDaoMem) orderDaoMem).getUserDataMap();
+    private Map<String, String> joinMaps(String uuidString) {
+        CartDao cartDaoMem = CartDaoMem.getInstance();
+        Map<String, Integer> productNameAndQuantityMap = ((CartDaoMem) cartDaoMem).getProductNameAndQuantityMap();
+        Map<String, String> userDataMap = ((CartDaoMem) cartDaoMem).getUserDataMap();
 
 
         Map<String, String> orderDataMap = new HashMap<>();
@@ -173,7 +172,7 @@ public class OrderDaoJson {
     }
 
 
-    public String orderToJsonString(WsOrder orderFromMemory) {
+    public String orderToJsonString(Cart orderFromMemory) {
         String uuidString = createUuid();
         Map<String, String> orderDataMap = joinMaps(uuidString);
 

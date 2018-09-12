@@ -1,11 +1,11 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.OrderDao;
+import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
+import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
 import com.codecool.shop.dao.implementation.postgresql.ProductCategoryDaoSql;
 import com.codecool.shop.dao.implementation.postgresql.ProductDaoSql;
 import com.codecool.shop.dao.implementation.postgresql.SupplierDaoSql;
@@ -34,7 +34,7 @@ public class ProductController extends HttpServlet {
         ProductDao productDaoSql = ProductDaoSql.getInstance();
         ProductCategoryDao productCategoryDaoSql = ProductCategoryDaoSql.getInstance();
         SupplierDao supplierDaoSql = SupplierDaoSql.getInstance();
-        OrderDao orderDaoMem = OrderDaoMem.getInstance();
+        CartDao cartDaoMem = CartDaoMem.getInstance();
 
         List<Product> productList = productDaoSql.getAll();
 
@@ -43,7 +43,7 @@ public class ProductController extends HttpServlet {
         if (productParameter != null) {
             int productId = Integer.parseInt(productParameter);
             Product productToAdd = productDaoSql.getBy(productId);
-            orderDaoMem.getCurrent().addProduct(productToAdd);
+            cartDaoMem.getCurrent().addProduct(productToAdd);
 
             productControllerLogger.info("{} successfully added to cart", productToAdd.getName());
 
@@ -69,7 +69,7 @@ public class ProductController extends HttpServlet {
         context.setVariable("categories", productCategoryDaoSql.getAll());
         context.setVariable("suppliers", supplierDaoSql.getAll());
         context.setVariable("products", productList);
-        context.setVariable("orderMem", orderDaoMem.getCurrent());
+        context.setVariable("orderMem", cartDaoMem.getCurrent());
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         engine.process("product/index.html", context, resp.getWriter());

@@ -1,8 +1,8 @@
 package com.codecool.shop.controller;
 
 import com.braintreegateway.*;
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
+import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,11 +28,11 @@ public class BrainTreeController  extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        OrderDao orderDaoMem = OrderDaoMem.getInstance();
+        CartDao cartDaoMem = CartDaoMem.getInstance();
 
-        String nonce = req.getParameter("payment_method_nonce");;
+        String nonce = req.getParameter("payment_method_nonce");
         TransactionRequest request = new TransactionRequest()
-                .amount(orderDaoMem.getTotalPrice())
+                .amount(cartDaoMem.getTotalPrice())
                 .paymentMethodNonce(nonce)
                 .options()
                 .submitForSettlement(true)

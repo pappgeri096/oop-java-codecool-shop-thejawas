@@ -1,10 +1,10 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.LineItem;
-import com.codecool.shop.model.WsOrder;
+import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.model.Cart;
+import com.codecool.shop.model.CartItem;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -21,14 +21,14 @@ import org.slf4j.LoggerFactory;
 
 
 @WebServlet(urlPatterns = {"/cart"})
-public class ShoppingCartController extends HttpServlet {
+public class CartController extends HttpServlet {
 
     private static final Logger cartLogger = LoggerFactory.getLogger(PaymentController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
+        CartDao orderDataStore = CartDaoMem.getInstance();
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
@@ -39,28 +39,28 @@ public class ShoppingCartController extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        OrderDao orderDaoMem = OrderDaoMem.getInstance();
-        WsOrder currentOrder = orderDaoMem.getCurrent();
-        List<LineItem> lineItemList = currentOrder.getLineItemList();
+        CartDao cartDaoMem = CartDaoMem.getInstance();
+        Cart currentOrder = cartDaoMem.getCurrent();
+        List<CartItem> cartItemList = currentOrder.getCartItemList();
         boolean repeat = true;
         while (repeat) {
             repeat = false;
-            for (LineItem lineItem : lineItemList) {
-                int newQuantity = Integer.parseInt(req.getParameter(String.valueOf(lineItem.id)));
+            for (CartItem cartItem : cartItemList) {
+                int newQuantity = Integer.parseInt(req.getParameter(String.valueOf(cartItem.id)));
                 if (newQuantity < 1) {
-                    lineItemList.remove(lineItem);
-                    cartLogger.info("{} is removed from shopping cart.", lineItem.getProduct().getName());
+                    cartItemList.remove(cartItem);
+                    cartLogger.info("{} is removed from shopping cart.", cartItem.getProduct().getName());
                     repeat = true;
                     break;
 
-                } else if (newQuantity != lineItem.getQuantity()){
-                    lineItem.setQuantity(newQuantity);
-                    cartLogger.info("New quantity for {} is set to {}", lineItem.getProduct().getName(), newQuantity);
+                } else if (newQuantity != cartItem.getQuantity()){
+                    cartItem.setQuantity(newQuantity);
+                    cartLogger.info("New quantity for {} is set to {}", cartItem.getProduct().getName(), newQuantity);
                 }
             }
         }
-        ((OrderDaoMem) orderDaoMem).createProductNameAndQuantityMaps();
-        if (currentOrder.getLineItemList().size()>0) {
+        ((CartDaoMem) cartDaoMem).createProductNameAndQuantityMaps();
+        if (currentOrder.getCartItemList().size()>0) {
             resp.sendRedirect("/review");
         }else {
             resp.sendRedirect("/");

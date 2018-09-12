@@ -1,10 +1,10 @@
 package com.codecool.shop.controller;
 
 
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.LineItem;
-import com.codecool.shop.model.WsOrder;
+import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.model.CartItem;
+import com.codecool.shop.model.Cart;
 
 import java.util.List;
 import java.util.Map;
@@ -18,13 +18,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class EmailUtil {
-
-//    private OrderDao orderDaoMem;
-//    private WsOrder currentOrder;
-//    private Map<String, String> userDataMap;
-//    private Map<String, Integer> productNameAndQuantityMap;
-
+class EmailUtil {
 
     private static void sendEmail(String email, String subject, String msg){
 
@@ -92,12 +86,12 @@ public class EmailUtil {
 
     static void sendVerificationEmail() {
 
-        OrderDao orderDaoMem = OrderDaoMem.getInstance();
-        WsOrder currentOrder = orderDaoMem.getCurrent();
-        Map<String, String> userDataMap = ((OrderDaoMem) orderDaoMem).getUserDataMap();
+        CartDao cartDaoMem = CartDaoMem.getInstance();
+        Cart currentOrder = cartDaoMem.getCurrent();
+        Map<String, String> userDataMap = ((CartDaoMem) cartDaoMem).getUserDataMap();
 
 
-        List<LineItem> lineItemList = currentOrder.getLineItemList();
+        List<CartItem> cartItemList = currentOrder.getCartItemList();
 
         String subject = "Order#"+ currentOrder.getId();
         String email = userDataMap.get("emailAddress");
@@ -108,7 +102,7 @@ public class EmailUtil {
         message.append("Email: ").append(email).append("\n");
         message.append("Items:");
 
-        for(LineItem item : lineItemList){
+        for(CartItem item : cartItemList){
             message.append(item.getProduct().getName()).append(" ");
             message.append(item.getSubTotalPrice()).append("\n");
         }

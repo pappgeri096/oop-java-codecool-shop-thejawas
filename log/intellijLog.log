@@ -1,0 +1,104 @@
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building codecoolshop 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] >>> jetty-maven-plugin:9.4.11.v20180605:run (default-cli) > test-compile @ codecoolshop >>>
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ codecoolshop ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 8 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.7.0:compile (default-compile) @ codecoolshop ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 37 source files to /home/akincsei/IntelliJ/4TW-codecoolShop/target/classes
+[INFO] /home/akincsei/IntelliJ/4TW-codecoolShop/src/main/java/com/codecool/shop/controller/PaypalController.java: /home/akincsei/IntelliJ/4TW-codecoolShop/src/main/java/com/codecool/shop/controller/PaypalController.java uses unchecked or unsafe operations.
+[INFO] /home/akincsei/IntelliJ/4TW-codecoolShop/src/main/java/com/codecool/shop/controller/PaypalController.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ codecoolshop ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/akincsei/IntelliJ/4TW-codecoolShop/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.7.0:testCompile (default-testCompile) @ codecoolshop ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] <<< jetty-maven-plugin:9.4.11.v20180605:run (default-cli) < test-compile @ codecoolshop <<<
+[INFO] 
+[INFO] --- jetty-maven-plugin:9.4.11.v20180605:run (default-cli) @ codecoolshop ---
+[INFO] webAppSourceDirectory not set. Trying src/main/webapp
+[INFO] Reload Mechanic: manual
+[INFO] nonBlocking:false
+[INFO] Classes = /home/akincsei/IntelliJ/4TW-codecoolShop/target/classes
+[INFO] Configuring Jetty for project: codecoolshop
+[INFO] Logging initialized @3573ms to org.eclipse.jetty.util.log.Slf4jLog
+[INFO] Context path = /
+[INFO] Tmp directory = /home/akincsei/IntelliJ/4TW-codecoolShop/target/tmp
+[INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
+[INFO] Web overrides =  none
+[INFO] web.xml file = file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/WEB-INF/web.xml
+[INFO] Webapp directory = /home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp
+[INFO] jetty-9.4.11.v20180605; built: 2018-06-05T18:24:03.829Z; git: d5fc0523cfa96bfebfbda19606cad384d772f04c; jvm 1.8.0_181-b13
+[WARNING] Unknown asm implementation version, assuming version 393216
+[INFO] Scanning elapsed time=362ms
+[WARNING] com.codecool.shop.config.TemplateEngineUtil does not implement one of the servlet listener interfaces
+12:12:31,563 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+12:12:31,563 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
+12:12:31,563 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [file:/home/akincsei/IntelliJ/4TW-codecoolShop/target/classes/logback.xml]
+12:12:31,613 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+12:12:31,617 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+12:12:31,622 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+12:12:31,624 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@7:24 - no applicable action for [withJansi], current ElementPath  is [[configuration][appender][encoder][withJansi]]
+12:12:31,645 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+12:12:31,648 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [FILE]
+12:12:31,653 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1150413547 - setting totalSizeCap to 30 MB
+12:12:31,655 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1150413547 - Archive files will be limited to [3 MB] each.
+12:12:31,658 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1150413547 - No compression will be used
+12:12:31,659 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1150413547 - Will use the pattern log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html for the active file
+12:12:31,662 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@70ee1963 - The date pattern is 'yyyy-MM-dd' from file name pattern 'log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html'.
+12:12:31,662 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@70ee1963 - Roll-over at midnight.
+12:12:31,665 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@70ee1963 - Setting initial period to Wed Sep 12 12:12:31 CEST 2018
+12:12:31,670 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@27:40 - no applicable action for [outputPatternAsHeader], current ElementPath  is [[configuration][appender][encoder][layout][outputPatternAsHeader]]
+12:12:31,670 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - Active log file name: log/order_logs/2018-09-12/OrderLog.StartedAt.12:00.hours.0.html
+12:12:31,671 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - File property is set to [null]
+12:12:31,672 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.classic.db.DBAppender]
+12:12:31,677 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [DB]
+12:12:31,751 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@70f5f59d - Driver name=PostgreSQL JDBC Driver
+12:12:31,751 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@70f5f59d - Driver version=42.2.4
+12:12:31,751 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@70f5f59d - supportsGetGeneratedKeys=true
+12:12:31,753 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.paypal] to INFO
+12:12:31,753 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.paypal]
+12:12:31,754 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.codecool.shop.controller] to INFO
+12:12:31,754 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.codecool.shop.controller]
+12:12:31,754 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.braintreegateway] to INFO
+12:12:31,754 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.braintreegateway]
+12:12:31,754 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to INFO
+12:12:31,754 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+12:12:31,754 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [DB] to Logger[ROOT]
+12:12:31,754 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+12:12:31,755 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@4b61e97 - Registering current configuration as safe fallback point
+12:12:31,539 |-INFO in ch.qos.logback.classic.servlet.LogbackServletContainerInitializer@20a47036 - Adding an instance of  class ch.qos.logback.classic.servlet.LogbackServletContextListener to the current web-app
+[INFO] DefaultSessionIdManager workerName=node0
+[INFO] No SessionScavenger set, using defaults
+[INFO] node0 Scavenging every 600000ms
+[INFO] Started o.e.j.m.p.JettyWebAppContext@75dc1c1c{CodecoolShop Application,/,file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/,AVAILABLE}{file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/}
+[INFO] Started ServerConnector@28e91f6d{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+[INFO] Started @4891ms
+[INFO] Started Jetty Server
+[INFO] Console reloading is ENABLED. Hit ENTER on the console to restart the context.
+[12:12:39.112] [INFO ] c.c.s.controller.ProductController [ProductController.java:48] - Health Energy successfully added to cart 
+[12:12:41.031] [INFO ] c.c.s.controller.ProductController [ProductController.java:48] - Maiden Body Pillow successfully added to cart 
+[12:12:42.719] [INFO ] c.c.s.controller.ProductController [ProductController.java:48] - Amazon Fire HD 8 successfully added to cart 
+[12:12:43.848] [INFO ] c.c.s.controller.PaymentController [CartController.java:38] - Shopping cart editor page displayed 
+[12:12:49.716] [INFO ] c.c.s.controller.PaymentController [CartController.java:58] - New quantity for Health Energy is set to 3 
+[12:12:49.723] [INFO ] c.c.s.controller.PaymentController [CartController.java:58] - New quantity for Amazon Fire HD 8 is set to 2 
+[12:12:49.738] [INFO ] c.c.s.controller.PaymentController [ReviewController.java:37] - Get request received for SHOPPING CART REVIEW page 
+[12:12:52.069] [INFO ] c.c.s.controller.CheckOutController [CheckOutController.java:35] - Get request received for CHECKOUT page 
+[12:12:57.967] [INFO ] c.c.s.controller.CheckOutController [CheckOutController.java:67] - User data is saved in json file. OrderFromMemory ID: 651cdadd-1c16-4d11-a441-fe0d2b80ca9c 
+Sep 12, 2018 12:12:59 PM com.braintreegateway.util.Http httpDo
+INFO: [Braintree] [12/Sep/2018 12:12:59 +0200]] POST /merchants/r63vmkrc39s63j9m/client_token
+[12:12:59.357] [INFO ] c.c.s.controller.PaymentController [PaymentController.java:40] - Get request received for PAYMENT page 
+Sep 12, 2018 12:13:17 PM com.braintreegateway.util.Http httpDo
+INFO: [Braintree] [12/Sep/2018 12:13:17 +0200]] POST /merchants/r63vmkrc39s63j9m/transactions
+Sent message successfully....
+[12:13:19.455] [INFO ] c.c.s.c.PaymentPayedController [PaymentPayedController.java:41] - Payment approved by online payment service provider 

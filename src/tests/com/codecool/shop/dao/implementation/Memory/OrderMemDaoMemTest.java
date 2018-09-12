@@ -1,53 +1,53 @@
 package com.codecool.shop.dao.implementation.Memory;
 
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.model.WsOrder;
+import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.model.Cart;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderMemDaoMemTest {
-    private OrderDao orderDaoMem = OrderDaoMem.getInstance();
+    private CartDao cartDaoMem = CartDaoMem.getInstance();
 
 
     private void addOrder(){
-        WsOrder orderFromMemory = new WsOrder();
-        orderDaoMem.add(orderFromMemory);
+        Cart orderFromMemory = new Cart();
+        cartDaoMem.add(orderFromMemory);
     }
 
-    private WsOrder addOrderAndReturn(){
-        WsOrder orderFromMemory = new WsOrder();
-        orderDaoMem.add(orderFromMemory);
+    private Cart addOrderAndReturn(){
+        Cart orderFromMemory = new Cart();
+        cartDaoMem.add(orderFromMemory);
         return orderFromMemory;
     }
 
     @Test
     void getInstanceTest() {
-        OrderDao orderDaoMemTest = OrderDaoMem.getInstance();
-        assertNotNull(orderDaoMemTest);
+        CartDao cartDaoMemTest = CartDaoMem.getInstance();
+        assertNotNull(cartDaoMemTest);
     }
 
     @Test
     void getCurrentTest() {
         addOrder();
-        assertNotNull(orderDaoMem.getCurrent());
+        assertNotNull(cartDaoMem.getCurrent());
     }
 
     @Test
     void addTest() {
-        assertEquals(addOrderAndReturn(),orderDaoMem.getCurrent());
+        assertEquals(addOrderAndReturn(), cartDaoMem.getCurrent());
     }
 
     @Test
     void findTest() {
-        assertEquals(addOrderAndReturn(),orderDaoMem.find(orderDaoMem.getAll().size()));
+        assertEquals(addOrderAndReturn(), cartDaoMem.find(cartDaoMem.getAll().size()));
     }
 
     @Test
     void removeTest() {
-        int size = orderDaoMem.getAll().size();
+        int size = cartDaoMem.getAll().size();
         addOrder();
-        orderDaoMem.remove(1);
-        assertEquals(size,orderDaoMem.getAll().size());
+        cartDaoMem.remove(1);
+        assertEquals(size, cartDaoMem.getAll().size());
     }
 }

@@ -1,10 +1,10 @@
 package com.codecool.shop.controller;
 
 
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
+import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.LineItem;
-import com.codecool.shop.model.WsOrder;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
@@ -28,8 +28,8 @@ public class PaypalController extends HttpServlet {
 
     private String clientID;
     private String SecretID;
-    private OrderDao orderDaoMem;
-    private WsOrder currentOrder;
+    private CartDao cartDaoMem;
+    private Cart currentOrder;
     private Map<String, String> userDataMap;
     private Map<String, Integer> productNameAndQuantityMap;
     private static final Logger paypalLogger = LoggerFactory.getLogger(PaymentController.class);
@@ -38,10 +38,10 @@ public class PaypalController extends HttpServlet {
     public PaypalController() {
         this.clientID = "AWTqmvOfxu2VnNifNQblRmD8ty6zvuam7Hh_k36MHk8sbYuZdEtR3gneLyuK_3A7E_AzZm0AWr-rNVA3";
         SecretID = "ECYgXqdlLBxQsCHhdwMt4yz1LU5O5n6chmJe3EHrhGftsUOiN5PbmergN_0_lqQcFl-JzzC1ep68JG5I";
-        orderDaoMem = OrderDaoMem.getInstance();
-        currentOrder = orderDaoMem.getCurrent();
-        userDataMap = ((OrderDaoMem) orderDaoMem).getUserDataMap();
-        productNameAndQuantityMap = ((OrderDaoMem) orderDaoMem).getProductNameAndQuantityMap();
+        cartDaoMem = CartDaoMem.getInstance();
+        currentOrder = cartDaoMem.getCurrent();
+        userDataMap = ((CartDaoMem) cartDaoMem).getUserDataMap();
+        productNameAndQuantityMap = ((CartDaoMem) cartDaoMem).getProductNameAndQuantityMap();
     }
 
     @Override
@@ -140,7 +140,7 @@ public class PaypalController extends HttpServlet {
         transaction.setItemList(list);
         transaction.setDescription("Payment page");
         //transaction.setInvoiceNumber(Integer.toString(ThreadLocalRandom.current().nextInt(1000000000, 999999999 + 1)));
-        List<Transaction> transactions = new ArrayList<Transaction>();
+        List<Transaction> transactions = new ArrayList<>();
         transactions.add(transaction);
         return transactions;
     }
@@ -148,7 +148,7 @@ public class PaypalController extends HttpServlet {
     private Amount getAmount() {
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal(Double.toString(orderDaoMem.getTotalPrice().doubleValue()));
+        amount.setTotal(Double.toString(cartDaoMem.getTotalPrice().doubleValue()));
         return amount;
     }
 

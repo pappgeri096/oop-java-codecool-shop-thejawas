@@ -1,17 +1,17 @@
 package com.codecool.shop.dao.implementation.Memory;
 
-import com.codecool.shop.dao.OrderDao;
+import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.LineItem;
-import com.codecool.shop.model.WsOrder;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
-public class OrderDaoMem implements OrderDao {
-    private static OrderDao instance = null;
+public class CartDaoMem implements CartDao {
+    private static CartDao instance = null;
 
-    private List<WsOrder> data = new ArrayList<>();
+    private List<Cart> data = new ArrayList<>();
 
     private Map<String, String> userDataMap = new HashMap<>();
     private Map<String, Integer> productNameAndQuantityMap = new HashMap<>();
@@ -20,29 +20,29 @@ public class OrderDaoMem implements OrderDao {
 
     /* A private Constructor prevents any other class from instantiating.
      */
-    private OrderDaoMem() {
+    private CartDaoMem() {
     }
 
-    public static OrderDao getInstance() {
+    public static CartDao getInstance() {
         if (instance == null) {
-            instance = new OrderDaoMem();
+            instance = new CartDaoMem();
         }
         return instance;
     }
 
     @Override
-    public WsOrder getCurrent() {
+    public Cart getCurrent() {
         return data.get(data.size() - 1);
     }
 
     @Override
-    public void add(WsOrder objectType) {
+    public void add(Cart objectType) {
         objectType.setId(data.size() + 1);
         data.add(objectType);
     }
 
     @Override
-    public WsOrder find(int id) {
+    public Cart find(int id) {
         return data.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
     }
 
@@ -52,7 +52,7 @@ public class OrderDaoMem implements OrderDao {
     }
 
     @Override
-    public List<WsOrder> getAll() {
+    public List<Cart> getAll() {
         return data;
     }
 

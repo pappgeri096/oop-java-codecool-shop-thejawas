@@ -1,10 +1,10 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
+import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.LineItem;
-import com.codecool.shop.model.WsOrder;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -21,14 +21,14 @@ import org.slf4j.LoggerFactory;
 
 
 @WebServlet(urlPatterns = {"/cart"})
-public class ShoppingCartController extends HttpServlet {
+public class CartController extends HttpServlet {
 
     private static final Logger cartLogger = LoggerFactory.getLogger(PaymentController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
+        CartDao orderDataStore = CartDaoMem.getInstance();
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
@@ -39,8 +39,8 @@ public class ShoppingCartController extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        OrderDao orderDaoMem = OrderDaoMem.getInstance();
-        WsOrder currentOrder = orderDaoMem.getCurrent();
+        CartDao cartDaoMem = CartDaoMem.getInstance();
+        Cart currentOrder = cartDaoMem.getCurrent();
         List<LineItem> lineItemList = currentOrder.getLineItemList();
         boolean repeat = true;
         while (repeat) {
@@ -59,7 +59,7 @@ public class ShoppingCartController extends HttpServlet {
                 }
             }
         }
-        ((OrderDaoMem) orderDaoMem).createProductNameAndQuantityMaps();
+        ((CartDaoMem) cartDaoMem).createProductNameAndQuantityMaps();
         if (currentOrder.getLineItemList().size()>0) {
             resp.sendRedirect("/review");
         }else {

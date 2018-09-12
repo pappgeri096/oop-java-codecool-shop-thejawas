@@ -1,10 +1,10 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.JSON.OrderDaoJson;
-import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.WsOrder;
+import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.implementation.JSON.CartDaoJson;
+import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.model.Cart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,8 +37,8 @@ public class CheckOutController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
-        WsOrder orderMem = orderDataStore.getCurrent();
+        CartDao orderDataStore = CartDaoMem.getInstance();
+        Cart orderMem = orderDataStore.getCurrent();
         List<String> userData = new ArrayList<>();
         List<String> formNames = Arrays.asList("name", "email", "phonenumber", "countryBill",
                 "cityBill", "zipcodeBill",
@@ -54,16 +54,16 @@ public class CheckOutController extends HttpServlet {
                 userData.add(req.getParameter(formName));
             }
         }
-        ((OrderDaoMem) orderDataStore).createUserDataMap(userData);
+        ((CartDaoMem) orderDataStore).createUserDataMap(userData);
 
-        OrderDaoJson writeOrderDataToFile = new OrderDaoJson();
+        CartDaoJson writeOrderDataToFile = new CartDaoJson();
         writeOrderDataToFile.add(orderMem);
 
-//        OrderDao serializeOrder = new OrderDaoJson();
-//        String serializedOrder = ((OrderDaoJson) serializeOrder).orderToJsonString(orderMem);
+//        CartDao serializeOrder = new CartDaoJson();
+//        String serializedOrder = ((CartDaoJson) serializeOrder).orderToJsonString(orderMem);
 //        checkoutLogger.warn(serializedOrder);
 
-        String uuidString = ((OrderDaoJson) writeOrderDataToFile).getUuidString();
+        String uuidString = writeOrderDataToFile.getUuidString();
         checkoutLogger.info("User data is saved in json file. OrderFromMemory ID: {}", uuidString);
 
         resp.sendRedirect("/payment");

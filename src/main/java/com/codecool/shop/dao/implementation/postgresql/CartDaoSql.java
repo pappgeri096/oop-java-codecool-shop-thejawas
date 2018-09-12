@@ -1,8 +1,8 @@
 package com.codecool.shop.dao.implementation.postgresql;
 
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.WsOrder;
+import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.LineItem;
 
 import java.math.BigDecimal;
@@ -10,26 +10,26 @@ import java.math.RoundingMode;
 import java.sql.*;
 import java.util.*;
 
-public class OrderDaoSql extends DaoSqlConnectionDML implements OrderDao {
-    private static OrderDaoSql singletonInstance = null;
+public class CartDaoSql extends DaoSqlConnectionDML implements CartDao {
+    private static CartDaoSql singletonInstance = null;
 
-    private OrderDaoSql() {
+    private CartDaoSql() {
     }
 
-    public static OrderDaoSql getInstance() {
+    public static CartDaoSql getInstance() {
         if (singletonInstance == null) {
-            singletonInstance = new OrderDaoSql();
+            singletonInstance = new CartDaoSql();
         }
         return singletonInstance;
     }
 
     @Override
-    public WsOrder getCurrent() {
+    public Cart getCurrent() {
         String query = "SELECT * FROM order WHERE id ='" + getCurrentOrderId() + "';";
         return null; // TODO----------------------------------
     }
 
-    List<WsOrder> getOrdersBy(int userId) {
+    List<Cart> getOrdersBy(int userId) {
         String query = "SELECT\n" +
                 "  \"order\".id AS id_from_order,\n" +
                 "  p.name,\n" +
@@ -43,15 +43,15 @@ public class OrderDaoSql extends DaoSqlConnectionDML implements OrderDao {
         return getOrders(query);
     }
 
-    private List<WsOrder> getOrders(String query) {
-        List<WsOrder> resultList = new ArrayList<>();
+    private List<Cart> getOrders(String query) {
+        List<Cart> resultList = new ArrayList<>();
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query);
+             ResultSet resultSet = statement.executeQuery(query)
         ) {
             while (resultSet.next()) {
-                WsOrder order = new WsOrder();
+                Cart order = new Cart();
                 resultList.add(order);
             }
         } catch (SQLException e) {
@@ -61,18 +61,18 @@ public class OrderDaoSql extends DaoSqlConnectionDML implements OrderDao {
     }
 
     @Override
-    public void add(WsOrder wsOrder) {
+    public void add(Cart cart) {
         String prePreparedQuery = "INSERT INTO public.order (id, user_id, status, total_price)" +
                 "VALUES (DEFAULT, ?, ?, ?);";
 
         int userId = 1;
         String status = "unshipped";
-        BigDecimal totalPrice = OrderDaoMem.getInstance().getTotalPrice(); // TODO: USES MEMORA: REWRITE
+        BigDecimal totalPrice = CartDaoMem.getInstance().getTotalPrice(); // TODO: USES MEMORA: REWRITE
 
         addToOrderSql(prePreparedQuery, userId, status, totalPrice);
 
         int orderId = getCurrentOrderId();
-        for (LineItem lineItem: wsOrder.getLineItemList()) {
+        for (LineItem lineItem: cart.getLineItemList()) {
 
             prePreparedQuery = "INSERT INTO public.order_product (id, order_id, product_id, product_quantity) " +
                     "VALUES (DEFAULT, ?, ?, ?);";
@@ -88,14 +88,12 @@ public class OrderDaoSql extends DaoSqlConnectionDML implements OrderDao {
         for (LineItem lineItem : getCurrent().getLineItemList()) {
             sumPrice = lineItem.getProduct().getDefaultPrice().multiply(new BigDecimal(lineItem.getQuantity())).add(sumPrice);
         }
-        BigDecimal totalPriceRounded = sumPrice.setScale(2, RoundingMode.HALF_UP);
-
-        return totalPriceRounded;
+        return sumPrice.setScale(2, RoundingMode.HALF_UP);
     }
 
 
     @Override
-    public WsOrder find(int id) {
+    public Cart find(int id) {
         return null; // TODO----------------------------------
     }
 
@@ -105,7 +103,7 @@ public class OrderDaoSql extends DaoSqlConnectionDML implements OrderDao {
     }
 
     @Override
-    public List<WsOrder> getAll() {
+    public List<Cart> getAll() {
         return null; // TODO----------------------------------
     }
 
@@ -117,7 +115,7 @@ public class OrderDaoSql extends DaoSqlConnectionDML implements OrderDao {
         }
 
         try (Connection connection = getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery);
+             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery)
         ) {
             pstmt.setInt(1, userId);
             pstmt.setString(2, status);
@@ -157,7 +155,7 @@ public class OrderDaoSql extends DaoSqlConnectionDML implements OrderDao {
         }
 
         try (Connection connection = getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery);
+             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery)
         ) {
             pstmt.setInt(1, orderId);
             pstmt.setInt(2, productId);

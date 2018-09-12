@@ -4,19 +4,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class LineItem {
-    private static int idCounter=1;
     public int id;
     private Product product;
     private int quantity = 1;
 
-    LineItem(Product product){
+    LineItem(int id, Product product){
         this.product = product;
-        id = idCounter;
-        idCounter++;
-
-    }
-
-    public void setId(int id) {
         this.id = id;
     }
 
@@ -32,7 +25,7 @@ public class LineItem {
         this.quantity = quantity;
     }
 
-    public void increaseQuantity(){
+    void increaseQuantity(){
         quantity++;
     }
 

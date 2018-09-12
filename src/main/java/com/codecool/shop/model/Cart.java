@@ -3,8 +3,8 @@ package com.codecool.shop.model;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: DOES NOT ID USE NAME AND DESCRIPTION FIELDS. CHANGE INHERITACE STRUCTURE
-public class WsOrder extends BaseModel {
+// TODO: DOES NOT ID USE NAME AND DESCRIPTION FIELDS. calling getName() and getDescription() methods can cause problems
+public class Cart extends BaseModel {
 
     private List<LineItem> lineItemList = new ArrayList<>();
 
@@ -17,9 +17,13 @@ public class WsOrder extends BaseModel {
             }
         }
         if (!wasProductFound){
-            lineItemList.add(new LineItem(product));
+            lineItemList.add(new LineItem(createIdForLineItem(), product));
         }
 
+    }
+
+    private int createIdForLineItem() {
+        return lineItemList.size();
     }
 
     public List<LineItem> getLineItemList() {
@@ -36,7 +40,7 @@ public class WsOrder extends BaseModel {
 
     @Override
     public String toString() {
-        return "WsOrder{" +
+        return "Cart{" +
                 "lineItemList=" + lineItemList +
                 "}";
     }

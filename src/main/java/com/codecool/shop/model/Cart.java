@@ -6,34 +6,34 @@ import java.util.List;
 // TODO: DOES NOT ID USE NAME AND DESCRIPTION FIELDS. calling getName() and getDescription() methods can cause problems
 public class Cart extends BaseModel {
 
-    private List<LineItem> lineItemList = new ArrayList<>();
+    private List<CartItem> cartItemList = new ArrayList<>();
 
     public void addProduct(Product product) {
         boolean wasProductFound = false;
-        for (LineItem lineItem : lineItemList) {
-            if (lineItem.getProduct().getId() == (product.getId())) {
-                lineItem.increaseQuantity();
+        for (CartItem cartItem : cartItemList) {
+            if (cartItem.getProduct().getId() == (product.getId())) {
+                cartItem.increaseQuantity();
                 wasProductFound = true;
             }
         }
         if (!wasProductFound){
-            lineItemList.add(new LineItem(createIdForLineItem(), product));
+            cartItemList.add(new CartItem(createIdForLineItem(), product));
         }
 
     }
 
     private int createIdForLineItem() {
-        return lineItemList.size();
+        return cartItemList.size();
     }
 
-    public List<LineItem> getLineItemList() {
-        return lineItemList;
+    public List<CartItem> getCartItemList() {
+        return cartItemList;
     }
 
     public int getQuantityOfProducts() {
         int numberOfItems = 0;
-        for (LineItem lineItem : lineItemList) {
-            numberOfItems += lineItem.getQuantity();
+        for (CartItem cartItem : cartItemList) {
+            numberOfItems += cartItem.getQuantity();
         }
         return numberOfItems;
     }
@@ -41,7 +41,7 @@ public class Cart extends BaseModel {
     @Override
     public String toString() {
         return "Cart{" +
-                "lineItemList=" + lineItemList +
+                "cartItemList=" + cartItemList +
                 "}";
     }
 }

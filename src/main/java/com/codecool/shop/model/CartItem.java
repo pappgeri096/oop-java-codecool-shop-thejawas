@@ -3,12 +3,12 @@ package com.codecool.shop.model;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class LineItem {
+public class CartItem {
     public int id;
     private Product product;
     private int quantity = 1;
 
-    LineItem(int id, Product product){
+    CartItem(int id, Product product){
         this.product = product;
         this.id = id;
     }

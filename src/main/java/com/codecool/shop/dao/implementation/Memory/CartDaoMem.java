@@ -2,7 +2,7 @@ package com.codecool.shop.dao.implementation.Memory;
 
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.CartItem;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -59,8 +59,8 @@ public class CartDaoMem implements CartDao {
     @Override
     public BigDecimal getTotalPrice() {
         BigDecimal sumPrice = BigDecimal.valueOf(0);
-        for (LineItem lineItem : getCurrent().getLineItemList()) {
-            sumPrice = lineItem.getProduct().getDefaultPrice().multiply(new BigDecimal(lineItem.getQuantity())).add(sumPrice);
+        for (CartItem cartItem : getCurrent().getCartItemList()) {
+            sumPrice = cartItem.getProduct().getDefaultPrice().multiply(new BigDecimal(cartItem.getQuantity())).add(sumPrice);
         }
         return sumPrice.setScale(2, RoundingMode.HALF_UP);
     }
@@ -76,8 +76,8 @@ public class CartDaoMem implements CartDao {
     }
 
     public void createProductNameAndQuantityMaps() {
-        for (LineItem lineItem: getCurrent().getLineItemList()) {
-            productNameAndQuantityMap.put(lineItem.getProduct().getName(), lineItem.getQuantity());
+        for (CartItem cartItem : getCurrent().getCartItemList()) {
+            productNameAndQuantityMap.put(cartItem.getProduct().getName(), cartItem.getQuantity());
         }
     }
 

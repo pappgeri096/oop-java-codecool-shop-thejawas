@@ -3,7 +3,7 @@ package com.codecool.shop.dao.implementation.postgresql;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
 import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.CartItem;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -72,12 +72,12 @@ public class CartDaoSql extends DaoSqlConnectionDML implements CartDao {
         addToOrderSql(prePreparedQuery, userId, status, totalPrice);
 
         int orderId = getCurrentOrderId();
-        for (LineItem lineItem: cart.getLineItemList()) {
+        for (CartItem cartItem : cart.getCartItemList()) {
 
             prePreparedQuery = "INSERT INTO public.order_product (id, order_id, product_id, product_quantity) " +
                     "VALUES (DEFAULT, ?, ?, ?);";
-            int product_id = lineItem.getProduct().getId();
-            int product_quantity = lineItem.getQuantity();
+            int product_id = cartItem.getProduct().getId();
+            int product_quantity = cartItem.getQuantity();
             addToOrder_ProductSql(prePreparedQuery, orderId, product_id, product_quantity);
         }
     }
@@ -85,8 +85,8 @@ public class CartDaoSql extends DaoSqlConnectionDML implements CartDao {
     @Override
     public BigDecimal getTotalPrice() { // TODO: USES MEMORA: REWRITE
         BigDecimal sumPrice = BigDecimal.valueOf(0);
-        for (LineItem lineItem : getCurrent().getLineItemList()) {
-            sumPrice = lineItem.getProduct().getDefaultPrice().multiply(new BigDecimal(lineItem.getQuantity())).add(sumPrice);
+        for (CartItem cartItem : getCurrent().getCartItemList()) {
+            sumPrice = cartItem.getProduct().getDefaultPrice().multiply(new BigDecimal(cartItem.getQuantity())).add(sumPrice);
         }
         return sumPrice.setScale(2, RoundingMode.HALF_UP);
     }

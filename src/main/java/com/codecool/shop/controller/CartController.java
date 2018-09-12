@@ -4,7 +4,7 @@ import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
 import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.CartItem;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -41,26 +41,26 @@ public class CartController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CartDao cartDaoMem = CartDaoMem.getInstance();
         Cart currentOrder = cartDaoMem.getCurrent();
-        List<LineItem> lineItemList = currentOrder.getLineItemList();
+        List<CartItem> cartItemList = currentOrder.getCartItemList();
         boolean repeat = true;
         while (repeat) {
             repeat = false;
-            for (LineItem lineItem : lineItemList) {
-                int newQuantity = Integer.parseInt(req.getParameter(String.valueOf(lineItem.id)));
+            for (CartItem cartItem : cartItemList) {
+                int newQuantity = Integer.parseInt(req.getParameter(String.valueOf(cartItem.id)));
                 if (newQuantity < 1) {
-                    lineItemList.remove(lineItem);
-                    cartLogger.info("{} is removed from shopping cart.", lineItem.getProduct().getName());
+                    cartItemList.remove(cartItem);
+                    cartLogger.info("{} is removed from shopping cart.", cartItem.getProduct().getName());
                     repeat = true;
                     break;
 
-                } else if (newQuantity != lineItem.getQuantity()){
-                    lineItem.setQuantity(newQuantity);
-                    cartLogger.info("New quantity for {} is set to {}", lineItem.getProduct().getName(), newQuantity);
+                } else if (newQuantity != cartItem.getQuantity()){
+                    cartItem.setQuantity(newQuantity);
+                    cartLogger.info("New quantity for {} is set to {}", cartItem.getProduct().getName(), newQuantity);
                 }
             }
         }
         ((CartDaoMem) cartDaoMem).createProductNameAndQuantityMaps();
-        if (currentOrder.getLineItemList().size()>0) {
+        if (currentOrder.getCartItemList().size()>0) {
             resp.sendRedirect("/review");
         }else {
             resp.sendRedirect("/");

@@ -50,12 +50,12 @@
         </div>
     </div>
 </nav>
-<div th:if="${orderMem.getLineItemList().size() < 1}">
+<div th:if="${orderMem.getCartItemList().size() < 1}">
     <div>Your cart is empty!</div>
 </div>
-<div th:if="${orderMem.getLineItemList().size() > 0}">
+<div th:if="${orderMem.getCartItemList().size() > 0}">
     <form action="/cart" method="post">
-    <div id="products" class="col-10 row" th:each="lineitem,iterStat : ${orderMem.getLineItemList()}">
+    <div id="products" class="col-10 row" th:each="lineitem,iterStat : ${orderMem.getCartItemList()}">
         <h4 class="group inner list-group-item-heading" th:text="${lineitem.getProduct().name}">Product name</h4>
         <p class="lead" th:text="${lineitem.getProduct().getPrice()}+ ' / '+ ${lineitem.getSubTotalPrice()}">100 USD</p>
         <input style="width: 100px" type="number" th:name="${lineitem.id}" value="1" th:attr="value=${(lineitem.getQuantity())}">

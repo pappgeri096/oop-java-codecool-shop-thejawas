@@ -3,7 +3,7 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
-import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.CartItem;
 import com.codecool.shop.model.Cart;
 
 import java.util.List;
@@ -91,7 +91,7 @@ class EmailUtil {
         Map<String, String> userDataMap = ((CartDaoMem) cartDaoMem).getUserDataMap();
 
 
-        List<LineItem> lineItemList = currentOrder.getLineItemList();
+        List<CartItem> cartItemList = currentOrder.getCartItemList();
 
         String subject = "Order#"+ currentOrder.getId();
         String email = userDataMap.get("emailAddress");
@@ -102,7 +102,7 @@ class EmailUtil {
         message.append("Email: ").append(email).append("\n");
         message.append("Items:");
 
-        for(LineItem item : lineItemList){
+        for(CartItem item : cartItemList){
             message.append(item.getProduct().getName()).append(" ");
             message.append(item.getSubTotalPrice()).append("\n");
         }

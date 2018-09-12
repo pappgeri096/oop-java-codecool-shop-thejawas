@@ -4,7 +4,7 @@ package com.codecool.shop.controller;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
 import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.CartItem;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
@@ -166,7 +166,7 @@ public class PaypalController extends HttpServlet {
             String quantity = Integer.toString(entry.getValue());
             String price = "1.1";
 
-            for (LineItem item : currentOrder.getLineItemList()) {
+            for (CartItem item : currentOrder.getCartItemList()) {
                 if (item.getProduct().getName().equals(name)) {
                     price = String.valueOf(item.getProduct().getDefaulPrice());
                     break;

@@ -25,6 +25,7 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/", "/index"})
 public class ProductController extends HttpServlet {
+
     private CartDao cartDaoMem = CartDaoMem.getInstance();
     private ProductDao productDaoSql = ProductDaoSql.getInstance();
     private ProductCategoryDao productCategoryDaoSql = ProductCategoryDaoSql.getInstance();

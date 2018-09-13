@@ -25,24 +25,21 @@ import java.util.EnumMap;
 @WebListener
 public class Initializer implements ServletContextListener {
 
-    private static final String CONFIGURATION_PROPERTY_NAME = "implementation";
-    private static final String CONFIGURATION_IMPLEMENTATION_TYPE = "MEMORY";
-
-    private static final ImplementationType CURRENT_IMPLEMENTATION;
-
-    private static final EnumMap<ImplementationType, ImplementationFactory> implementationFactoryEnumMap = new EnumMap<>(ImplementationType.class);
+//    private static final String CONFIGURATION_PROPERTY_NAME = "implementation";
+//    private static final String CONFIGURATION_IMPLEMENTATION_TYPE = "MEMORY";
 
     private static final ImplementationFactory IMPLEMENTATION_FACTORY;
+
+    private static final ImplementationType CURRENT_IMPLEMENTATION = ImplementationType.MEMORY;
+    private static final EnumMap<ImplementationType, ImplementationFactory> implementationFactoryEnumMap = new EnumMap<>(ImplementationType.class);
 
     static {
         implementationFactoryEnumMap.put(ImplementationType.MEMORY, new MemoryFactory());
 
-        ConfigurationHandler.writeConfigurationProperty(CONFIGURATION_PROPERTY_NAME, CONFIGURATION_IMPLEMENTATION_TYPE);
-        String currentConfiguration = ConfigurationHandler.readConfigurationProperty(CONFIGURATION_PROPERTY_NAME);
-        CURRENT_IMPLEMENTATION = ImplementationType.valueOf(currentConfiguration);
+//        ConfigurationHandler.writeConfigurationProperty(CONFIGURATION_PROPERTY_NAME, CONFIGURATION_IMPLEMENTATION_TYPE);
+//        String currentConfiguration = ConfigurationHandler.readConfigurationProperty(CONFIGURATION_PROPERTY_NAME);
+//        CURRENT_IMPLEMENTATION = ImplementationType.valueOf(currentConfiguration);
         IMPLEMENTATION_FACTORY = implementationFactoryEnumMap.get(CURRENT_IMPLEMENTATION);
-        System.out.println(currentConfiguration);
-        System.out.println(CURRENT_IMPLEMENTATION);
     }
 
     public static ImplementationFactory getImplementationFactory() {

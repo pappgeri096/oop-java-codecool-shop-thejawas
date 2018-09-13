@@ -1,18 +1,5 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.CartDao;
-import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
-import com.codecool.shop.dao.implementation.postgresql.ProductCategoryDaoSql;
-import com.codecool.shop.dao.implementation.postgresql.ProductDaoSql;
-import com.codecool.shop.dao.implementation.postgresql.SupplierDaoSql;
-import com.codecool.shop.model.Product;
-import org.slf4j.LoggerFactory;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,14 +9,48 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import com.codecool.shop.model.BaseModel;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+
+
+import org.slf4j.LoggerFactory;
+
+import com.codecool.shop.config.TemplateEngineUtil;
+
+import com.codecool.shop.model.Product;
+
+import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.ProductCategoryDao;
+import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.SupplierDao;
+
+import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.dao.implementation.Memory.ProductCategoryDaoMem;
+import com.codecool.shop.dao.implementation.Memory.ProductDaoMem;
+import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
+
+//import com.codecool.shop.dao.implementation.postgresql.CartDaoSql;
+//import com.codecool.shop.dao.implementation.postgresql.ProductCategoryDaoSql;
+//import com.codecool.shop.dao.implementation.postgresql.ProductDaoSql;
+//import com.codecool.shop.dao.implementation.postgresql.SupplierDaoSql;
+
+
+
+
 
 @WebServlet(urlPatterns = {"/", "/index"})
 public class ProductController extends HttpServlet {
 
-    private CartDao cartDaoMem = CartDaoMem.getInstance();
-    private ProductDao productDaoSql = ProductDaoSql.getInstance();
-    private ProductCategoryDao productCategoryDaoSql = ProductCategoryDaoSql.getInstance();
-    private SupplierDao supplierDaoSql = SupplierDaoSql.getInstance();
+    private CartDao cartHandler = CartDaoMem.getInstance();
+    private ProductDao productHandler = ProductDaoMem.getInstance();
+    private ProductCategoryDao productCategoryHandler = ProductCategoryDaoMem.getInstance();
+    private SupplierDao supplierHandler = SupplierDaoMem.getInstance();
+
+
+//    private ProductDao productDaoSql = ProductDaoSql.getInstance();
+//    private ProductCategoryDao productCategoryDaoSql = ProductCategoryDaoSql.getInstance();
+//    private SupplierDao supplierDaoSql = SupplierDaoSql.getInstance();
 
 
     private static final ch.qos.logback.classic.Logger productControllerLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProductController.class);
@@ -37,14 +58,14 @@ public class ProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<Product> productList = productDaoSql.getAll();
+        List<Product> productList = productHandler.getAll();
 
         String productParameter = req.getParameter("product");
 
         if (productParameter != null) {
             int productId = Integer.parseInt(productParameter);
-            Product productToAdd = productDaoSql.getBy(productId);
-            cartDaoMem.getCurrent().addProduct(productToAdd);
+            Product productToAdd = productHandler.getBy(productId);
+            cartHandler.getCurrent().addProduct(productToAdd);
 
             productControllerLogger.info("{} successfully added to cart", productToAdd.getName());
 
@@ -57,20 +78,20 @@ public class ProductController extends HttpServlet {
         if (categoryParameter != null) {
             int productCategoryId = Integer.parseInt(categoryParameter);
 
-            if (productCategoryId > 0 && productCategoryId <= productCategoryDaoSql.getAll().size()) {
-                productList = productDaoSql.getBy(productCategoryDaoSql.find(productCategoryId));
+            if (productCategoryId > 0 && productCategoryId <= productCategoryHandler.getAll().size()) {
+                productList = productHandler.getBy(productCategoryHandler.find(productCategoryId));
             }
         } else if (supplierParameter != null) {
             int supplierId = Integer.parseInt(supplierParameter);
-            if (supplierId > 0 && supplierId <= supplierDaoSql.getAll().size()) {
-                productList = productDaoSql.getBy(supplierDaoSql.find(supplierId));
+            if (supplierId > 0 && supplierId <= supplierHandler.getAll().size()) {
+                productList = productHandler.getBy(supplierHandler.find(supplierId));
             }
         }
 
-        context.setVariable("categories", productCategoryDaoSql.getAll());
-        context.setVariable("suppliers", supplierDaoSql.getAll());
+        context.setVariable("categories", productCategoryHandler.getAll());
+        context.setVariable("suppliers", supplierHandler.getAll());
         context.setVariable("products", productList);
-        context.setVariable("orderMem", cartDaoMem.getCurrent());
+        context.setVariable("orderMem", cartHandler.getCurrent());
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         engine.process("product/index.html", context, resp.getWriter());

@@ -3,10 +3,8 @@ package com.codecool.shop.controller;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.CustomerDao;
-import com.codecool.shop.dao.implementation.JSON.CartDaoJson;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
 import com.codecool.shop.dao.implementation.Memory.CustomerDaoMem;
-import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Customer;
 import com.codecool.shop.util.CustomerContactLabel;
 import org.slf4j.Logger;
@@ -23,13 +21,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/checkout"})
 public class CheckOutController extends HttpServlet {
 
-    private CartDao cartDao = CartDaoMem.getInstance();
     private CustomerDao customerDao = CustomerDaoMem.getInstance();
 
     private static final Logger checkoutLogger = LoggerFactory.getLogger(CheckOutController.class);
@@ -44,7 +40,6 @@ public class CheckOutController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Cart cartMem = cartDao.getCurrent();
         List<String> customerData = new ArrayList<>();
 
         String SAME_ADDRESS_INPUT = req.getParameter("sameAddress");
@@ -62,12 +57,6 @@ public class CheckOutController extends HttpServlet {
 
         customerDao.add(new Customer(customerData));
         customerDao.createUserDataMap();
-
-        CartDaoJson writeOrderDataToFile = new CartDaoJson();
-        writeOrderDataToFile.add(cartMem);
-
-        String uuidString = writeOrderDataToFile.getUuidString();
-        checkoutLogger.info("User data is saved in json file. OrderFromMemory ID: {}", uuidString);
 
         resp.sendRedirect("/payment");
     }

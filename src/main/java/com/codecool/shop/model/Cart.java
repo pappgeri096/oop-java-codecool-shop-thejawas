@@ -8,6 +8,10 @@ public class Cart extends BaseModel {
 
     private List<CartItem> cartItemList = new ArrayList<>();
 
+    public Cart() {
+        cartItemList.clear();
+    }
+
     public void addProduct(Product product) {
         boolean wasProductFound = false;
         for (CartItem cartItem : cartItemList) {
@@ -23,7 +27,7 @@ public class Cart extends BaseModel {
     }
 
     private int createIdForLineItem() {
-        return cartItemList.size();
+        return cartItemList.size() + 1;
     }
 
     public List<CartItem> getCartItemList() {

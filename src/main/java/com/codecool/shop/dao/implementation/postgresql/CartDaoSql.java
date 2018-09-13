@@ -24,9 +24,65 @@ public class CartDaoSql extends DaoSqlConnectionDML implements CartDao {
     }
 
     @Override
+    public void add(Cart cart) {
+        String prePreparedQuery = "INSERT INTO public.order (id, user_id, status, total_price)" +
+                "VALUES (DEFAULT, ?, ?, ?);";
+
+        int userId = 1;
+        String status = "unshipped";
+        BigDecimal totalPrice = CartDaoMem.getInstance().getTotalPrice(); // TODO: USES MEMORY: REWRITE
+
+        addToOrderSql(prePreparedQuery, userId, status, totalPrice);
+
+        int orderId = getCurrentOrderId();
+        for (CartItem cartItem : cart.getCartItemList()) {
+
+            prePreparedQuery = "INSERT INTO public.order_product (id, order_id, product_id, product_quantity) " +
+                    "VALUES (DEFAULT, ?, ?, ?);";
+            int product_id = cartItem.getProduct().getId();
+            int product_quantity = cartItem.getQuantity();
+            addToOrder_ProductSql(prePreparedQuery, orderId, product_id, product_quantity);
+        }
+    }
+
+    @Override
+    public Cart find(int id) {
+        return null; // TODO----------------------------------
+    }
+
+    @Override
+    public void remove(int id) {
+        // TODO----------------------------------
+    }
+
+    @Override
+    public List<Cart> getAll() {
+        return null; // TODO----------------------------------
+    }
+
+    @Override
     public Cart getCurrent() {
         String query = "SELECT * FROM order WHERE id ='" + getCurrentOrderId() + "';";
         return null; // TODO----------------------------------
+    }
+
+    @Override
+    public BigDecimal getTotalPrice() { // TODO: USES MEMORA: REWRITE
+        BigDecimal sumPrice = BigDecimal.valueOf(0);
+        for (CartItem cartItem : getCurrent().getCartItemList()) {
+            sumPrice = cartItem.getProduct().getDefaultPrice().multiply(new BigDecimal(cartItem.getQuantity())).add(sumPrice);
+        }
+        return sumPrice.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    @Override
+    public void createProductNameAndQuantityMaps() {
+
+    }
+
+    @Override
+    public Map<String, Integer> getProductNameAndQuantityMap() {
+        return null;
     }
 
     List<Cart> getOrdersBy(int userId) {
@@ -60,72 +116,6 @@ public class CartDaoSql extends DaoSqlConnectionDML implements CartDao {
         return resultList;
     }
 
-    @Override
-    public void add(Cart cart) {
-        String prePreparedQuery = "INSERT INTO public.order (id, user_id, status, total_price)" +
-                "VALUES (DEFAULT, ?, ?, ?);";
-
-        int userId = 1;
-        String status = "unshipped";
-        BigDecimal totalPrice = CartDaoMem.getInstance().getTotalPrice(); // TODO: USES MEMORA: REWRITE
-
-        addToOrderSql(prePreparedQuery, userId, status, totalPrice);
-
-        int orderId = getCurrentOrderId();
-        for (CartItem cartItem : cart.getCartItemList()) {
-
-            prePreparedQuery = "INSERT INTO public.order_product (id, order_id, product_id, product_quantity) " +
-                    "VALUES (DEFAULT, ?, ?, ?);";
-            int product_id = cartItem.getProduct().getId();
-            int product_quantity = cartItem.getQuantity();
-            addToOrder_ProductSql(prePreparedQuery, orderId, product_id, product_quantity);
-        }
-    }
-
-    @Override
-    public BigDecimal getTotalPrice() { // TODO: USES MEMORA: REWRITE
-        BigDecimal sumPrice = BigDecimal.valueOf(0);
-        for (CartItem cartItem : getCurrent().getCartItemList()) {
-            sumPrice = cartItem.getProduct().getDefaultPrice().multiply(new BigDecimal(cartItem.getQuantity())).add(sumPrice);
-        }
-        return sumPrice.setScale(2, RoundingMode.HALF_UP);
-    }
-
-    @Override
-    public void createUserDataMap(List<String> userData) {
-
-    }
-
-    @Override
-    public Map<String, String> getUserDataMap() {
-        return null;
-    }
-
-    @Override
-    public void createProductNameAndQuantityMaps() {
-
-    }
-
-    @Override
-    public Map<String, Integer> getProductNameAndQuantityMap() {
-        return null;
-    }
-
-
-    @Override
-    public Cart find(int id) {
-        return null; // TODO----------------------------------
-    }
-
-    @Override
-    public void remove(int id) {
-        // TODO----------------------------------
-    }
-
-    @Override
-    public List<Cart> getAll() {
-        return null; // TODO----------------------------------
-    }
 
     private void addToOrderSql(String prePreparedQuery, int userId, String status, BigDecimal totalprice) {
         try {

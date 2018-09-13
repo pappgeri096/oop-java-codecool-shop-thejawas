@@ -25,16 +25,16 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/", "/index"})
 public class ProductController extends HttpServlet {
+    private CartDao cartDaoMem = CartDaoMem.getInstance();
+    private ProductDao productDaoSql = ProductDaoSql.getInstance();
+    private ProductCategoryDao productCategoryDaoSql = ProductCategoryDaoSql.getInstance();
+    private SupplierDao supplierDaoSql = SupplierDaoSql.getInstance();
+
 
     private static final ch.qos.logback.classic.Logger productControllerLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProductController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        ProductDao productDaoSql = ProductDaoSql.getInstance();
-        ProductCategoryDao productCategoryDaoSql = ProductCategoryDaoSql.getInstance();
-        SupplierDao supplierDaoSql = SupplierDaoSql.getInstance();
-        CartDao cartDaoMem = CartDaoMem.getInstance();
 
         List<Product> productList = productDaoSql.getAll();
 

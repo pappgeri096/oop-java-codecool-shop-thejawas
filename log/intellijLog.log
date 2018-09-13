@@ -11,10 +11,7 @@
 [INFO] Copying 8 resources
 [INFO] 
 [INFO] --- maven-compiler-plugin:3.7.0:compile (default-compile) @ codecoolshop ---
-[INFO] Changes detected - recompiling the module!
-[INFO] Compiling 37 source files to /home/akincsei/IntelliJ/4TW-codecoolShop/target/classes
-[INFO] /home/akincsei/IntelliJ/4TW-codecoolShop/src/main/java/com/codecool/shop/controller/PaypalController.java: /home/akincsei/IntelliJ/4TW-codecoolShop/src/main/java/com/codecool/shop/controller/PaypalController.java uses unchecked or unsafe operations.
-[INFO] /home/akincsei/IntelliJ/4TW-codecoolShop/src/main/java/com/codecool/shop/controller/PaypalController.java: Recompile with -Xlint:unchecked for details.
+[INFO] Nothing to compile - all classes are up to date
 [INFO] 
 [INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ codecoolshop ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
@@ -31,7 +28,7 @@
 [INFO] nonBlocking:false
 [INFO] Classes = /home/akincsei/IntelliJ/4TW-codecoolShop/target/classes
 [INFO] Configuring Jetty for project: codecoolshop
-[INFO] Logging initialized @3573ms to org.eclipse.jetty.util.log.Slf4jLog
+[INFO] Logging initialized @2783ms to org.eclipse.jetty.util.log.Slf4jLog
 [INFO] Context path = /
 [INFO] Tmp directory = /home/akincsei/IntelliJ/4TW-codecoolShop/target/tmp
 [INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
@@ -40,65 +37,215 @@
 [INFO] Webapp directory = /home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp
 [INFO] jetty-9.4.11.v20180605; built: 2018-06-05T18:24:03.829Z; git: d5fc0523cfa96bfebfbda19606cad384d772f04c; jvm 1.8.0_181-b13
 [WARNING] Unknown asm implementation version, assuming version 393216
-[INFO] Scanning elapsed time=362ms
+[INFO] Scanning elapsed time=428ms
 [WARNING] com.codecool.shop.config.TemplateEngineUtil does not implement one of the servlet listener interfaces
-12:12:31,563 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
-12:12:31,563 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
-12:12:31,563 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [file:/home/akincsei/IntelliJ/4TW-codecoolShop/target/classes/logback.xml]
-12:12:31,613 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
-12:12:31,617 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
-12:12:31,622 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
-12:12:31,624 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@7:24 - no applicable action for [withJansi], current ElementPath  is [[configuration][appender][encoder][withJansi]]
-12:12:31,645 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
-12:12:31,648 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [FILE]
-12:12:31,653 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1150413547 - setting totalSizeCap to 30 MB
-12:12:31,655 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1150413547 - Archive files will be limited to [3 MB] each.
-12:12:31,658 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1150413547 - No compression will be used
-12:12:31,659 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1150413547 - Will use the pattern log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html for the active file
-12:12:31,662 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@70ee1963 - The date pattern is 'yyyy-MM-dd' from file name pattern 'log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html'.
-12:12:31,662 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@70ee1963 - Roll-over at midnight.
-12:12:31,665 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@70ee1963 - Setting initial period to Wed Sep 12 12:12:31 CEST 2018
-12:12:31,670 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@27:40 - no applicable action for [outputPatternAsHeader], current ElementPath  is [[configuration][appender][encoder][layout][outputPatternAsHeader]]
-12:12:31,670 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - Active log file name: log/order_logs/2018-09-12/OrderLog.StartedAt.12:00.hours.0.html
-12:12:31,671 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - File property is set to [null]
-12:12:31,672 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.classic.db.DBAppender]
-12:12:31,677 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [DB]
-12:12:31,751 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@70f5f59d - Driver name=PostgreSQL JDBC Driver
-12:12:31,751 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@70f5f59d - Driver version=42.2.4
-12:12:31,751 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@70f5f59d - supportsGetGeneratedKeys=true
-12:12:31,753 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.paypal] to INFO
-12:12:31,753 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.paypal]
-12:12:31,754 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.codecool.shop.controller] to INFO
-12:12:31,754 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.codecool.shop.controller]
-12:12:31,754 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.braintreegateway] to INFO
-12:12:31,754 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.braintreegateway]
-12:12:31,754 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to INFO
-12:12:31,754 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
-12:12:31,754 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [DB] to Logger[ROOT]
-12:12:31,754 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
-12:12:31,755 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@4b61e97 - Registering current configuration as safe fallback point
-12:12:31,539 |-INFO in ch.qos.logback.classic.servlet.LogbackServletContainerInitializer@20a47036 - Adding an instance of  class ch.qos.logback.classic.servlet.LogbackServletContextListener to the current web-app
+14:06:39,285 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+14:06:39,286 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
+14:06:39,286 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [file:/home/akincsei/IntelliJ/4TW-codecoolShop/target/classes/logback.xml]
+14:06:39,339 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+14:06:39,342 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+14:06:39,348 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+14:06:39,349 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@7:24 - no applicable action for [withJansi], current ElementPath  is [[configuration][appender][encoder][withJansi]]
+14:06:39,369 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+14:06:39,372 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [FILE]
+14:06:39,377 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@309271464 - setting totalSizeCap to 30 MB
+14:06:39,381 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@309271464 - Archive files will be limited to [3 MB] each.
+14:06:39,383 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@309271464 - No compression will be used
+14:06:39,385 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@309271464 - Will use the pattern log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html for the active file
+14:06:39,388 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@687e4c93 - The date pattern is 'yyyy-MM-dd' from file name pattern 'log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html'.
+14:06:39,388 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@687e4c93 - Roll-over at midnight.
+14:06:39,391 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@687e4c93 - Setting initial period to Thu Sep 13 14:06:39 CEST 2018
+14:06:39,396 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@27:40 - no applicable action for [outputPatternAsHeader], current ElementPath  is [[configuration][appender][encoder][layout][outputPatternAsHeader]]
+14:06:39,397 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - Active log file name: log/order_logs/2018-09-13/OrderLog.StartedAt.14:00.hours.0.html
+14:06:39,397 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - File property is set to [null]
+14:06:39,398 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.classic.db.DBAppender]
+14:06:39,403 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [DB]
+14:06:39,472 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@36417a54 - Driver name=PostgreSQL JDBC Driver
+14:06:39,472 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@36417a54 - Driver version=42.2.4
+14:06:39,472 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@36417a54 - supportsGetGeneratedKeys=true
+14:06:39,475 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.paypal] to INFO
+14:06:39,475 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.paypal]
+14:06:39,475 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.codecool.shop.controller] to INFO
+14:06:39,475 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.codecool.shop.controller]
+14:06:39,475 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.braintreegateway] to INFO
+14:06:39,475 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.braintreegateway]
+14:06:39,476 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to INFO
+14:06:39,476 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+14:06:39,476 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [DB] to Logger[ROOT]
+14:06:39,476 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+14:06:39,476 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@644ded04 - Registering current configuration as safe fallback point
+14:06:39,258 |-INFO in ch.qos.logback.classic.servlet.LogbackServletContainerInitializer@100c567f - Adding an instance of  class ch.qos.logback.classic.servlet.LogbackServletContextListener to the current web-app
 [INFO] DefaultSessionIdManager workerName=node0
 [INFO] No SessionScavenger set, using defaults
-[INFO] node0 Scavenging every 600000ms
-[INFO] Started o.e.j.m.p.JettyWebAppContext@75dc1c1c{CodecoolShop Application,/,file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/,AVAILABLE}{file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/}
-[INFO] Started ServerConnector@28e91f6d{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
-[INFO] Started @4891ms
+[INFO] node0 Scavenging every 660000ms
+[INFO] Started o.e.j.m.p.JettyWebAppContext@1abc9f14{CodecoolShop Application,/,file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/,AVAILABLE}{file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/}
+[INFO] Started ServerConnector@142bc6c9{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+[INFO] Started @4129ms
 [INFO] Started Jetty Server
 [INFO] Console reloading is ENABLED. Hit ENTER on the console to restart the context.
-[12:12:39.112] [INFO ] c.c.s.controller.ProductController [ProductController.java:48] - Health Energy successfully added to cart 
-[12:12:41.031] [INFO ] c.c.s.controller.ProductController [ProductController.java:48] - Maiden Body Pillow successfully added to cart 
-[12:12:42.719] [INFO ] c.c.s.controller.ProductController [ProductController.java:48] - Amazon Fire HD 8 successfully added to cart 
-[12:12:43.848] [INFO ] c.c.s.controller.PaymentController [CartController.java:38] - Shopping cart editor page displayed 
-[12:12:49.716] [INFO ] c.c.s.controller.PaymentController [CartController.java:58] - New quantity for Health Energy is set to 3 
-[12:12:49.723] [INFO ] c.c.s.controller.PaymentController [CartController.java:58] - New quantity for Amazon Fire HD 8 is set to 2 
-[12:12:49.738] [INFO ] c.c.s.controller.PaymentController [ReviewController.java:37] - Get request received for SHOPPING CART REVIEW page 
-[12:12:52.069] [INFO ] c.c.s.controller.CheckOutController [CheckOutController.java:35] - Get request received for CHECKOUT page 
-[12:12:57.967] [INFO ] c.c.s.controller.CheckOutController [CheckOutController.java:67] - User data is saved in json file. OrderFromMemory ID: 651cdadd-1c16-4d11-a441-fe0d2b80ca9c 
-Sep 12, 2018 12:12:59 PM com.braintreegateway.util.Http httpDo
-INFO: [Braintree] [12/Sep/2018 12:12:59 +0200]] POST /merchants/r63vmkrc39s63j9m/client_token
-[12:12:59.357] [INFO ] c.c.s.controller.PaymentController [PaymentController.java:40] - Get request received for PAYMENT page 
-Sep 12, 2018 12:13:17 PM com.braintreegateway.util.Http httpDo
-INFO: [Braintree] [12/Sep/2018 12:13:17 +0200]] POST /merchants/r63vmkrc39s63j9m/transactions
+[14:06:56.330] [INFO ] c.c.s.controller.ProductController [ProductController.java:48] - Amazon Fire successfully added to cart 
+[14:06:57.635] [INFO ] c.c.s.controller.PaymentController [CartController.java:39] - Shopping cart editor page displayed 
+[14:06:59.020] [INFO ] c.c.s.controller.PaymentController [ReviewController.java:37] - Get request received for SHOPPING CART REVIEW page 
+[14:06:59.907] [INFO ] c.c.s.controller.CheckOutController [CheckOutController.java:41] - Get request received for CHECKOUT page 
+[14:07:04.293] [INFO ] c.c.s.controller.CheckOutController [CheckOutController.java:75] - User data is saved in json file. OrderFromMemory ID: 0d02e6c5-24f0-4f7f-8dfd-6e8ef6bee666 
+Sep 13, 2018 2:07:05 PM com.braintreegateway.util.Http httpDo
+INFO: [Braintree] [13/Sep/2018 14:07:05 +0200]] POST /merchants/r63vmkrc39s63j9m/client_token
+[14:07:05.770] [INFO ] c.c.s.controller.PaymentController [PaymentController.java:40] - Get request received for PAYMENT page 
+{Amazon Fire=1}
+[14:07:08.637] [INFO ] c.c.s.controller.PaymentController [PaypalController.java:51] - Customer is now redirected to paypal.com 
+Cart{cartItemList=[CartItem{id=1, product=id: 1, name: Amazon Fire, defaultPrice: 49.910000, defaultCurrency: USD, productCategory: Tablet, supplier: Amazon, quantity=1}]}
+[14:07:12.341] [INFO ] c.c.s.controller.PaymentController [PaypalController.java:115] - Payment approved by PayPal 
+[14:07:42.859] [INFO ] c.c.s.controller.PaymentController [PaypalPaymentController.java:41] - Payment is successful. PayPal payment ID: PAY-2HR314419T458200LLONFF4A 
 Sent message successfully....
-[12:13:19.455] [INFO ] c.c.s.c.PaymentPayedController [PaymentPayedController.java:41] - Payment approved by online payment service provider 
+Cart{cartItemList=[CartItem{id=1, product=id: 1, name: Amazon Fire, defaultPrice: 49.910000, defaultCurrency: USD, productCategory: Tablet, supplier: Amazon, quantity=1}]}
+Cart{cartItemList=[]}
+[14:07:47.061] [INFO ] c.c.s.c.PaymentPayedController [PaymentPayedController.java:48] - Payment approved by online payment service provider 
+[14:08:20.395] [INFO ] c.c.s.controller.ProductController [ProductController.java:48] - Money Energy successfully added to cart 
+[14:08:21.967] [INFO ] c.c.s.controller.PaymentController [CartController.java:39] - Shopping cart editor page displayed 
+[14:08:25.339] [INFO ] c.c.s.controller.PaymentController [CartController.java:58] - New quantity for Money Energy is set to 2 
+[14:08:25.352] [INFO ] c.c.s.controller.PaymentController [ReviewController.java:37] - Get request received for SHOPPING CART REVIEW page 
+[14:08:26.237] [INFO ] c.c.s.controller.CheckOutController [CheckOutController.java:41] - Get request received for CHECKOUT page 
+[14:08:32.761] [INFO ] c.c.s.controller.CheckOutController [CheckOutController.java:75] - User data is saved in json file. OrderFromMemory ID: 5c5d3596-05c0-47c5-9512-0c4c323d9dd6 
+Sep 13, 2018 2:08:33 PM com.braintreegateway.util.Http httpDo
+INFO: [Braintree] [13/Sep/2018 14:08:33 +0200]] POST /merchants/r63vmkrc39s63j9m/client_token
+[14:08:33.944] [INFO ] c.c.s.controller.PaymentController [PaymentController.java:40] - Get request received for PAYMENT page 
+{Money Energy=2, Amazon Fire=1}
+[14:08:36.157] [INFO ] c.c.s.controller.PaymentController [PaypalController.java:51] - Customer is now redirected to paypal.com 
+Cart{cartItemList=[CartItem{id=1, product=id: 6, name: Money Energy, defaultPrice: 199.890000, defaultCurrency: USD, productCategory: Esoteric, supplier: Earth, quantity=2}]}
+[14:08:38.079] [ERROR] com.paypal.base.HttpConnection [HttpConnection.java:153] - Response code: 400	Error response: {"name":"VALIDATION_ERROR","details":[{"field":"transactions[0]","issue":"Item amount must add up to specified amount subtotal (or total if amount details not specified)"}],"message":"Invalid request - see details","information_link":"https://developer.paypal.com/docs/api/payments/#errors","debug_id":"c5ba04bfad5d6"} 
+[14:08:38.094] [ERROR] c.c.s.controller.PaymentController [PaypalController.java:119] - Payment is not approved by  
+com.paypal.base.rest.PayPalRESTException: Response code: 400	Error response: {"name":"VALIDATION_ERROR","details":[{"field":"transactions[0]","issue":"Item amount must add up to specified amount subtotal (or total if amount details not specified)"}],"message":"Invalid request - see details","information_link":"https://developer.paypal.com/docs/api/payments/#errors","debug_id":"c5ba04bfad5d6"}
+	at com.paypal.base.rest.PayPalRESTException.createFromHttpErrorException(PayPalRESTException.java:72)
+	at com.paypal.base.rest.PayPalResource.execute(PayPalResource.java:431)
+	at com.paypal.base.rest.PayPalResource.configureAndExecute(PayPalResource.java:295)
+	at com.paypal.base.rest.PayPalResource.configureAndExecute(PayPalResource.java:228)
+	at com.paypal.api.payments.Payment.create(Payment.java:149)
+	at com.codecool.shop.controller.PaypalController.executePayment(PaypalController.java:108)
+	at com.codecool.shop.controller.PaypalController.payment(PaypalController.java:99)
+	at com.codecool.shop.controller.PaypalController.doGet(PaypalController.java:53)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:687)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:857)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1655)
+	at org.eclipse.jetty.websocket.server.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:215)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1642)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:533)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:146)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:257)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1595)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1564)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)
+	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:219)
+	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at org.eclipse.jetty.server.Server.handle(Server.java:531)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)
+	at org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)
+	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)
+	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)
+	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)
+	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)
+	at org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: com.paypal.base.exception.HttpErrorException: Response code: 400	Error response: {"name":"VALIDATION_ERROR","details":[{"field":"transactions[0]","issue":"Item amount must add up to specified amount subtotal (or total if amount details not specified)"}],"message":"Invalid request - see details","information_link":"https://developer.paypal.com/docs/api/payments/#errors","debug_id":"c5ba04bfad5d6"}
+	at com.paypal.base.HttpConnection.executeWithStream(HttpConnection.java:162)
+	at com.paypal.base.HttpConnection.execute(HttpConnection.java:65)
+	at com.paypal.base.rest.PayPalResource.execute(PayPalResource.java:417)
+	... 43 common frames omitted
+Caused by: java.io.IOException: Server returned HTTP response code: 400 for URL: https://api.sandbox.paypal.com/v1/payments/payment
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at sun.net.www.protocol.http.HttpURLConnection$10.run(HttpURLConnection.java:1944)
+	at sun.net.www.protocol.http.HttpURLConnection$10.run(HttpURLConnection.java:1939)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.net.www.protocol.http.HttpURLConnection.getChainedException(HttpURLConnection.java:1938)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1508)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1492)
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.getInputStream(HttpsURLConnectionImpl.java:263)
+	at com.paypal.base.HttpConnection.executeWithStream(HttpConnection.java:132)
+	... 45 common frames omitted
+Caused by: java.io.IOException: Server returned HTTP response code: 400 for URL: https://api.sandbox.paypal.com/v1/payments/payment
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1894)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1492)
+	at java.net.HttpURLConnection.getResponseCode(HttpURLConnection.java:480)
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.getResponseCode(HttpsURLConnectionImpl.java:347)
+	at com.paypal.base.HttpConnection.executeWithStream(HttpConnection.java:117)
+	... 45 common frames omitted
+14:08:38,107 |-ERROR in ch.qos.logback.classic.db.DBAppender[DB] - problem appending event java.sql.BatchUpdateException: Batch entry 0 INSERT INTO logging_event_exception (event_id, i, trace_line) VALUES (15811, 0, 'com.paypal.base.rest.PayPalRESTException: Response code: 400	Error response: {"name":"VALIDATION_ERROR","details":[{"field":"transactions[0]","issue":"Item amount must add up to specified amount subtotal (or total if amount details not specified)"}],"message":"Invalid request - see details","information_link":"https://developer.paypal.com/docs/api/payments/#errors","debug_id":"c5ba04bfad5d6"}') was aborted: ERROR: value too long for type character varying(254)  Call getNextException to see other errors in the batch.
+	at java.sql.BatchUpdateException: Batch entry 0 INSERT INTO logging_event_exception (event_id, i, trace_line) VALUES (15811, 0, 'com.paypal.base.rest.PayPalRESTException: Response code: 400	Error response: {"name":"VALIDATION_ERROR","details":[{"field":"transactions[0]","issue":"Item amount must add up to specified amount subtotal (or total if amount details not specified)"}],"message":"Invalid request - see details","information_link":"https://developer.paypal.com/docs/api/payments/#errors","debug_id":"c5ba04bfad5d6"}') was aborted: ERROR: value too long for type character varying(254)  Call getNextException to see other errors in the batch.
+	at 	at org.postgresql.jdbc.BatchResultHandler.handleError(BatchResultHandler.java:148)
+	at 	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2184)
+	at 	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:481)
+	at 	at org.postgresql.jdbc.PgStatement.executeBatch(PgStatement.java:840)
+	at 	at org.postgresql.jdbc.PgPreparedStatement.executeBatch(PgPreparedStatement.java:1567)
+	at 	at ch.qos.logback.classic.db.DBAppender.insertThrowable(DBAppender.java:288)
+	at 	at ch.qos.logback.classic.db.DBAppender.secondarySubAppend(DBAppender.java:115)
+	at 	at ch.qos.logback.classic.db.DBAppender.secondarySubAppend(DBAppender.java:43)
+	at 	at ch.qos.logback.core.db.DBAppenderBase.append(DBAppenderBase.java:108)
+	at 	at ch.qos.logback.core.UnsynchronizedAppenderBase.doAppend(UnsynchronizedAppenderBase.java:84)
+	at 	at ch.qos.logback.core.spi.AppenderAttachableImpl.appendLoopOnAppenders(AppenderAttachableImpl.java:51)
+	at 	at ch.qos.logback.classic.Logger.appendLoopOnAppenders(Logger.java:270)
+	at 	at ch.qos.logback.classic.Logger.callAppenders(Logger.java:257)
+	at 	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:421)
+	at 	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:383)
+	at 	at ch.qos.logback.classic.Logger.error(Logger.java:538)
+	at 	at com.codecool.shop.controller.PaypalController.executePayment(PaypalController.java:119)
+	at 	at com.codecool.shop.controller.PaypalController.payment(PaypalController.java:99)
+	at 	at com.codecool.shop.controller.PaypalController.doGet(PaypalController.java:53)
+	at 	at javax.servlet.http.HttpServlet.service(HttpServlet.java:687)
+	at 	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at 	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:857)
+	at 	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1655)
+	at 	at org.eclipse.jetty.websocket.server.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:215)
+	at 	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1642)
+	at 	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:533)
+	at 	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:146)
+	at 	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
+	at 	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at 	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:257)
+	at 	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1595)
+	at 	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)
+	at 	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)
+	at 	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)
+	at 	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)
+	at 	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1564)
+	at 	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)
+	at 	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)
+	at 	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)
+	at 	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:219)
+	at 	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)
+	at 	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at 	at org.eclipse.jetty.server.Server.handle(Server.java:531)
+	at 	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)
+	at 	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)
+	at 	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)
+	at 	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)
+	at 	at org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)
+	at 	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)
+	at 	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)
+	at 	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)
+	at 	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)
+	at 	at org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)
+	at 	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)
+	at 	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)
+	at 	at java.lang.Thread.run(Thread.java:748)
+Caused by: org.postgresql.util.PSQLException: ERROR: value too long for type character varying(254)
+	at 	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2440)
+	at 	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2183)
+	at 	... 54 common frames omitted
+[14:08:38.113] [ERROR] c.c.s.c.PaymentCanceledController [PaymentCanceledController.java:30] - Payment cancelled by online payment service provider. See details above at line containing [ERROR com.paypal.base.HttpConnection logger]. 

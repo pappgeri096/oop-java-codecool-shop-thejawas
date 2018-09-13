@@ -20,19 +20,19 @@ import org.slf4j.LoggerFactory;
 
 @WebServlet(urlPatterns = {"/review"})
 public class ReviewController extends HttpServlet {
+    CartDao cartDaoMem = CartDaoMem.getInstance();
 
     private static final Logger reviewLogger = LoggerFactory.getLogger(PaymentController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        CartDao orderDataStore = CartDaoMem.getInstance();
-        Cart currentOrder = orderDataStore.getCurrent();
+        Cart currentOrder = cartDaoMem.getCurrent();
 
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("orderMem", currentOrder);
-        context.setVariable("totalPrice", orderDataStore.getTotalPrice());
+        context.setVariable("totalPrice", cartDaoMem.getTotalPrice());
         engine.process("product/review.html", context, resp.getWriter());
         reviewLogger.info("Get request received for SHOPPING CART REVIEW page");
     }

@@ -1,6 +1,7 @@
 package com.codecool.shop.model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Currency;
 
 public class Product extends BaseModel {
@@ -39,12 +40,12 @@ public class Product extends BaseModel {
     }
 
     private void setPrice(BigDecimal price, String currency) {
-        this.defaultPrice = price;
+        this.defaultPrice = price.setScale(2, RoundingMode.HALF_UP);
         this.defaultCurrency = Currency.getInstance(currency);
     }
 
     public BigDecimal getDefaulPrice(){
-        return defaultPrice;
+        return defaultPrice.setScale(2, RoundingMode.HALF_UP);
     }
 
     public ProductCategory getProductCategory() {

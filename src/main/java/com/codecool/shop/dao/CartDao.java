@@ -11,8 +11,9 @@ public interface CartDao extends BaseDAO<Cart> {
 
     Cart getCurrent();
     BigDecimal getTotalPrice();
-    void createUserDataMap(List<String> userData);
-    Map<String, String> getUserDataMap();
+
+//    void createUserDataMap(List<String> userData);
+//    Map<String, String> getUserDataMap();
     void createProductNameAndQuantityMaps();
     Map<String, Integer> getProductNameAndQuantityMap();
 }

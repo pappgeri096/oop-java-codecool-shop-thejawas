@@ -34,4 +34,13 @@ public class CartItem {
         BigDecimal subtotal = bigDecimalSubtotal.setScale(2, RoundingMode.HALF_UP);
         return subtotal.toString() + " " + product.getDefaultCurrency();
     }
+
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "id=" + id +
+                ", product=" + product +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

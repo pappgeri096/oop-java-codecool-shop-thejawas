@@ -2,7 +2,9 @@ package com.codecool.shop.controller;
 
 
 import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.CustomerDao;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.dao.implementation.Memory.CustomerDaoMem;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.CartItem;
 import com.paypal.api.payments.*;
@@ -26,27 +28,18 @@ import java.util.Map;
 @WebServlet(urlPatterns = {"/paypal"})
 public class PaypalController extends HttpServlet {
 
-    private String clientID;
-    private String SecretID;
-    private CartDao cartDaoMem;
-    private Cart currentOrder;
-    private Map<String, String> userDataMap;
-    private Map<String, Integer> productNameAndQuantityMap;
+    private CartDao cartDaoMem = CartDaoMem.getInstance();
+    private Map<String, Integer> productNameAndQuantityMap = cartDaoMem.getProductNameAndQuantityMap();
+
+    private CustomerDao customerDaoMem = CustomerDaoMem.getInstance();
+    private Map<String, String> userDataMap = customerDaoMem.getUserDataMap();
+
     private static final Logger paypalLogger = LoggerFactory.getLogger(PaymentController.class);
 
 
-    public PaypalController() {
-        this.clientID = "AWTqmvOfxu2VnNifNQblRmD8ty6zvuam7Hh_k36MHk8sbYuZdEtR3gneLyuK_3A7E_AzZm0AWr-rNVA3";
-        SecretID = "ECYgXqdlLBxQsCHhdwMt4yz1LU5O5n6chmJe3EHrhGftsUOiN5PbmergN_0_lqQcFl-JzzC1ep68JG5I";
-        cartDaoMem = CartDaoMem.getInstance();
-        currentOrder = cartDaoMem.getCurrent();
-        userDataMap = ((CartDaoMem) cartDaoMem).getUserDataMap();
-        productNameAndQuantityMap = ((CartDaoMem) cartDaoMem).getProductNameAndQuantityMap();
-    }
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        System.out.println(productNameAndQuantityMap.toString());
         if (userDataMap.size() == 0 || productNameAndQuantityMap.size() == 0) {
             resp.sendRedirect("/");
             paypalLogger.debug("Empty user data or product quantity");
@@ -60,6 +53,28 @@ public class PaypalController extends HttpServlet {
         payment(resp);
 
     }
+
+    private void getItems(List items) {
+        Cart currentCart = cartDaoMem.getCurrent(); // TODO: BUG IS HERE
+        System.out.println(currentCart);
+        for (Map.Entry<String, Integer> entry : productNameAndQuantityMap.entrySet()) {
+
+            String name = entry.getKey();
+            String quantity = Integer.toString(entry.getValue());
+            String price = "1.1";
+
+            for (CartItem item : currentCart.getCartItemList()) {
+                if (item.getProduct().getName().equals(name)) {
+                    price = String.valueOf(item.getProduct().getDefaulPrice());
+                    break;
+                }
+
+            }
+
+            addItem(items, name, quantity, price);
+        }
+    }
+
 
     private void payment(HttpServletResponse resp) throws IOException {
         ShippingAddress address = getAddress();
@@ -86,7 +101,10 @@ public class PaypalController extends HttpServlet {
 
     private void executePayment(HttpServletResponse resp, Payment payment) throws IOException {
         try {
-            APIContext apiContext = new APIContext(clientID, SecretID, "sandbox");
+            String clientID = "AWTqmvOfxu2VnNifNQblRmD8ty6zvuam7Hh_k36MHk8sbYuZdEtR3gneLyuK_3A7E_AzZm0AWr-rNVA3";
+            String secretID = "ECYgXqdlLBxQsCHhdwMt4yz1LU5O5n6chmJe3EHrhGftsUOiN5PbmergN_0_lqQcFl-JzzC1ep68JG5I";
+
+            APIContext apiContext = new APIContext(clientID, secretID, "sandbox");
             Payment createdPayment = payment.create(apiContext);
 
             Iterator links = createdPayment.getLinks().iterator();
@@ -157,25 +175,6 @@ public class PaypalController extends HttpServlet {
         list.setItems(items);
         list.setShippingAddress(address);
         return list;
-    }
-
-    private void getItems(List items) {
-        for (Map.Entry<String, Integer> entry : productNameAndQuantityMap.entrySet()) {
-
-            String name = entry.getKey();
-            String quantity = Integer.toString(entry.getValue());
-            String price = "1.1";
-
-            for (CartItem item : currentOrder.getCartItemList()) {
-                if (item.getProduct().getName().equals(name)) {
-                    price = String.valueOf(item.getProduct().getDefaulPrice());
-                    break;
-                }
-
-            }
-
-            addItem(items, name, quantity, price);
-        }
     }
 
     private void addItem(List items, String name, String quantity, String price) {

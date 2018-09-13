@@ -2,9 +2,12 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.CustomerDao;
 import com.codecool.shop.dao.implementation.JSON.CartDaoJson;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.dao.implementation.Memory.CustomerDaoMem;
 import com.codecool.shop.model.Cart;
+import com.codecool.shop.model.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +28,9 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/checkout"})
 public class CheckOutController extends HttpServlet {
 
+    private CartDao cartDao = CartDaoMem.getInstance();
+    private CustomerDao customerDao = CustomerDaoMem.getInstance();
+
     private static final Logger checkoutLogger = LoggerFactory.getLogger(CheckOutController.class);
 
     @Override
@@ -37,9 +43,8 @@ public class CheckOutController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        CartDao orderDataStore = CartDaoMem.getInstance();
-        Cart orderMem = orderDataStore.getCurrent();
-        List<String> userData = new ArrayList<>();
+        Cart cartMem = cartDao.getCurrent();
+        List<String> customerData = new ArrayList<>();
         List<String> formNames = Arrays.asList("name", "email", "phonenumber", "countryBill",
                 "cityBill", "zipcodeBill",
                 "addressBill", "sameAddress", "countryShip", "cityShip",
@@ -47,17 +52,20 @@ public class CheckOutController extends HttpServlet {
         for (String formName : formNames) {
             if (formName.equals("sameAddress") && req.getParameter(formName) != null && req.getParameter(formName).equals("true")) {
                 for (int i = 3; i < 7; i++) {
-                    userData.add(userData.get(i));
+                    customerData.add(customerData.get(i));
                 }
                 break;
             } else if (!formName.equals("sameAddress")) {
-                userData.add(req.getParameter(formName));
+                customerData.add(req.getParameter(formName));
             }
         }
-        ((CartDaoMem) orderDataStore).createUserDataMap(userData);
+//        cartDao.createUserDataMap(customerData);
+        Customer newCustomer = new Customer(customerData);
+        customerDao.add(newCustomer);
+        customerDao.createUserDataMap();
 
         CartDaoJson writeOrderDataToFile = new CartDaoJson();
-        writeOrderDataToFile.add(orderMem);
+        writeOrderDataToFile.add(cartMem);
 
 //        CartDao serializeOrder = new CartDaoJson();
 //        String serializedOrder = ((CartDaoJson) serializeOrder).orderToJsonString(orderMem);

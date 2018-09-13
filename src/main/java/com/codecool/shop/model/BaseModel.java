@@ -11,6 +11,11 @@ public class BaseModel {
     BaseModel() {
     }
 
+    public BaseModel(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     BaseModel(String name, String description) {
         this.name = name;
         this.description = description;

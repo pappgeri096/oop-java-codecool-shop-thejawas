@@ -28,25 +28,29 @@ import java.util.Map;
 @WebServlet(urlPatterns = {"/paypal"})
 public class PaypalController extends HttpServlet {
 
-    private CartDao cartDaoMem = CartDaoMem.getInstance();
-
-
-    private CustomerDao customerDaoMem = CustomerDaoMem.getInstance();
-    private Map<String, String> userDataMap = customerDaoMem.getCustomerDataMap();
-    Map<String, Integer> productNameAndQuantityMap = cartDaoMem.getProductNameAndQuantityMap();
-
     private static final Logger paypalLogger = LoggerFactory.getLogger(PaymentController.class);
+
+    private CartDao cartHandler = CartDaoMem.getInstance();
+    private Map<String, Integer> productNameAndQuantityMap = cartHandler.getProductNameAndQuantityMap();
+
+    private CustomerDao customerHandler = CustomerDaoMem.getInstance();
+    private Map<String, String> customerDataMap = customerHandler.getCustomerDataMap();
+
+//    private CartDao cartDaoSql = CartDaoSql.getInstance();
+//    private CustomerDao customerDaoSql = CustomerDaoSql.getInstance();
+//    private Map<String, String> userDataMap = customerDaoSql.getCustomerDataMap();
+//    private Map<String, Integer> productNameAndQuantityMap = cartDaoSql.getProductNameAndQuantityMap();
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        if (userDataMap.size() == 0 || productNameAndQuantityMap.size() == 0) {
+        if (customerDataMap.size() == 0 || productNameAndQuantityMap.size() == 0) {
             resp.sendRedirect("/");
             paypalLogger.debug("Empty user data or product quantity");
             paypalLogger.debug(
                     "User data size: {}. Product quantity: {}",
-                    userDataMap.size(),
+                    customerDataMap.size(),
                     productNameAndQuantityMap.size());
         }
         paypalLogger.info("Customer is now redirected to paypal.com");
@@ -59,7 +63,7 @@ public class PaypalController extends HttpServlet {
     private void payment(HttpServletResponse resp) throws IOException {
         ShippingAddress address = getAddress();
 
-        List items = new ArrayList();
+        List<Item> items = new ArrayList<>();
         getItems(items);
 
         ItemList list = getItemList(address, items);
@@ -80,7 +84,7 @@ public class PaypalController extends HttpServlet {
     }
 
     private void getItems(List items) {
-        Cart currentCart = cartDaoMem.getCurrent();
+        Cart currentCart = cartHandler.getCurrent();
 
         for (Map.Entry<String, Integer> entry : productNameAndQuantityMap.entrySet()) {
 
@@ -100,7 +104,7 @@ public class PaypalController extends HttpServlet {
         }
     }
 
-    private void addItem(List items, String name, String quantity, String price) {
+    private void addItem(List<Item> items, String name, String quantity, String price) {
         Item item = new Item();
         item.setName(name);
 
@@ -179,11 +183,11 @@ public class PaypalController extends HttpServlet {
     private Amount getAmount() {
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal(Double.toString(cartDaoMem.getTotalPrice().doubleValue()));
+        amount.setTotal(Double.toString(cartHandler.getTotalPrice().doubleValue()));
         return amount;
     }
 
-    private ItemList getItemList(ShippingAddress address, List items) {
+    private ItemList getItemList(ShippingAddress address, List<Item> items) {
         ItemList list = new ItemList();
         list.setItems(items);
         list.setShippingAddress(address);
@@ -192,12 +196,12 @@ public class PaypalController extends HttpServlet {
 
     private ShippingAddress getAddress() {
         ShippingAddress address = new ShippingAddress();
-        address.setPhone(userDataMap.get("telephoneNumber"));
+        address.setPhone(customerDataMap.get("telephoneNumber"));
         address.setCountryCode("HU");
-        address.setCity(userDataMap.get("cityBill"));
-        address.setLine1(userDataMap.get("addressBill"));
-        address.setPostalCode(userDataMap.get("zipCodeBill"));
-        address.setState(userDataMap.get("Pest"));
+        address.setCity(customerDataMap.get("cityBill"));
+        address.setLine1(customerDataMap.get("addressBill"));
+        address.setPostalCode(customerDataMap.get("zipCodeBill"));
+        address.setState(customerDataMap.get("Pest"));
         return address;
     }
 

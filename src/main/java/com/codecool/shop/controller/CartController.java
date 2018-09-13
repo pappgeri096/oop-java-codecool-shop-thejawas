@@ -23,9 +23,14 @@ import org.slf4j.LoggerFactory;
 @WebServlet(urlPatterns = {"/cart"})
 public class CartController extends HttpServlet {
 
-    private CartDao cartDaoMem = CartDaoMem.getInstance();
-    Cart currentOrder = cartDaoMem.getCurrent();
     private static final Logger cartLogger = LoggerFactory.getLogger(PaymentController.class);
+
+    private CartDao cartHandler = CartDaoMem.getInstance();
+    private Cart currentOrder = cartHandler.getCurrent();
+
+//    private CartDao cartDaoSql = CartDaoSql.getInstance();
+//    private Cart currentOrderSql = cartDaoSql.getCurrent();
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -60,7 +65,7 @@ public class CartController extends HttpServlet {
                 }
             }
         }
-        cartDaoMem.createProductNameAndQuantityMaps();
+        cartHandler.createProductNameAndQuantityMaps();
 
         if (currentOrder.getCartItemList().size()>0) {
             resp.sendRedirect("/review");

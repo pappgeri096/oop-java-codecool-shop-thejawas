@@ -13,7 +13,9 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/braintree"})
 public class BrainTreeController  extends HttpServlet {
 
-    private CartDao cartDao = CartDaoMem.getInstance();
+    private CartDao cartHandler = CartDaoMem.getInstance();
+
+//    private CartDao cartHandler = CartDaoSql.getInstance();
 
     private static BraintreeGateway gateway = new BraintreeGateway(
             Environment.SANDBOX,
@@ -34,7 +36,7 @@ public class BrainTreeController  extends HttpServlet {
 
         String nonce = req.getParameter("payment_method_nonce");
         TransactionRequest request = new TransactionRequest()
-                .amount(cartDao.getTotalPrice())
+                .amount(cartHandler.getTotalPrice())
                 .paymentMethodNonce(nonce)
                 .options()
                 .submitForSettlement(true)

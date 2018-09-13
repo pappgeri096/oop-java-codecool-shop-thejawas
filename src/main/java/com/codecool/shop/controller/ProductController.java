@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import com.codecool.shop.model.BaseModel;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -42,18 +41,17 @@ import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
 @WebServlet(urlPatterns = {"/", "/index"})
 public class ProductController extends HttpServlet {
 
+    private static final ch.qos.logback.classic.Logger productControllerLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProductController.class);
+
     private CartDao cartHandler = CartDaoMem.getInstance();
     private ProductDao productHandler = ProductDaoMem.getInstance();
     private ProductCategoryDao productCategoryHandler = ProductCategoryDaoMem.getInstance();
     private SupplierDao supplierHandler = SupplierDaoMem.getInstance();
 
-
+//    private CartDao cartHandler = CartDaoSql.getInstance();
 //    private ProductDao productDaoSql = ProductDaoSql.getInstance();
 //    private ProductCategoryDao productCategoryDaoSql = ProductCategoryDaoSql.getInstance();
 //    private SupplierDao supplierDaoSql = SupplierDaoSql.getInstance();
-
-
-    private static final ch.qos.logback.classic.Logger productControllerLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProductController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

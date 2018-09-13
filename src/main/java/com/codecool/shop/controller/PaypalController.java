@@ -56,7 +56,7 @@ public class PaypalController extends HttpServlet {
 
     private void getItems(List items) {
         Cart currentCart = cartDaoMem.getCurrent(); // TODO: BUG IS HERE
-        System.out.println(currentCart);
+        System.out.println("Content of card in paypal controller before payment" + currentCart);
         for (Map.Entry<String, Integer> entry : productNameAndQuantityMap.entrySet()) {
 
             String name = entry.getKey();

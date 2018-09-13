@@ -29,17 +29,18 @@ import java.util.Map;
 public class PaypalController extends HttpServlet {
 
     private CartDao cartDaoMem = CartDaoMem.getInstance();
-    private Map<String, Integer> productNameAndQuantityMap = cartDaoMem.getProductNameAndQuantityMap();
+
 
     private CustomerDao customerDaoMem = CustomerDaoMem.getInstance();
-    private Map<String, String> userDataMap = customerDaoMem.getUserDataMap();
+    private Map<String, String> userDataMap = customerDaoMem.getCustomerDataMap();
+    Map<String, Integer> productNameAndQuantityMap = cartDaoMem.getProductNameAndQuantityMap();
 
     private static final Logger paypalLogger = LoggerFactory.getLogger(PaymentController.class);
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(productNameAndQuantityMap.toString());
+
         if (userDataMap.size() == 0 || productNameAndQuantityMap.size() == 0) {
             resp.sendRedirect("/");
             paypalLogger.debug("Empty user data or product quantity");
@@ -52,27 +53,6 @@ public class PaypalController extends HttpServlet {
         //execute payment
         payment(resp);
 
-    }
-
-    private void getItems(List items) {
-        Cart currentCart = cartDaoMem.getCurrent(); // TODO: BUG IS HERE
-        System.out.println("Content of card in paypal controller before payment" + currentCart);
-        for (Map.Entry<String, Integer> entry : productNameAndQuantityMap.entrySet()) {
-
-            String name = entry.getKey();
-            String quantity = Integer.toString(entry.getValue());
-            String price = "1.1";
-
-            for (CartItem item : currentCart.getCartItemList()) {
-                if (item.getProduct().getName().equals(name)) {
-                    price = String.valueOf(item.getProduct().getDefaulPrice());
-                    break;
-                }
-
-            }
-
-            addItem(items, name, quantity, price);
-        }
     }
 
 
@@ -98,6 +78,39 @@ public class PaypalController extends HttpServlet {
 
         executePayment(resp, payment);
     }
+
+    private void getItems(List items) {
+        Cart currentCart = cartDaoMem.getCurrent();
+
+        for (Map.Entry<String, Integer> entry : productNameAndQuantityMap.entrySet()) {
+
+            String name = entry.getKey();
+            String quantity = Integer.toString(entry.getValue());
+            String price = "1.1";
+
+            for (CartItem item : currentCart.getCartItemList()) {
+                if (item.getProduct().getName().equals(name)) {
+                    price = String.valueOf(item.getProduct().getDefaulPrice());
+                    break;
+                }
+
+            }
+
+            addItem(items, name, quantity, price);
+        }
+    }
+
+    private void addItem(List items, String name, String quantity, String price) {
+        Item item = new Item();
+        item.setName(name);
+
+        item.setPrice(price);
+        item.setCategory("PHYSICAL");
+        item.setQuantity(quantity);
+        item.setCurrency("USD");
+        items.add(item);
+    }
+
 
     private void executePayment(HttpServletResponse resp, Payment payment) throws IOException {
         try {
@@ -175,17 +188,6 @@ public class PaypalController extends HttpServlet {
         list.setItems(items);
         list.setShippingAddress(address);
         return list;
-    }
-
-    private void addItem(List items, String name, String quantity, String price) {
-        Item item = new Item();
-        item.setName(name);
-
-        item.setPrice(price);
-        item.setCategory("PHYSICAL");
-        item.setQuantity(quantity);
-        item.setCurrency("USD");
-        items.add(item);
     }
 
     private ShippingAddress getAddress() {

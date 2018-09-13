@@ -8,6 +8,7 @@ import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
 import com.codecool.shop.dao.implementation.Memory.CustomerDaoMem;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Customer;
+import com.codecool.shop.util.CustomerContactLabel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,31 +46,25 @@ public class CheckOutController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Cart cartMem = cartDao.getCurrent();
         List<String> customerData = new ArrayList<>();
-        List<String> formNames = Arrays.asList("name", "email", "phonenumber", "countryBill",
-                "cityBill", "zipcodeBill",
-                "addressBill", "sameAddress", "countryShip", "cityShip",
-                "zipcodeShip", "addressShip");
-        for (String formName : formNames) {
-            if (formName.equals("sameAddress") && req.getParameter(formName) != null && req.getParameter(formName).equals("true")) {
+
+        String SAME_ADDRESS_INPUT = req.getParameter("sameAddress");
+        for (CustomerContactLabel labelEnum : CustomerContactLabel.values()) {
+            String enumInString = labelEnum.getInputString();
+            if (enumInString.equals("sameAddress") && SAME_ADDRESS_INPUT != null && SAME_ADDRESS_INPUT.equals("true")) {
                 for (int i = 3; i < 7; i++) {
                     customerData.add(customerData.get(i));
                 }
                 break;
-            } else if (!formName.equals("sameAddress")) {
-                customerData.add(req.getParameter(formName));
+            } else if (!enumInString.equals("sameAddress")) {
+                customerData.add(req.getParameter(enumInString));
             }
         }
-//        cartDao.createUserDataMap(customerData);
-        Customer newCustomer = new Customer(customerData);
-        customerDao.add(newCustomer);
+
+        customerDao.add(new Customer(customerData));
         customerDao.createUserDataMap();
 
         CartDaoJson writeOrderDataToFile = new CartDaoJson();
         writeOrderDataToFile.add(cartMem);
-
-//        CartDao serializeOrder = new CartDaoJson();
-//        String serializedOrder = ((CartDaoJson) serializeOrder).orderToJsonString(orderMem);
-//        checkoutLogger.warn(serializedOrder);
 
         String uuidString = writeOrderDataToFile.getUuidString();
         checkoutLogger.info("User data is saved in json file. OrderFromMemory ID: {}", uuidString);

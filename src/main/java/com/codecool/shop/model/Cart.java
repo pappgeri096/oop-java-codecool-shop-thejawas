@@ -8,10 +8,6 @@ public class Cart extends BaseModel {
 
     private List<CartItem> cartItemList = new ArrayList<>();
 
-    public Cart() {
-        cartItemList.clear();
-    }
-
     public void addProduct(Product product) {
         boolean wasProductFound = false;
         for (CartItem cartItem : cartItemList) {

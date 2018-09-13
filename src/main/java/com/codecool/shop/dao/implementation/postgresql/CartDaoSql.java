@@ -178,4 +178,9 @@ public class CartDaoSql extends DaoSqlConnectionDML implements CartDao {
         }
 
     }
+
+    @Override
+    public void clearProductNameAndQuantityMap() {
+
+    }
 }

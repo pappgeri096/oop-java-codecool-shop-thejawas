@@ -13,13 +13,8 @@ public class CartDaoMem implements CartDao {
 
     private List<Cart> data = new ArrayList<>();
 
-    private Map<String, String> userDataMap = new HashMap<>(); // TODO: moves to customer
     private Map<String, Integer> productNameAndQuantityMap = new HashMap<>();
-    private List<String> checkoutData = Arrays.asList("fullName", "emailAddress", " telephoneNumber", "countryBill", "cityBill", "zipCodeBill", "addressBill", "countryShip", "cityShip", "zipCodeShip", "addressShip"); // TODO: moves to customer
 
-
-    /* A private Constructor prevents any other class from instantiating.
-     */
     private CartDaoMem() {
     }
 
@@ -32,7 +27,6 @@ public class CartDaoMem implements CartDao {
 
     @Override
     public void add(Cart objectType) {
-        data.clear();
         objectType.setId(data.size() + 1);
         data.add(objectType);
     }
@@ -66,18 +60,6 @@ public class CartDaoMem implements CartDao {
         return sumPrice.setScale(2, RoundingMode.HALF_UP);
     }
 
-//    @Override
-//    public void createUserDataMap(List<String> userData) { // TODO: moves to customerdao
-//        for (int i = 0; i < 11; i++) {
-//            this.userDataMap.put(checkoutData.get(i), userData.get(i));
-//        }
-//    }
-
-//    @Override
-//    public Map<String, String> getUserDataMap() {
-//        return userDataMap;
-//    } // TODO: moves to customerdao
-//
     @Override
     public void createProductNameAndQuantityMaps() {
         for (CartItem cartItem : getCurrent().getCartItemList()) {
@@ -88,5 +70,10 @@ public class CartDaoMem implements CartDao {
     @Override
     public Map<String, Integer> getProductNameAndQuantityMap() {
         return productNameAndQuantityMap;
+    }
+
+    @Override
+    public void clearProductNameAndQuantityMap() {
+        productNameAndQuantityMap.clear();
     }
 }

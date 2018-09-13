@@ -7,11 +7,9 @@ import java.util.Map;
 public interface CustomerDao extends BaseDAO<Customer> {
 
     Customer getCurrent();
-    Map<String, String> getUserDataMap();
+    Map<String, String> getCustomerDataMap();
     void createUserDataMap();
 
-//    void createProductNameAndQuantityMaps();
-//    Map<String, Integer> getProductNameAndQuantityMap();
-
+    void clearCustomerDataMap();
 
 }

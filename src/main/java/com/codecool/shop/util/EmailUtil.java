@@ -95,8 +95,8 @@ public class EmailUtil {
 
         Cart currentOrder = cartDaoMem.getCurrent();
 
-        Map<String, String> customerDataMap = customerDaoMem.getUserDataMap();
-//        Map<String, String> userDataMap = ((CartDaoMem) cartDaoMem).getUserDataMap();
+        Map<String, String> customerDataMap = customerDaoMem.getCustomerDataMap();
+//        Map<String, String> userDataMap = ((CartDaoMem) cartDaoMem).getCustomerDataMap();
 
 
         List<CartItem> cartItemList = currentOrder.getCartItemList();

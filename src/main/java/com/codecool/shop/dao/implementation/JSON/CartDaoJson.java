@@ -125,7 +125,7 @@ public class CartDaoJson {
 
     private Map<String, String> joinMaps(String uuidString) {
         Map<String, Integer> productNameAndQuantityMap = cartDaoMem.getProductNameAndQuantityMap();
-        Map<String, String> customerDataMap = customerDaoMem.getUserDataMap();
+        Map<String, String> customerDataMap = customerDaoMem.getCustomerDataMap();
 
 
         Map<String, String> orderDataMap = new HashMap<>();

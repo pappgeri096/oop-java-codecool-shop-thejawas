@@ -2,7 +2,9 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.CustomerDao;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.dao.implementation.Memory.CustomerDaoMem;
 import com.codecool.shop.dao.implementation.postgresql.CartDaoSql;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.util.EmailUtil;
@@ -24,6 +26,7 @@ import org.slf4j.LoggerFactory;
 public class PaymentPayedController extends HttpServlet {
 
     CartDao cartDaoMem = CartDaoMem.getInstance();
+    CustomerDao customerDao = CustomerDaoMem.getInstance();
     CartDao cartDaoSql = CartDaoSql.getInstance();
 
     private static final Logger paymentPayedLogger = LoggerFactory.getLogger(PaymentPayedController.class);
@@ -38,13 +41,11 @@ public class PaymentPayedController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("payment/payed.html", context, resp.getWriter());
 
-//        OrderDaoSql.getSingletonInstance().add(OrderDaoMem.getInstance().getCurrent());
-//        OrderDaoMem.getInstance().add(new Order());
-
-        System.out.println(cartDaoMem.getCurrent());
         cartDaoSql.add(cartDaoMem.getCurrent());
         cartDaoMem.add(new Cart());
-        System.out.println(cartDaoMem.getCurrent());
+        cartDaoMem.clearProductNameAndQuantityMap();
+        customerDao.clearCustomerDataMap();
+
         paymentPayedLogger.info("Payment approved by online payment service provider");
 
     }

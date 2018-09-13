@@ -1,7 +1,6 @@
 package com.codecool.shop.dao.implementation.Memory;
 
 import com.codecool.shop.dao.CustomerDao;
-import com.codecool.shop.model.CartItem;
 import com.codecool.shop.model.Customer;
 
 import java.util.*;
@@ -12,8 +11,7 @@ public class CustomerDaoMem implements CustomerDao {
     private List<Customer> data = new ArrayList<>();
 
     private List<String> checkoutData = Arrays.asList("fullName", "emailAddress", " telephoneNumber", "countryBill", "cityBill", "zipCodeBill", "addressBill", "countryShip", "cityShip", "zipCodeShip", "addressShip"); // TODO: moves to customer
-    private Map<String, String> userDataMap = new HashMap<>();
-    private Map<String, Integer> productNameAndQuantityMap = new HashMap<>();
+    private Map<String, String> customerDataMap = new HashMap<>();
 
     private CustomerDaoMem() {
     }
@@ -55,25 +53,17 @@ public class CustomerDaoMem implements CustomerDao {
     @Override
     public void createUserDataMap() {
         for (int i = 0; i < 11; i++) {
-            this.userDataMap.put(checkoutData.get(i), getCurrent().getCustomerInputData().get(i));
+            this.customerDataMap.put(checkoutData.get(i), getCurrent().getCustomerInputData().get(i));
         }
     }
 
     @Override
-    public Map<String, String> getUserDataMap() {
-        return userDataMap;
+    public Map<String, String> getCustomerDataMap() {
+        return customerDataMap;
     }
 
-//    @Override
-//    public void createProductNameAndQuantityMaps() {
-//        for (CartItem cartItem : getCurrent().getCartItemList()) {
-//            productNameAndQuantityMap.put(cartItem.getProduct().getName(), cartItem.getQuantity());
-//        }
-//    }
-//
-//    @Override
-//    public Map<String, Integer> getProductNameAndQuantityMap() {
-//        return productNameAndQuantityMap;
-//    }
-
+    @Override
+    public void clearCustomerDataMap() {
+        customerDataMap.clear();
+    }
 }

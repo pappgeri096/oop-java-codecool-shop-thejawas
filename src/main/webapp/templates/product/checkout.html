@@ -3,64 +3,107 @@
 <head>
     <meta charset="UTF-8">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
 
-    <link rel="stylesheet" type="text/css" href="static/css/checkout.css">
+    <link rel="stylesheet" href="https://bootswatch.com/3/flatly/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://bootswatch.com/3/flatly/_variables.less">
+
+    <link rel="stylesheet" href="https://bootswatch.com/3/flatly/_bootswatch.scss">
+
+    <link rel="stylesheet" href="static/css/checkout.css">
+
     <title>Checkout</title>
 </head>
 <body>
-<div class="mx-auto" style="width: 30%;">
-<form action="/checkout" method="post">
-    <div class="form-group mx-auto">
-    <label>Name</label>
-    <input class="form-control" placeholder="Enter your name" type="text" name="name" required ><br>
-
-    <label>Email address</label>
-    <input class="form-control" placeholder="Enter email" type="text" name="email" required ><br>
-
-    <label>Phone Number</label>
-    <input class="form-control" placeholder="06-20-458-4578" type="text"  name="phonenumber" required ><br>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Codecool shop</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+        </div>
     </div>
+</nav>
+<div class="container" style="margin-bottom: 15px">
+    <div class="col-lg-6 col-lg-offset-3">
+        <h3 class="bg-success text-white p-5">Personal Info</h3>
+        <form action="/checkout" method="post">
+            <div class="form-group mx-auto">
+                Name
+                <input class="form-control" placeholder="Enter your name" type="text" name="name" required ><br>
 
-    <div class="form-group">
-    <label>Billing Address</label><br>
+                Email address
+                <input class="form-control" placeholder="Enter email" type="text" name="email" required ><br>
 
-    <label>Country:<br></label>
-    <input class="form-control" type="text" name="countryBill" required><br>
+                Phone Number
+                <input class="form-control" placeholder="06-20-458-4578" type="text"  name="phonenumber" required ><br>
+            </div>
 
-    <label>City</label>
-    <input class="form-control" type="text" name="cityBill" required><br>
+            <div class="form-group">
+                <h3 class="bg-success text-white p-5">Billing Address</h3>
 
-    <label>Zipcode</label>
-    <input class="form-control" type="text" name="zipcodeBill" required><br>
+                Country:<br>
+                <input class="form-control" type="text" name="countryBill" required><br>
 
-    <label>Address</label>
-    <input class="form-control" type="text" name="addressBill" required><br>
+                City
+                <input class="form-control" type="text" name="cityBill" required><br>
+
+                Zipcode
+                <input class="form-control" type="text" name="zipcodeBill" required><br>
+
+                Address
+                <input class="form-control" type="text" name="addressBill" required>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="sameAddress" name="sameAddress">
+                <label class="form-check-label" for="sameAddress" style="font-size: 16px">
+                    Same
+                </label>
+            </div>
+            <div class="form-group">
+            <h3 class="bg-success text-white p-5">Shipping Address</h3>
+
+
+                Country:<br>
+                <input class="form-control shipping" type="text" name="countryShip" ><br>
+
+                City
+                <input class="form-control shipping" type="text" name="cityShip" ><br>
+
+                Zipcode
+                <input class="form-control shipping" type="text" name="zipcodeShip" ><br>
+
+                Address
+                <input class="form-control shipping" type="text" name="addressShip" ><br>
+            </div>
+            <button type="submit" value="Submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
     </div>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="true" id="sameAddress" name="sameAddress">
-        <label class="form-check-label" for="sameAddress">
-           Same <br>
-        </label>
-    </div>
-    <p>
-    <div class="form-group">
-    <label>Shiping Address</label><br>
-
-    <label>Country:<br></label>
-    <input class="form-control" type="text" name="countryShip" ><br>
-
-    <label>City</label>
-    <input class="form-control" type="text" name="cityShip" ><br>
-
-    <label>Zipcode</label>
-    <input class="form-control" type="text" name="zipcodeShip" ><br>
-
-    <label>Address</label>
-    <input class="form-control" type="text" name="addressShip" ><br>
-    </div>
-    <button type="submit" value="Submit">Submit</button>
-</form>
 </div>
+<script>
+    function toggleSameButton() {
+        let sameButton = document.querySelector("#sameAddress");
+        let addressFields = document.querySelectorAll(".shipping");
+        sameButton.addEventListener("change", function (evt) {
+            for(field of addressFields){
+                if(field.disabled === true){
+                    field.disabled = false;
+                }else{
+                    field.disabled = true;
+                }
+            }
+        })
+    }
+    toggleSameButton();
+</script>
 </body>
 </html>

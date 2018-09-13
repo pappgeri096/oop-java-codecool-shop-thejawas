@@ -61,3 +61,8 @@
     margin: 0 0 11px;
 }
 
+.center-paypal{
+    horiz-align: center;
+    justify-content: center;
+    align-items: center;
+}

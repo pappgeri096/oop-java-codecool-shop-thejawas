@@ -1,8 +1,10 @@
 package com.codecool.shop.controller;
 
 import com.braintreegateway.*;
+import com.codecool.shop.config.Initializer;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +15,9 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/braintree"})
 public class BrainTreeController  extends HttpServlet {
 
-    private CartDao cartDataManager = CartDaoMem.getInstance();
+    private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
+
+    private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
 
 //    private CartDao cartDataManager = CartDaoSql.getInstance();
 

@@ -4,7 +4,6 @@ import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
 import com.codecool.shop.dao.implementation.Memory.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.Memory.ProductDaoMem;
 import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
@@ -12,26 +11,62 @@ import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
+import com.codecool.shop.util.ConfigurationHandler;
+import com.codecool.shop.util.ImplementationType;
+import com.codecool.shop.util.implementation_factory.ImplementationFactory;
+import com.codecool.shop.util.implementation_factory.MemoryFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import java.math.BigDecimal;
+import java.util.EnumMap;
 
 @WebListener
 public class Initializer implements ServletContextListener {
 
+    private static final String CONFIGURATION_PROPERTY_NAME = "implementation";
+    private static final String CONFIGURATION_IMPLEMENTATION_TYPE = "MEMORY";
+
+    private static final ImplementationType CURRENT_IMPLEMENTATION;
+
+    private static final EnumMap<ImplementationType, ImplementationFactory> implementationFactoryEnumMap = new EnumMap<>(ImplementationType.class);
+
+    private static final ImplementationFactory IMPLEMENTATION_FACTORY;
+
+    static {
+        implementationFactoryEnumMap.put(ImplementationType.MEMORY, new MemoryFactory());
+
+        ConfigurationHandler.writeConfigurationProperty(CONFIGURATION_PROPERTY_NAME, CONFIGURATION_IMPLEMENTATION_TYPE);
+        String currentConfiguration = ConfigurationHandler.readConfigurationProperty(CONFIGURATION_PROPERTY_NAME);
+        CURRENT_IMPLEMENTATION = ImplementationType.valueOf(currentConfiguration);
+        IMPLEMENTATION_FACTORY = implementationFactoryEnumMap.get(CURRENT_IMPLEMENTATION);
+        System.out.println(currentConfiguration);
+        System.out.println(CURRENT_IMPLEMENTATION);
+    }
+
+    public static ImplementationFactory getImplementationFactory() {
+        return IMPLEMENTATION_FACTORY;
+    }
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ProductDao productDataManager = ProductDaoMem.getInstance();
 
-        ProductCategoryDao productCategoryDataManager = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataManager = SupplierDaoMem.getInstance();
+        if (CURRENT_IMPLEMENTATION == ImplementationType.MEMORY) {
+            initializeFromMemory();
+        }
 
-
-        CartDao cartDataManager = CartDaoMem.getInstance();
+        CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
         cartDataManager.add(new Cart());
+
+
+
+    }
+
+    private void initializeFromMemory() {
+        SupplierDao supplierDataManager = SupplierDaoMem.getInstance();
+        ProductCategoryDao productCategoryDataManager = ProductCategoryDaoMem.getInstance();
+        ProductDao productDataManager = ProductDaoMem.getInstance();
 
         //setting up a new supplier
         Supplier amazon = new Supplier(1, "Amazon", "Digital content and services");

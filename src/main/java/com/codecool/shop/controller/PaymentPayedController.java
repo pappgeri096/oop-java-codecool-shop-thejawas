@@ -1,5 +1,6 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.config.Initializer;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.CustomerDao;
@@ -8,6 +9,7 @@ import com.codecool.shop.dao.implementation.Memory.CustomerDaoMem;
 //import com.codecool.shop.dao.implementation.postgresql.CartDaoSql;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.util.EmailUtil;
+import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -25,8 +27,10 @@ import org.slf4j.LoggerFactory;
 @WebServlet(urlPatterns = {"/success"})
 public class PaymentPayedController extends HttpServlet {
 
-    private CartDao cartDataManager = CartDaoMem.getInstance();
-    private CustomerDao customerDataManager = CustomerDaoMem.getInstance();
+    private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
+
+    private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
+    private CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
 
 //    CartDao cartDaoSql = CartDaoSql.getInstance();
 //    CustomerDao customerDaoSql = CustomerDaoSql.getInstance();

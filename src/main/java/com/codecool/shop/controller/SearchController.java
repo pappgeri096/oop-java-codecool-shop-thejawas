@@ -1,8 +1,10 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.config.Initializer;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.Memory.ProductDaoMem;
 import com.codecool.shop.model.Product;
+import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,8 +16,9 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/search"})
 public class SearchController extends HttpServlet {
+    private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
 
-    private ProductDao productDataManager = ProductDaoMem.getInstance();
+    private ProductDao productDataManager = IMPLEMENTATION_FACTORY.getProductDataManagerInstance();
 
 //    private ProductDao productDaoSql = ProductDaoSql.getInstance();
 

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import com.codecool.shop.config.Initializer;
+import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -42,11 +44,12 @@ import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
 public class ProductController extends HttpServlet {
 
     private static final ch.qos.logback.classic.Logger productControllerLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProductController.class);
+    private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
 
-    private CartDao cartDataManager = CartDaoMem.getInstance();
-    private ProductDao productDataManager = ProductDaoMem.getInstance();
-    private ProductCategoryDao productCategoryHandler = ProductCategoryDaoMem.getInstance();
-    private SupplierDao supplierDataManager = SupplierDaoMem.getInstance();
+    private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
+    private ProductDao productDataManager = IMPLEMENTATION_FACTORY.getProductDataManagerInstance();
+    private ProductCategoryDao productCategoryHandler = IMPLEMENTATION_FACTORY.getProductCategoryDataManagerInstance();
+    private SupplierDao supplierDataManager = IMPLEMENTATION_FACTORY.getSupplierDataManagerInstance();
 
 //    private CartDao cartDataManager = CartDaoSql.getInstance();
 //    private ProductDao productDaoSql = ProductDaoSql.getInstance();

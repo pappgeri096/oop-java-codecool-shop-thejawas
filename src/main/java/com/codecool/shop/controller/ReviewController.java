@@ -1,9 +1,11 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.config.Initializer;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
 import com.codecool.shop.model.Cart;
+import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -22,8 +24,9 @@ import org.slf4j.LoggerFactory;
 public class ReviewController extends HttpServlet {
 
     private static final Logger reviewLogger = LoggerFactory.getLogger(PaymentController.class);
+    private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
 
-    private CartDao cartDataManager = CartDaoMem.getInstance();
+    private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
 
 //    private CartDao cartDaoSql = CartDaoSql.getInstance();
 

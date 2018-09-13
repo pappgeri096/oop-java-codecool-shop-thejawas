@@ -1,12 +1,14 @@
 package com.codecool.shop.controller;
 
 
+import com.codecool.shop.config.Initializer;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.CustomerDao;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
 import com.codecool.shop.dao.implementation.Memory.CustomerDaoMem;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.CartItem;
+import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
@@ -29,11 +31,12 @@ import java.util.Map;
 public class PaypalController extends HttpServlet {
 
     private static final Logger paypalLogger = LoggerFactory.getLogger(PaymentController.class);
+    private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
 
-    private CartDao cartDataManager = CartDaoMem.getInstance();
+    private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
+    private CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
+
     private Map<String, Integer> productNameAndQuantityMap = cartDataManager.getProductNameAndQuantityMap();
-
-    private CustomerDao customerDataManager = CustomerDaoMem.getInstance();
     private Map<String, String> customerDataMap = customerDataManager.getCustomerDataMap();
 
 //    private CartDao cartDaoSql = CartDaoSql.getInstance();

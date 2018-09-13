@@ -30,11 +30,11 @@ public class PaypalController extends HttpServlet {
 
     private static final Logger paypalLogger = LoggerFactory.getLogger(PaymentController.class);
 
-    private CartDao cartHandler = CartDaoMem.getInstance();
-    private Map<String, Integer> productNameAndQuantityMap = cartHandler.getProductNameAndQuantityMap();
+    private CartDao cartDataManager = CartDaoMem.getInstance();
+    private Map<String, Integer> productNameAndQuantityMap = cartDataManager.getProductNameAndQuantityMap();
 
-    private CustomerDao customerHandler = CustomerDaoMem.getInstance();
-    private Map<String, String> customerDataMap = customerHandler.getCustomerDataMap();
+    private CustomerDao customerDataManager = CustomerDaoMem.getInstance();
+    private Map<String, String> customerDataMap = customerDataManager.getCustomerDataMap();
 
 //    private CartDao cartDaoSql = CartDaoSql.getInstance();
 //    private CustomerDao customerDaoSql = CustomerDaoSql.getInstance();
@@ -84,7 +84,7 @@ public class PaypalController extends HttpServlet {
     }
 
     private void getItems(List items) {
-        Cart currentCart = cartHandler.getCurrent();
+        Cart currentCart = cartDataManager.getCurrent();
 
         for (Map.Entry<String, Integer> entry : productNameAndQuantityMap.entrySet()) {
 
@@ -183,7 +183,7 @@ public class PaypalController extends HttpServlet {
     private Amount getAmount() {
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal(Double.toString(cartHandler.getTotalPrice().doubleValue()));
+        amount.setTotal(Double.toString(cartDataManager.getTotalPrice().doubleValue()));
         return amount;
     }
 

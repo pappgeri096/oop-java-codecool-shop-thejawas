@@ -25,8 +25,8 @@ public class CartController extends HttpServlet {
 
     private static final Logger cartLogger = LoggerFactory.getLogger(PaymentController.class);
 
-    private CartDao cartHandler = CartDaoMem.getInstance();
-    private Cart currentOrder = cartHandler.getCurrent();
+    private CartDao cartDataManager = CartDaoMem.getInstance();
+    private Cart currentCart = cartDataManager.getCurrent();
 
 //    private CartDao cartDaoSql = CartDaoSql.getInstance();
 //    private Cart currentOrderSql = cartDaoSql.getCurrent();
@@ -47,7 +47,7 @@ public class CartController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<CartItem> cartItemList = currentOrder.getCartItemList();
+        List<CartItem> cartItemList = currentCart.getCartItemList();
         boolean repeat = true;
         while (repeat) {
             repeat = false;
@@ -65,9 +65,9 @@ public class CartController extends HttpServlet {
                 }
             }
         }
-        cartHandler.createProductNameAndQuantityMaps();
+        cartDataManager.createProductNameAndQuantityMaps();
 
-        if (currentOrder.getCartItemList().size()>0) {
+        if (currentCart.getCartItemList().size()>0) {
             resp.sendRedirect("/review");
         }else {
             resp.sendRedirect("/");

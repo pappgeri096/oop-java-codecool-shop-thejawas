@@ -43,12 +43,12 @@ public class ProductController extends HttpServlet {
 
     private static final ch.qos.logback.classic.Logger productControllerLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProductController.class);
 
-    private CartDao cartHandler = CartDaoMem.getInstance();
-    private ProductDao productHandler = ProductDaoMem.getInstance();
+    private CartDao cartDataManager = CartDaoMem.getInstance();
+    private ProductDao productDataManager = ProductDaoMem.getInstance();
     private ProductCategoryDao productCategoryHandler = ProductCategoryDaoMem.getInstance();
-    private SupplierDao supplierHandler = SupplierDaoMem.getInstance();
+    private SupplierDao supplierDataManager = SupplierDaoMem.getInstance();
 
-//    private CartDao cartHandler = CartDaoSql.getInstance();
+//    private CartDao cartDataManager = CartDaoSql.getInstance();
 //    private ProductDao productDaoSql = ProductDaoSql.getInstance();
 //    private ProductCategoryDao productCategoryDaoSql = ProductCategoryDaoSql.getInstance();
 //    private SupplierDao supplierDaoSql = SupplierDaoSql.getInstance();
@@ -56,14 +56,14 @@ public class ProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<Product> productList = productHandler.getAll();
+        List<Product> productList = productDataManager.getAll();
 
         String productParameter = req.getParameter("product");
 
         if (productParameter != null) {
             int productId = Integer.parseInt(productParameter);
-            Product productToAdd = productHandler.getBy(productId);
-            cartHandler.getCurrent().addProduct(productToAdd);
+            Product productToAdd = productDataManager.getBy(productId);
+            cartDataManager.getCurrent().addProduct(productToAdd);
 
             productControllerLogger.info("{} successfully added to cart", productToAdd.getName());
 
@@ -77,19 +77,19 @@ public class ProductController extends HttpServlet {
             int productCategoryId = Integer.parseInt(categoryParameter);
 
             if (productCategoryId > 0 && productCategoryId <= productCategoryHandler.getAll().size()) {
-                productList = productHandler.getBy(productCategoryHandler.find(productCategoryId));
+                productList = productDataManager.getBy(productCategoryHandler.find(productCategoryId));
             }
         } else if (supplierParameter != null) {
             int supplierId = Integer.parseInt(supplierParameter);
-            if (supplierId > 0 && supplierId <= supplierHandler.getAll().size()) {
-                productList = productHandler.getBy(supplierHandler.find(supplierId));
+            if (supplierId > 0 && supplierId <= supplierDataManager.getAll().size()) {
+                productList = productDataManager.getBy(supplierDataManager.find(supplierId));
             }
         }
 
         context.setVariable("categories", productCategoryHandler.getAll());
-        context.setVariable("suppliers", supplierHandler.getAll());
+        context.setVariable("suppliers", supplierDataManager.getAll());
         context.setVariable("products", productList);
-        context.setVariable("orderMem", cartHandler.getCurrent());
+        context.setVariable("orderMem", cartDataManager.getCurrent());
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         engine.process("product/index.html", context, resp.getWriter());

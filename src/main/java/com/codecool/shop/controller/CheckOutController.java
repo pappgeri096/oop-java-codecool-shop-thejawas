@@ -24,7 +24,7 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/checkout"})
 public class CheckOutController extends HttpServlet {
 
-    private CustomerDao customerHandler = CustomerDaoMem.getInstance();
+    private CustomerDao customerDataManager = CustomerDaoMem.getInstance();
 
 //    private CustomerDao customerDaoSql = CustomerDaoSql.getInstance();
 
@@ -55,8 +55,8 @@ public class CheckOutController extends HttpServlet {
             }
         }
 
-        customerHandler.add(new Customer(customerData));
-        customerHandler.createUserDataMap();
+        customerDataManager.add(new Customer(customerData));
+        customerDataManager.createUserDataMap();
 
         resp.sendRedirect("/payment");
     }

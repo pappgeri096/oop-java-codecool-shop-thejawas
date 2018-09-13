@@ -25,8 +25,8 @@ import org.slf4j.LoggerFactory;
 @WebServlet(urlPatterns = {"/success"})
 public class PaymentPayedController extends HttpServlet {
 
-    private CartDao cartHandler = CartDaoMem.getInstance();
-    private CustomerDao customerHandler = CustomerDaoMem.getInstance();
+    private CartDao cartDataManager = CartDaoMem.getInstance();
+    private CustomerDao customerDataManager = CustomerDaoMem.getInstance();
 
 //    CartDao cartDaoSql = CartDaoSql.getInstance();
 //    CustomerDao customerDaoSql = CustomerDaoSql.getInstance();
@@ -43,13 +43,13 @@ public class PaymentPayedController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("payment/payed.html", context, resp.getWriter());
 
-        cartHandler.add(new Cart());
-        cartHandler.clearProductNameAndQuantityMap();
+        cartDataManager.add(new Cart());
+        cartDataManager.clearProductNameAndQuantityMap();
 
 //        cartDaoSql.add(cartDaoMem.getCurrent());
 //        cartDaoSql.clearProductNameAndQuantityMap();
 
-        customerHandler.clearCustomerDataMap();
+        customerDataManager.clearCustomerDataMap();
 
         paymentPayedLogger.info("Payment approved by online payment service provider");
 

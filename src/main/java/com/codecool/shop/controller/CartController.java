@@ -23,6 +23,8 @@ import org.slf4j.LoggerFactory;
 @WebServlet(urlPatterns = {"/cart"})
 public class CartController extends HttpServlet {
 
+    private CartDao cartDaoMem = CartDaoMem.getInstance();
+    Cart currentOrder = cartDaoMem.getCurrent();
     private static final Logger cartLogger = LoggerFactory.getLogger(PaymentController.class);
 
     @Override
@@ -39,8 +41,7 @@ public class CartController extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        CartDao cartDaoMem = CartDaoMem.getInstance();
-        Cart currentOrder = cartDaoMem.getCurrent();
+
         List<CartItem> cartItemList = currentOrder.getCartItemList();
         boolean repeat = true;
         while (repeat) {
@@ -59,7 +60,8 @@ public class CartController extends HttpServlet {
                 }
             }
         }
-        ((CartDaoMem) cartDaoMem).createProductNameAndQuantityMaps();
+        cartDaoMem.createProductNameAndQuantityMaps();
+
         if (currentOrder.getCartItemList().size()>0) {
             resp.sendRedirect("/review");
         }else {

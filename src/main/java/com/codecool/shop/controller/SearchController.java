@@ -14,11 +14,11 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/search"})
 public class SearchController extends HttpServlet {
+    private ProductDao productDaoMem = ProductDaoMem.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        ProductDao productDaoMem = ProductDaoMem.getInstance();
         List<Product> productList = ((ProductDaoMem) productDaoMem).getBy(req.getParameter("keyWord"));
         if(productList.size()==0) productList = productDaoMem.getAll();
 

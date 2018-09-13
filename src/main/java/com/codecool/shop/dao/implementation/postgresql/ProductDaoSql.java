@@ -94,7 +94,7 @@ public class ProductDaoSql extends DaoSqlConnectionDML implements ProductDao {
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query);
+             ResultSet resultSet = statement.executeQuery(query)
         ) {
             while (resultSet.next()) {
                 Product product = new Product(
@@ -140,11 +140,11 @@ public class ProductDaoSql extends DaoSqlConnectionDML implements ProductDao {
         return recordsAffected;
     }
 
-    public int getLastRecordsId(String query) {
+    int getLastRecordsId(String query) {
         int lastItemsId = 0;
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query);
+             ResultSet resultSet = statement.executeQuery(query)
         ) {
             if (resultSet.next()) {
                 lastItemsId = resultSet.getInt("max");

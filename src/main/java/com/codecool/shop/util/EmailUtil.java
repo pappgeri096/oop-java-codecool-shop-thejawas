@@ -1,8 +1,10 @@
-package com.codecool.shop.controller;
+package com.codecool.shop.util;
 
 
 import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.CustomerDao;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.dao.implementation.Memory.CustomerDaoMem;
 import com.codecool.shop.model.CartItem;
 import com.codecool.shop.model.Cart;
 
@@ -18,7 +20,12 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-class EmailUtil {
+public class EmailUtil {
+
+    private static CartDao cartDaoMem = CartDaoMem.getInstance();
+
+    private static CustomerDao customerDaoMem = CustomerDaoMem.getInstance();
+
 
     private static void sendEmail(String email, String subject, String msg){
 
@@ -84,21 +91,22 @@ class EmailUtil {
         return props;
     }
 
-    static void sendVerificationEmail() {
+    public static void sendVerificationEmail() {
 
-        CartDao cartDaoMem = CartDaoMem.getInstance();
         Cart currentOrder = cartDaoMem.getCurrent();
-        Map<String, String> userDataMap = ((CartDaoMem) cartDaoMem).getUserDataMap();
+
+        Map<String, String> customerDataMap = customerDaoMem.getCustomerDataMap();
+//        Map<String, String> userDataMap = ((CartDaoMem) cartDaoMem).getCustomerDataMap();
 
 
         List<CartItem> cartItemList = currentOrder.getCartItemList();
 
         String subject = "Order#"+ currentOrder.getId();
-        String email = userDataMap.get("emailAddress");
+        String email = customerDataMap.get("emailAddress");
 
         StringBuilder message = new StringBuilder();
 
-        message.append("Name: ").append(userDataMap.get("fullName")).append("\n");
+        message.append("Name: ").append(customerDataMap.get("fullName")).append("\n");
         message.append("Email: ").append(email).append("\n");
         message.append("Items:");
 

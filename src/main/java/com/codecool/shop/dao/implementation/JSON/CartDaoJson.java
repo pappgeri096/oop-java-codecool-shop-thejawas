@@ -1,7 +1,9 @@
 package com.codecool.shop.dao.implementation.JSON;
 
 import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.CustomerDao;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.dao.implementation.Memory.CustomerDaoMem;
 import com.codecool.shop.model.Cart;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -18,6 +20,9 @@ import java.util.*;
 public class CartDaoJson {
 
     private String uuidString;
+
+    CartDao cartDaoMem = CartDaoMem.getInstance();
+    CustomerDao customerDaoMem = CustomerDaoMem.getInstance();
 
     /**
      * writes single order data to json file
@@ -119,14 +124,13 @@ public class CartDaoJson {
 
 
     private Map<String, String> joinMaps(String uuidString) {
-        CartDao cartDaoMem = CartDaoMem.getInstance();
-        Map<String, Integer> productNameAndQuantityMap = ((CartDaoMem) cartDaoMem).getProductNameAndQuantityMap();
-        Map<String, String> userDataMap = ((CartDaoMem) cartDaoMem).getUserDataMap();
+        Map<String, Integer> productNameAndQuantityMap = cartDaoMem.getProductNameAndQuantityMap();
+        Map<String, String> customerDataMap = customerDaoMem.getCustomerDataMap();
 
 
         Map<String, String> orderDataMap = new HashMap<>();
 
-        for (Map.Entry<String, String> entrySet : userDataMap.entrySet()) {
+        for (Map.Entry<String, String> entrySet : customerDataMap.entrySet()) {
             orderDataMap.put(entrySet.getKey(), entrySet.getValue());
         }
 

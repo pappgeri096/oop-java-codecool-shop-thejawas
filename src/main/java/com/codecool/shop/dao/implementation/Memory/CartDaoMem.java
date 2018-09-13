@@ -13,13 +13,8 @@ public class CartDaoMem implements CartDao {
 
     private List<Cart> data = new ArrayList<>();
 
-    private Map<String, String> userDataMap = new HashMap<>();
     private Map<String, Integer> productNameAndQuantityMap = new HashMap<>();
-    private List<String> checkoutData = Arrays.asList("fullName", "emailAddress", " telephoneNumber", "countryBill", "cityBill", "zipCodeBill", "addressBill", "countryShip", "cityShip", "zipCodeShip", "addressShip");
 
-
-    /* A private Constructor prevents any other class from instantiating.
-     */
     private CartDaoMem() {
     }
 
@@ -28,11 +23,6 @@ public class CartDaoMem implements CartDao {
             instance = new CartDaoMem();
         }
         return instance;
-    }
-
-    @Override
-    public Cart getCurrent() {
-        return data.get(data.size() - 1);
     }
 
     @Override
@@ -57,24 +47,17 @@ public class CartDaoMem implements CartDao {
     }
 
     @Override
+    public Cart getCurrent() {
+        return data.get(data.size() - 1);
+    }
+
+    @Override
     public BigDecimal getTotalPrice() {
         BigDecimal sumPrice = BigDecimal.valueOf(0);
         for (CartItem cartItem : getCurrent().getCartItemList()) {
             sumPrice = cartItem.getProduct().getDefaultPrice().multiply(new BigDecimal(cartItem.getQuantity())).add(sumPrice);
         }
         return sumPrice.setScale(2, RoundingMode.HALF_UP);
-    }
-
-    @Override
-    public void createUserDataMap(List<String> userData) {
-        for (int i = 0; i < 11; i++) {
-            this.userDataMap.put(checkoutData.get(i), userData.get(i));
-        }
-    }
-
-    @Override
-    public Map<String, String> getUserDataMap() {
-        return userDataMap;
     }
 
     @Override
@@ -87,5 +70,10 @@ public class CartDaoMem implements CartDao {
     @Override
     public Map<String, Integer> getProductNameAndQuantityMap() {
         return productNameAndQuantityMap;
+    }
+
+    @Override
+    public void clearProductNameAndQuantityMap() {
+        productNameAndQuantityMap.clear();
     }
 }

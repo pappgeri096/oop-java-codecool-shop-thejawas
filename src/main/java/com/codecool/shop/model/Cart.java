@@ -23,7 +23,7 @@ public class Cart extends BaseModel {
     }
 
     private int createIdForLineItem() {
-        return cartItemList.size();
+        return cartItemList.size() + 1;
     }
 
     public List<CartItem> getCartItemList() {

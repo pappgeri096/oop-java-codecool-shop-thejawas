@@ -9,7 +9,7 @@ import java.util.Map;
 public interface CartDao extends BaseDAO<Cart> {
 
     Cart getCurrent();
-    BigDecimal getTotalPrice();
+    BigDecimal getTotalPriceOfCurrentCart();
 
     void createProductNameAndQuantityMaps();
     Map<String, Integer> getProductNameAndQuantityMap();

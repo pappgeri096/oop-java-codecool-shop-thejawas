@@ -4,8 +4,6 @@ package com.codecool.shop.controller;
 import com.codecool.shop.config.Initializer;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.CustomerDao;
-import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
-import com.codecool.shop.dao.implementation.Memory.CustomerDaoMem;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.CartItem;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
@@ -186,7 +184,7 @@ public class PaypalController extends HttpServlet {
     private Amount getAmount() {
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal(Double.toString(cartDataManager.getTotalPrice().doubleValue()));
+        amount.setTotal(Double.toString(cartDataManager.getTotalPriceOfCurrentCart().doubleValue()));
         return amount;
     }
 

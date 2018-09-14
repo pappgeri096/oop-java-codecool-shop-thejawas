@@ -52,7 +52,7 @@ public class CartDaoMem implements CartDao {
     }
 
     @Override
-    public BigDecimal getTotalPrice() {
+    public BigDecimal getTotalPriceOfCurrentCart() {
         BigDecimal sumPrice = BigDecimal.valueOf(0);
         for (CartItem cartItem : getCurrent().getCartItemList()) {
             sumPrice = cartItem.getProduct().getDefaultPrice().multiply(new BigDecimal(cartItem.getQuantity())).add(sumPrice);

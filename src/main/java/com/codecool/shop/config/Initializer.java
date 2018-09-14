@@ -1,17 +1,10 @@
 package com.codecool.shop.config;
 
-import com.codecool.shop.dao.CartDao;
-import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.*;
 import com.codecool.shop.dao.implementation.Memory.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.Memory.ProductDaoMem;
 import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
-import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.Product;
-import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.Supplier;
-import com.codecool.shop.util.ConfigurationHandler;
+import com.codecool.shop.model.*;
 import com.codecool.shop.util.ImplementationType;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import com.codecool.shop.util.implementation_factory.MemoryFactory;
@@ -35,6 +28,7 @@ public class Initializer implements ServletContextListener {
 
     static {
         implementationFactoryEnumMap.put(ImplementationType.MEMORY, new MemoryFactory());
+//        implementationFactoryEnumMap.put(ImplementationType.DATABASE, new DatabaseFactory());
 
 //        ConfigurationHandler.writeConfigurationProperty(CONFIGURATION_PROPERTY_NAME, CONFIGURATION_IMPLEMENTATION_TYPE);
 //        String currentConfiguration = ConfigurationHandler.readConfigurationProperty(CONFIGURATION_PROPERTY_NAME);
@@ -46,15 +40,26 @@ public class Initializer implements ServletContextListener {
         return IMPLEMENTATION_FACTORY;
     }
 
+
+    private final CartDao cartDataManager;
+
+    {
+        cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
+    }
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
 
         if (CURRENT_IMPLEMENTATION == ImplementationType.MEMORY) {
             initializeFromMemory();
+        } else if (CURRENT_IMPLEMENTATION == ImplementationType.DATABASE) {
+
         }
 
-        CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
-        cartDataManager.add(new Cart());
+
+
+
+
 
 
 
@@ -103,5 +108,15 @@ public class Initializer implements ServletContextListener {
         productDataManager.add(new Product(7, "Maiden Body Pillow", BigDecimal.valueOf(80.33), "USD", "Maiden body pillow, designed to fulfill all your desires.", bodyPillow, ebay));
         productDataManager.add(new Product(8, "Levi Body Pillow", BigDecimal.valueOf(50.76), "USD", "A body pillow of Levi, designed to fulfill all your desires.", bodyPillow, ebay));
         productDataManager.add(new Product(9, "Sebastian Body Pillow", BigDecimal.valueOf(40.43), "USD", "A body pillow of Sebastian, designed to fulfill all your desires.", bodyPillow, ebay));
+
+        // setting up a guest user until registration and adding it to Customer data manager
+        Customer guest = new Customer(1, "Guest", "jawas@jawas.hu", 702225555, "Hungary", "Budapest", "1133", "Blaha Lujza tér 1.", "Hungary", "Budapest", "1133", "Blaha Lujza tér 1.");
+        CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
+        customerDataManager.add(guest);
+
+        // setting up a new shopping cart and adding it to its data manager:
+        cartDataManager.add(new Cart());
+
+
     }
 }

@@ -11,7 +11,7 @@ public class BaseModel {
     BaseModel() {
     }
 
-    public BaseModel(int id, String name) {
+    BaseModel(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -56,7 +56,7 @@ public class BaseModel {
         final StringBuilder sb = new StringBuilder();
         for (Field field : this.getClass().getDeclaredFields()) {
             field.setAccessible(true);
-            Object value = null;
+            Object value;
             try {
                 value = field.get(this);
                 if (value != null) {

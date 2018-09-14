@@ -30,7 +30,7 @@ public class Cart extends BaseModel {
         return cartItemList;
     }
 
-    public int getQuantityOfProducts() {
+    public int getQuantityOfProducts() { // TODO NEXT:
         int numberOfItems = 0;
         for (CartItem cartItem : cartItemList) {
             numberOfItems += cartItem.getQuantity();

@@ -10,7 +10,7 @@ public class CustomerDaoMem implements CustomerDao {
     private static CustomerDaoMem instance = null;
     private List<Customer> data = new ArrayList<>();
 
-    private List<String> checkoutData = Arrays.asList("fullName", "emailAddress", " telephoneNumber", "countryBill", "cityBill", "zipCodeBill", "addressBill", "countryShip", "cityShip", "zipCodeShip", "addressShip"); // TODO: moves to customer
+    private List<String> checkoutData = Arrays.asList("name", "emailAddress", " telephoneNumber", "countryBill", "cityBill", "zipCodeBill", "addressBill", "countryShip", "cityShip", "zipCodeShip", "addressShip"); // TODO: moves to customer
     private Map<String, String> customerDataMap = new HashMap<>();
 
     private CustomerDaoMem() {

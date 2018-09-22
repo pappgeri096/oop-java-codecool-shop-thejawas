@@ -30,12 +30,12 @@ class OrderMemDaoMemTest {
     @Test
     void getCurrentTest() {
         addOrder();
-        assertNotNull(cartDaoMem.getCurrent());
+        assertNotNull(cartDaoMem.getLastCart());
     }
 
     @Test
     void addTest() {
-        assertEquals(addOrderAndReturn(), cartDaoMem.getCurrent());
+        assertEquals(addOrderAndReturn(), cartDaoMem.getLastCart());
     }
 
     @Test

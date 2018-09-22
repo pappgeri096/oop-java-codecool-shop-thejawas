@@ -50,7 +50,7 @@ public class PaymentPayedController extends HttpServlet {
         cartDataManager.add(new Cart());
         cartDataManager.clearProductNameAndQuantityMap();
 
-//        cartDaoSql.add(cartDaoMem.getCurrent());
+//        cartDaoSql.add(cartDaoMem.getLastCart());
 //        cartDaoSql.clearProductNameAndQuantityMap();
 
         customerDataManager.clearCustomerDataMap();

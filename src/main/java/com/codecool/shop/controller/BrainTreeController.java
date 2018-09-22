@@ -39,7 +39,7 @@ public class BrainTreeController  extends HttpServlet {
 
         String nonce = req.getParameter("payment_method_nonce");
         TransactionRequest request = new TransactionRequest()
-                .amount(cartDataManager.getTotalPriceOfCurrentCart())
+                .amount(cartDataManager.getTotalPriceOfLastCart())
                 .paymentMethodNonce(nonce)
                 .options()
                 .submitForSettlement(true)

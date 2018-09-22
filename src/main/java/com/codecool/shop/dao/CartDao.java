@@ -1,6 +1,7 @@
 package com.codecool.shop.dao;
 
 import com.codecool.shop.model.Cart;
+import com.codecool.shop.model.Product;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -8,11 +9,13 @@ import java.util.Map;
 
 public interface CartDao extends BaseDAO<Cart> {
 
-    Cart getCurrent();
-    BigDecimal getTotalPriceOfCurrentCart();
+    Cart getLastCart();
+    BigDecimal getTotalPriceOfLastCart();
+    void addToCartItemList(Product product);
+    int getQuantityOfProducts();
 
-    void createProductNameAndQuantityMaps();
-    Map<String, Integer> getProductNameAndQuantityMap();
+    void createProductNameAndQuantityMaps(); // TODO: REMOVE THESE
+    Map<String, Integer> getProductNameAndQuantityMap(); // TODO: REMOVE THESE
 
-    void clearProductNameAndQuantityMap();
+    void clearProductNameAndQuantityMap(); // TODO: REMOVE THESE
 }

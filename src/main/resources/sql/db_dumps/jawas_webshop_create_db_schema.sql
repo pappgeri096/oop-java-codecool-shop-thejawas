@@ -100,7 +100,7 @@ CREATE TABLE public."order"
   CONSTRAINT fk_order_product_id FOREIGN KEY (user_id) REFERENCES public."user" (id)
 );
 COMMENT ON COLUMN public."order".status
-IS 'unshipped';
+IS 'UNSHIPPED';
 
 CREATE TABLE public.order_product
 (

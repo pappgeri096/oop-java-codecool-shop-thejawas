@@ -31,13 +31,13 @@ public class ReviewController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Cart currentOrder = cartDataManager.getCurrent();
+        Cart currentOrder = cartDataManager.getLastCart();
 
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("orderMem", currentOrder);
-        context.setVariable("totalPrice", cartDataManager.getTotalPriceOfCurrentCart());
+        context.setVariable("totalPrice", cartDataManager.getTotalPriceOfLastCart());
         engine.process("product/review.html", context, resp.getWriter());
         reviewLogger.info("Get request received for SHOPPING CART REVIEW page");
     }

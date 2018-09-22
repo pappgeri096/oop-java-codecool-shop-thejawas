@@ -1,15 +1,15 @@
 package com.codecool.shop.util;
 
-public enum StatusType {
+public enum CartStatusType {
     EMPTY("EMPTY"),
     UNFINISHED("UNFINISHED"),
-    PAID("PAID"),
+    SAVED_BY_USER("SAVED_BY_USER"),
     UNSHIPPED("UNSHIPPED"),
     SHIPPED("SHIPPED");
 
     private final String statusString;
 
-    StatusType(String statusString) {
+    CartStatusType(String statusString) {
         this.statusString = statusString;
     }
 

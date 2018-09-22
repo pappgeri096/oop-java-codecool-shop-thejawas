@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DaoSqlConnectionDML {
+public class DatabaseConnectionHandler {
 
     private static final String DATABASE = "jdbc:postgresql://localhost:5432/jawas_webshop";
     private static final String DB_USER = "jawas";

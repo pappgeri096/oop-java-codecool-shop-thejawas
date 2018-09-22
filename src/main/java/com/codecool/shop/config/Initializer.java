@@ -5,6 +5,7 @@ import com.codecool.shop.dao.implementation.Memory.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.Memory.ProductDaoMem;
 import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
 import com.codecool.shop.model.*;
+import com.codecool.shop.util.ConfigurationHandler;
 import com.codecool.shop.util.ImplementationType;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import com.codecool.shop.util.implementation_factory.MemoryFactory;
@@ -18,22 +19,28 @@ import java.util.EnumMap;
 @WebListener
 public class Initializer implements ServletContextListener {
 
-//    private static final String CONFIGURATION_PROPERTY_NAME = "implementation";
-//    private static final String CONFIGURATION_IMPLEMENTATION_TYPE = "MEMORY";
+    private static final String CONFIGURATION_PROPERTY_NAME = "implementation";
+
+    private static final ImplementationType CURRENT_IMPLEMENTATION;
+    private static final EnumMap<ImplementationType, ImplementationFactory> implementationFactoryEnumMap = new EnumMap<>(ImplementationType.class);
 
     private static final ImplementationFactory IMPLEMENTATION_FACTORY;
-
-    private static final ImplementationType CURRENT_IMPLEMENTATION = ImplementationType.MEMORY;
-    private static final EnumMap<ImplementationType, ImplementationFactory> implementationFactoryEnumMap = new EnumMap<>(ImplementationType.class);
 
     static {
         implementationFactoryEnumMap.put(ImplementationType.MEMORY, new MemoryFactory());
 //        implementationFactoryEnumMap.put(ImplementationType.DATABASE, new DatabaseFactory());
 
-//        ConfigurationHandler.writeConfigurationProperty(CONFIGURATION_PROPERTY_NAME, CONFIGURATION_IMPLEMENTATION_TYPE);
-//        String currentConfiguration = ConfigurationHandler.readConfigurationProperty(CONFIGURATION_PROPERTY_NAME);
-//        CURRENT_IMPLEMENTATION = ImplementationType.valueOf(currentConfiguration);
-        IMPLEMENTATION_FACTORY = implementationFactoryEnumMap.get(CURRENT_IMPLEMENTATION);
+        String currentConfiguration = ConfigurationHandler.readConfigurationProperty(CONFIGURATION_PROPERTY_NAME);
+        CURRENT_IMPLEMENTATION = ImplementationType.valueOf(currentConfiguration);
+
+        try {
+            IMPLEMENTATION_FACTORY = implementationFactoryEnumMap.get(CURRENT_IMPLEMENTATION);
+        } catch (NullPointerException npe) {
+            System.out.println("No such implementation: " + currentConfiguration);
+            npe.printStackTrace();
+            throw new NullPointerException(npe.getMessage());
+        }
+
     }
 
     public static ImplementationFactory getImplementationFactory() {
@@ -41,10 +48,10 @@ public class Initializer implements ServletContextListener {
     }
 
 
-    private final CartDao cartDataManager;
+    private final CartDao CART_DATA_MANAGER;
 
     {
-        cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
+        CART_DATA_MANAGER = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
     }
 
     @Override
@@ -109,7 +116,7 @@ public class Initializer implements ServletContextListener {
         customerDataManager.add(guest);
 
         // setting up a new shopping cart and adding it to its data manager:
-        cartDataManager.add(new Cart());
+        CART_DATA_MANAGER.add(new Cart());
 
 
     }

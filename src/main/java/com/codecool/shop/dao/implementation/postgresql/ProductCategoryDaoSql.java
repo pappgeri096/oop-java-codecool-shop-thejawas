@@ -69,7 +69,7 @@ public class ProductCategoryDaoSql extends ProductCategoryQueryHandler implement
     public void remove(int id) {
         String query = "DELETE FROM product_category WHERE id ='" + id + "';";
 
-        executeIsertUpdateOrDelete(query);
+        executeInsertUpdateOrDelete(query);
 
     }
 
@@ -99,26 +99,6 @@ public class ProductCategoryDaoSql extends ProductCategoryQueryHandler implement
         }
 
         return resultList;
-
-    }
-
-    private void insertProductCategoryWithValidation(String prePreparedQuery, String name, String description, String department) {
-
-        try (Connection connection = getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery)
-        ) {
-            Class.forName("org.postgresql.Driver");
-            pstmt.setString(1, name);
-            pstmt.setString(2, description);
-            pstmt.setString(3, department);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
     }
 

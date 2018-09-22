@@ -34,7 +34,7 @@ public class PaypalController extends HttpServlet {
     private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
     private CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
 
-    private Map<String, Integer> productNameAndQuantityMap = cartDataManager.getProductNameAndQuantityMap();
+    private Map<String, Integer> productNameAndQuantityMap = cartDataManager.getProductNameAndQuantityMap();  // TODO: CARTDAO REFACTOR
     private Map<String, String> customerDataMap = customerDataManager.getCustomerDataMap();
 
 //    private CartDao cartDaoSql = CartDaoSql.getInstance();
@@ -64,14 +64,14 @@ public class PaypalController extends HttpServlet {
     private void payment(HttpServletResponse resp) throws IOException {
         ShippingAddress address = getAddress();
 
-        List<Item> items = new ArrayList<>();
-        getItems(items);
+        List<Item> paypalItemLists = new ArrayList<>();
+        getItems(paypalItemLists);
 
-        ItemList list = getItemList(address, items);
+        ItemList itemList = getItemList(address, paypalItemLists);
 
         Amount amount = getAmount();
 
-        List<Transaction> transactions = getTransactions(list, amount);
+        List<Transaction> transactions = getTransactions(itemList, amount);
 
         PayerInfo info = getPayerInfo(address);
 
@@ -84,8 +84,8 @@ public class PaypalController extends HttpServlet {
         executePayment(resp, payment);
     }
 
-    private void getItems(List items) {
-        Cart currentCart = cartDataManager.getCurrent();
+    private void getItems(List<Item> payPalItems) {
+        Cart currentCart = cartDataManager.getLastCart();
 
         for (Map.Entry<String, Integer> entry : productNameAndQuantityMap.entrySet()) {
 
@@ -93,27 +93,38 @@ public class PaypalController extends HttpServlet {
             String quantity = Integer.toString(entry.getValue());
             String price = "1.1";
 
-            for (CartItem item : currentCart.getCartItemList()) {
-                if (item.getProduct().getName().equals(name)) {
-                    price = String.valueOf(item.getProduct().getDefaulPrice());
+            for (CartItem cartItem : currentCart.getCartItemList()) {
+                if (cartItem.getProduct().getName().equals(name)) {
+                    price = String.valueOf(cartItem.getProduct().getDefaulPrice());
                     break;
                 }
 
             }
 
-            addItem(items, name, quantity, price);
+            addCartItem(payPalItems, name, quantity, price);
         }
     }
 
-    private void addItem(List<Item> items, String name, String quantity, String price) {
-        Item item = new Item();
-        item.setName(name);
+    private ItemList getItemList(ShippingAddress address, List<Item> payPalItems) {
+        ItemList list = new ItemList();
+        list.setItems(payPalItems);
+        list.setShippingAddress(address);
+        return list;
+    }
 
-        item.setPrice(price);
-        item.setCategory("PHYSICAL");
-        item.setQuantity(quantity);
-        item.setCurrency("USD");
-        items.add(item);
+
+
+    private void addCartItem(List<Item> payPalItems, String name, String quantity, String price) {
+
+        Item payPalItem = new Item();
+
+        payPalItem.setName(name);
+        payPalItem.setPrice(price);
+        payPalItem.setCategory("PHYSICAL");
+        payPalItem.setQuantity(quantity);
+        payPalItem.setCurrency("USD");
+        
+        payPalItems.add(payPalItem);
     }
 
 
@@ -184,15 +195,8 @@ public class PaypalController extends HttpServlet {
     private Amount getAmount() {
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal(Double.toString(cartDataManager.getTotalPriceOfCurrentCart().doubleValue()));
+        amount.setTotal(Double.toString(cartDataManager.getTotalPriceOfLastCart().doubleValue()));
         return amount;
-    }
-
-    private ItemList getItemList(ShippingAddress address, List<Item> items) {
-        ItemList list = new ItemList();
-        list.setItems(items);
-        list.setShippingAddress(address);
-        return list;
     }
 
     private ShippingAddress getAddress() {

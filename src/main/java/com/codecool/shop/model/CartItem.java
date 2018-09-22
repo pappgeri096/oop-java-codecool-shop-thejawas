@@ -8,9 +8,15 @@ public class CartItem {
     private Product product;
     private int quantity = 1;
 
-    CartItem(int id, Product product){
-        this.product = product;
+    public CartItem(int id, Product product){
         this.id = id;
+        this.product = product;
+    }
+
+    public CartItem(int id, Product product, int quantity) {
+        this.id = id;
+        this.product = product;
+        this.quantity = quantity;
     }
 
     public int getQuantity() {
@@ -25,7 +31,7 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    void increaseQuantity(){
+    public void increaseQuantity(){
         quantity++;
     }
 

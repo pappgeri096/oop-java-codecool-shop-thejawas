@@ -93,7 +93,7 @@ public class EmailUtil {
 
     public static void sendVerificationEmail() {
 
-        Cart currentOrder = cartDaoMem.getCurrent();
+        Cart currentOrder = cartDaoMem.getLastCart();
 
         Map<String, String> customerDataMap = customerDaoMem.getCustomerDataMap();
 //        Map<String, String> userDataMap = ((CartDaoMem) cartDaoMem).getCustomerDataMap();

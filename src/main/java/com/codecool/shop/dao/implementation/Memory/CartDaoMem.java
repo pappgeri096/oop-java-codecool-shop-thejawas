@@ -3,6 +3,7 @@ package com.codecool.shop.dao.implementation.Memory;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.CartItem;
+import com.codecool.shop.model.Product;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -47,14 +48,14 @@ public class CartDaoMem implements CartDao {
     }
 
     @Override
-    public Cart getCurrent() {
+    public Cart getLastCart() {
         return data.get(data.size() - 1);
     }
 
     @Override
-    public BigDecimal getTotalPriceOfCurrentCart() {
+    public BigDecimal getTotalPriceOfLastCart() {
         BigDecimal sumPrice = BigDecimal.valueOf(0);
-        for (CartItem cartItem : getCurrent().getCartItemList()) {
+        for (CartItem cartItem : getLastCart().getCartItemList()) {
             sumPrice = cartItem.getProduct().getDefaultPrice().multiply(new BigDecimal(cartItem.getQuantity())).add(sumPrice);
         }
         return sumPrice.setScale(2, RoundingMode.HALF_UP);
@@ -62,7 +63,7 @@ public class CartDaoMem implements CartDao {
 
     @Override
     public void createProductNameAndQuantityMaps() {
-        for (CartItem cartItem : getCurrent().getCartItemList()) {
+        for (CartItem cartItem : getLastCart().getCartItemList()) {
             productNameAndQuantityMap.put(cartItem.getProduct().getName(), cartItem.getQuantity());
         }
     }
@@ -76,4 +77,35 @@ public class CartDaoMem implements CartDao {
     public void clearProductNameAndQuantityMap() {
         productNameAndQuantityMap.clear();
     }
+
+    @Override
+    public void addToCartItemList(Product product) {
+        boolean wasProductFound = false;
+        for (CartItem cartItem : getLastCart().getCartItemList()) {
+            if (cartItem.getProduct().getId() == (product.getId())) {
+                cartItem.increaseQuantity();
+                wasProductFound = true;
+            }
+        }
+        if (!wasProductFound){
+            getLastCart().getCartItemList().add(new CartItem(createIdForCartItem(), product));
+        }
+
+    }
+
+    private int createIdForCartItem() {
+        return getLastCart().getCartItemList().size() + 1;
+    }
+
+    @Override
+    public int getQuantityOfProducts() {
+        int numberOfItems = 0;
+        for (CartItem cartItem : getLastCart().getCartItemList()) {
+            numberOfItems += cartItem.getQuantity();
+        }
+        return numberOfItems;
+    }
+
+
+
 }

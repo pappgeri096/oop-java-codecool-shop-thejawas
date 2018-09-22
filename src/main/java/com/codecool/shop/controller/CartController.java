@@ -29,10 +29,10 @@ public class CartController extends HttpServlet {
     private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
 
     private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
-    private Cart currentCart = cartDataManager.getCurrent();
+    private Cart currentCart = cartDataManager.getLastCart();
 
 //    private CartDao cartDaoSql = CartDaoSql.getInstance();
-//    private Cart currentOrderSql = cartDaoSql.getCurrent();
+//    private Cart currentOrderSql = cartDaoSql.getLastCart();
 
 
     @Override
@@ -42,7 +42,7 @@ public class CartController extends HttpServlet {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        context.setVariable("orderMem", orderDataStore.getCurrent());
+        context.setVariable("orderMem", orderDataStore.getLastCart());
         engine.process("product/cart.html", context, resp.getWriter());
 
         cartLogger.info("Shopping cart editor page displayed");
@@ -68,7 +68,7 @@ public class CartController extends HttpServlet {
                 }
             }
         }
-        cartDataManager.createProductNameAndQuantityMaps();
+        cartDataManager.createProductNameAndQuantityMaps(); // TODO: CARTDAO REFACTOR
 
         if (currentCart.getCartItemList().size()>0) {
             resp.sendRedirect("/review");

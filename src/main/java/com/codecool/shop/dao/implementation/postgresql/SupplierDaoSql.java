@@ -1,14 +1,14 @@
 package com.codecool.shop.dao.implementation.postgresql;
 
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.dao.implementation.postgresql.query_util.QueryHandler;
+import com.codecool.shop.dao.implementation.postgresql.query_util.SupplierQueryHandler;
 import com.codecool.shop.model.Supplier;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupplierDaoSql extends QueryHandler implements SupplierDao {
+public class SupplierDaoSql extends SupplierQueryHandler implements SupplierDao {
 
     private static SupplierDaoSql instance = null;
 
@@ -65,7 +65,7 @@ public class SupplierDaoSql extends QueryHandler implements SupplierDao {
     public void remove(int id) {
         String query = "DELETE FROM supplier WHERE id ='" + id + "';";
 
-        executeIsertUpdateOrDelete(query);
+        executeInsertUpdateOrDelete(query);
 
     }
 
@@ -96,26 +96,6 @@ public class SupplierDaoSql extends QueryHandler implements SupplierDao {
 
     }
 
-    private void insertSupplierWithValidation(String prePreparedQuery, String name, String description) {
-
-        try (Connection connection = getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery)
-        ) {
-            Class.forName("org.postgresql.Driver");
-            pstmt.setString(1, name);
-            pstmt.setString(2, description);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            System.out.println("SQL exception");
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            System.out.println("ClassNotFound exception");
-            e.printStackTrace();
-        }
-
-    }
 
 
 }

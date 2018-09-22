@@ -14,8 +14,6 @@ public class CartDaoMem implements CartDao {
 
     private List<Cart> data = new ArrayList<>();
 
-    private Map<String, Integer> productNameAndQuantityMap = new HashMap<>();
-
     private CartDaoMem() {
     }
 
@@ -59,23 +57,6 @@ public class CartDaoMem implements CartDao {
             sumPrice = cartItem.getProduct().getDefaultPrice().multiply(new BigDecimal(cartItem.getQuantity())).add(sumPrice);
         }
         return sumPrice.setScale(2, RoundingMode.HALF_UP);
-    }
-
-    @Override
-    public void createProductNameAndQuantityMaps() {
-        for (CartItem cartItem : getLastCart().getCartItemList()) {
-            productNameAndQuantityMap.put(cartItem.getProduct().getName(), cartItem.getQuantity());
-        }
-    }
-
-    @Override
-    public Map<String, Integer> getProductNameAndQuantityMap() {
-        return productNameAndQuantityMap;
-    }
-
-    @Override
-    public void clearProductNameAndQuantityMap() {
-        productNameAndQuantityMap.clear();
     }
 
     @Override

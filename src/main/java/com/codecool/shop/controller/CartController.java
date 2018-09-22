@@ -29,7 +29,7 @@ public class CartController extends HttpServlet {
     private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
 
     private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
-    private Cart currentCart = cartDataManager.getLastCart();
+//    private Cart currentCart = ;
 
 //    private CartDao cartDaoSql = CartDaoSql.getInstance();
 //    private Cart currentOrderSql = cartDaoSql.getLastCart();
@@ -47,32 +47,33 @@ public class CartController extends HttpServlet {
 
         cartLogger.info("Shopping cart editor page displayed");
     }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<CartItem> cartItemList = currentCart.getCartItemList();
+        List<CartItem> currentCartsItemList = cartDataManager.getLastCart().getCartItemList();
         boolean repeat = true;
         while (repeat) {
             repeat = false;
-            for (CartItem cartItem : cartItemList) {
+            for (CartItem cartItem : currentCartsItemList) {
                 int newQuantity = Integer.parseInt(req.getParameter(String.valueOf(cartItem.id)));
                 if (newQuantity < 1) {
-                    cartItemList.remove(cartItem);
+                    currentCartsItemList.remove(cartItem);
                     cartLogger.info("{} is removed from shopping cart.", cartItem.getProduct().getName());
                     repeat = true;
                     break;
 
-                } else if (newQuantity != cartItem.getQuantity()){
+                } else if (newQuantity != cartItem.getQuantity()) {
                     cartItem.setQuantity(newQuantity);
                     cartLogger.info("New quantity for {} is set to {}", cartItem.getProduct().getName(), newQuantity);
                 }
             }
         }
-        cartDataManager.createProductNameAndQuantityMaps(); // TODO: CARTDAO REFACTOR
+//        cartDataManager.createProductNameAndQuantityMaps(); // TODO: MAYBE AUTOMATIC SAVING SHOULD COME HERE?
 
-        if (currentCart.getCartItemList().size()>0) {
+        if (currentCartsItemList.size() > 0) {
             resp.sendRedirect("/review");
-        }else {
+        } else {
             resp.sendRedirect("/");
             cartLogger.info("All products were removed from shopping cart.");
         }

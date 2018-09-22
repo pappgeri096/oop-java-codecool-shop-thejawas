@@ -28,7 +28,7 @@
 [INFO] nonBlocking:false
 [INFO] Classes = /home/akincsei/IntelliJ/4TW-codecoolShop/target/classes
 [INFO] Configuring Jetty for project: codecoolshop
-[INFO] Logging initialized @2749ms to org.eclipse.jetty.util.log.Slf4jLog
+[INFO] Logging initialized @2748ms to org.eclipse.jetty.util.log.Slf4jLog
 [INFO] Context path = /
 [INFO] Tmp directory = /home/akincsei/IntelliJ/4TW-codecoolShop/target/tmp
 [INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
@@ -37,57 +37,77 @@
 [INFO] Webapp directory = /home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp
 [INFO] jetty-9.4.11.v20180605; built: 2018-06-05T18:24:03.829Z; git: d5fc0523cfa96bfebfbda19606cad384d772f04c; jvm 1.8.0_181-b13
 [WARNING] Unknown asm implementation version, assuming version 393216
-[INFO] Scanning elapsed time=448ms
+[INFO] Scanning elapsed time=608ms
 [WARNING] com.codecool.shop.config.TemplateEngineUtil does not implement one of the servlet listener interfaces
-22:24:02,041 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
-22:24:02,041 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
-22:24:02,041 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [file:/home/akincsei/IntelliJ/4TW-codecoolShop/target/classes/logback.xml]
-22:24:02,098 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
-22:24:02,102 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
-22:24:02,109 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
-22:24:02,111 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@7:24 - no applicable action for [withJansi], current ElementPath  is [[configuration][appender][encoder][withJansi]]
-22:24:02,131 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
-22:24:02,134 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [FILE]
-22:24:02,139 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1537371824 - setting totalSizeCap to 30 MB
-22:24:02,141 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1537371824 - Archive files will be limited to [3 MB] each.
-22:24:02,143 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1537371824 - No compression will be used
-22:24:02,144 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1537371824 - Will use the pattern log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html for the active file
-22:24:02,147 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@67b100fe - The date pattern is 'yyyy-MM-dd' from file name pattern 'log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html'.
-22:24:02,147 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@67b100fe - Roll-over at midnight.
-22:24:02,150 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@67b100fe - Setting initial period to Sat Sep 22 22:24:02 CEST 2018
-22:24:02,154 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@27:40 - no applicable action for [outputPatternAsHeader], current ElementPath  is [[configuration][appender][encoder][layout][outputPatternAsHeader]]
-22:24:02,154 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - Active log file name: log/order_logs/2018-09-22/OrderLog.StartedAt.22:00.hours.0.html
-22:24:02,154 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - File property is set to [null]
-22:24:02,156 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.classic.db.DBAppender]
-22:24:02,160 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [DB]
-22:24:02,224 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@d109c4f - Driver name=PostgreSQL JDBC Driver
-22:24:02,224 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@d109c4f - Driver version=42.2.4
-22:24:02,224 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@d109c4f - supportsGetGeneratedKeys=true
-22:24:02,227 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.paypal] to INFO
-22:24:02,227 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.paypal]
-22:24:02,227 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.codecool.shop.controller] to INFO
-22:24:02,228 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.codecool.shop.controller]
-22:24:02,228 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.braintreegateway] to INFO
-22:24:02,228 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.braintreegateway]
-22:24:02,228 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to INFO
-22:24:02,228 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
-22:24:02,228 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [DB] to Logger[ROOT]
-22:24:02,228 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
-22:24:02,228 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@7aac8884 - Registering current configuration as safe fallback point
-22:24:02,011 |-INFO in ch.qos.logback.classic.servlet.LogbackServletContainerInitializer@70e13fa - Adding an instance of  class ch.qos.logback.classic.servlet.LogbackServletContextListener to the current web-app
+23:22:24,137 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+23:22:24,138 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
+23:22:24,138 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [file:/home/akincsei/IntelliJ/4TW-codecoolShop/target/classes/logback.xml]
+23:22:24,199 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+23:22:24,202 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+23:22:24,209 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+23:22:24,210 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@7:24 - no applicable action for [withJansi], current ElementPath  is [[configuration][appender][encoder][withJansi]]
+23:22:24,241 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+23:22:24,245 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [FILE]
+23:22:24,251 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1705281026 - setting totalSizeCap to 30 MB
+23:22:24,255 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1705281026 - Archive files will be limited to [3 MB] each.
+23:22:24,258 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1705281026 - No compression will be used
+23:22:24,261 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1705281026 - Will use the pattern log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html for the active file
+23:22:24,264 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@14982a82 - The date pattern is 'yyyy-MM-dd' from file name pattern 'log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html'.
+23:22:24,264 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@14982a82 - Roll-over at midnight.
+23:22:24,268 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@14982a82 - Setting initial period to Sat Sep 22 23:22:24 CEST 2018
+23:22:24,276 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@27:40 - no applicable action for [outputPatternAsHeader], current ElementPath  is [[configuration][appender][encoder][layout][outputPatternAsHeader]]
+23:22:24,276 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - Active log file name: log/order_logs/2018-09-22/OrderLog.StartedAt.23:00.hours.0.html
+23:22:24,277 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - File property is set to [null]
+23:22:24,279 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.classic.db.DBAppender]
+23:22:24,284 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [DB]
+23:22:24,394 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@5624657a - Driver name=PostgreSQL JDBC Driver
+23:22:24,394 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@5624657a - Driver version=42.2.4
+23:22:24,394 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@5624657a - supportsGetGeneratedKeys=true
+23:22:24,400 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.paypal] to INFO
+23:22:24,401 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.paypal]
+23:22:24,402 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.codecool.shop.controller] to INFO
+23:22:24,402 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.codecool.shop.controller]
+23:22:24,402 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.braintreegateway] to INFO
+23:22:24,402 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.braintreegateway]
+23:22:24,403 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to INFO
+23:22:24,404 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+23:22:24,404 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [DB] to Logger[ROOT]
+23:22:24,404 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+23:22:24,406 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@599e4d41 - Registering current configuration as safe fallback point
+23:22:24,102 |-INFO in ch.qos.logback.classic.servlet.LogbackServletContainerInitializer@30669dac - Adding an instance of  class ch.qos.logback.classic.servlet.LogbackServletContextListener to the current web-app
 [INFO] DefaultSessionIdManager workerName=node0
 [INFO] No SessionScavenger set, using defaults
 [INFO] node0 Scavenging every 660000ms
-[INFO] Started o.e.j.m.p.JettyWebAppContext@c6a6c1d{CodecoolShop Application,/,file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/,AVAILABLE}{file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/}
-[INFO] Started ServerConnector@44065156{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
-[INFO] Started @4149ms
+[INFO] Started o.e.j.m.p.JettyWebAppContext@971e903{CodecoolShop Application,/,file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/,AVAILABLE}{file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/}
+[INFO] Started ServerConnector@17dd671f{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+[INFO] Started @4805ms
 [INFO] Started Jetty Server
 [INFO] Console reloading is ENABLED. Hit ENTER on the console to restart the context.
-[22:24:24.943] [INFO ] c.c.s.controller.ProductController [ProductController.java:59] - Amazon Fire successfully added to cart 
-[22:24:26.269] [INFO ] c.c.s.controller.ProductController [ProductController.java:59] - Lenovo IdeaPad Miix 700 successfully added to cart 
-[22:24:27.523] [INFO ] c.c.s.controller.ProductController [ProductController.java:59] - Amazon Fire HD 8 successfully added to cart 
-[22:24:28.629] [INFO ] c.c.s.controller.PaymentController [CartController.java:48] - Shopping cart editor page displayed 
-[22:24:33.273] [INFO ] c.c.s.controller.PaymentController [CartController.java:67] - New quantity for Amazon Fire is set to 2 
-[22:24:33.281] [INFO ] c.c.s.controller.PaymentController [CartController.java:67] - New quantity for Lenovo IdeaPad Miix 700 is set to 2 
-[22:24:33.297] [INFO ] c.c.s.controller.PaymentController [ReviewController.java:42] - Get request received for SHOPPING CART REVIEW page 
-[22:24:35.476] [INFO ] c.c.s.controller.CheckOutController [CheckOutController.java:42] - Get request received for CHECKOUT page 
+[23:22:30.834] [INFO ] c.c.s.controller.ProductController [ProductController.java:59] - Amazon Fire HD 8 successfully added to cart 
+[23:22:32.558] [INFO ] c.c.s.controller.PaymentController [CartController.java:48] - Shopping cart editor page displayed 
+[23:22:33.804] [INFO ] c.c.s.controller.PaymentController [ReviewController.java:42] - Get request received for SHOPPING CART REVIEW page 
+[23:22:35.419] [INFO ] c.c.s.controller.CheckOutController [CheckOutController.java:42] - Get request received for CHECKOUT page 
+Sep 22, 2018 11:22:43 PM com.braintreegateway.util.Http httpDo
+INFO: [Braintree] [22/Sep/2018 23:22:43 +0200]] POST /merchants/r63vmkrc39s63j9m/client_token
+[23:22:43.149] [INFO ] c.c.s.controller.PaymentController [PaymentController.java:40] - Get request received for PAYMENT page 
+[23:22:46.291] [INFO ] c.c.s.controller.PaymentController [PaypalController.java:58] - Customer is now redirected to paypal.com 
+[23:22:48.676] [INFO ] c.c.s.controller.PaymentController [PaypalController.java:137] - Payment approved by PayPal 
+[23:23:03.132] [INFO ] c.c.s.controller.PaymentController [PaypalPaymentController.java:41] - Payment is successful. PayPal payment ID: PAY-9YF995518K712641ELOTLFKA 
+Sent message successfully....
+[23:23:04.686] [INFO ] c.c.s.c.PaymentPayedController [PaymentPayedController.java:57] - Payment approved by online payment service provider 
+[23:23:09.386] [INFO ] c.c.s.controller.ProductController [ProductController.java:59] - Sebastian Body Pillow successfully added to cart 
+[23:23:11.560] [INFO ] c.c.s.controller.PaymentController [CartController.java:48] - Shopping cart editor page displayed 
+[23:23:14.769] [INFO ] c.c.s.controller.PaymentController [ReviewController.java:42] - Get request received for SHOPPING CART REVIEW page 
+[23:23:16.050] [INFO ] c.c.s.controller.CheckOutController [CheckOutController.java:42] - Get request received for CHECKOUT page 
+Sep 22, 2018 11:23:22 PM com.braintreegateway.util.Http httpDo
+INFO: [Braintree] [22/Sep/2018 23:23:22 +0200]] POST /merchants/r63vmkrc39s63j9m/client_token
+[23:23:22.397] [INFO ] c.c.s.controller.PaymentController [PaymentController.java:40] - Get request received for PAYMENT page 
+[23:23:25.631] [INFO ] c.c.s.controller.PaymentController [PaypalController.java:58] - Customer is now redirected to paypal.com 
+[23:23:26.928] [INFO ] c.c.s.controller.PaymentController [PaypalController.java:137] - Payment approved by PayPal 
+[23:23:44.068] [INFO ] c.c.s.controller.PaymentController [PaypalPaymentController.java:41] - Payment is successful. PayPal payment ID: PAY-3R6535470M384333ALOTLFTQ 
+Sent message successfully....
+[23:23:45.319] [INFO ] c.c.s.c.PaymentPayedController [PaymentPayedController.java:57] - Payment approved by online payment service provider 
+[23:23:57.159] [INFO ] c.c.s.controller.ProductController [ProductController.java:59] - Amazon Fire HD 8 successfully added to cart 
+[23:23:58.401] [INFO ] c.c.s.controller.PaymentController [CartController.java:48] - Shopping cart editor page displayed 
+[23:24:02.047] [INFO ] c.c.s.controller.PaymentController [CartController.java:62] - Amazon Fire HD 8 is removed from shopping cart. 
+[23:24:02.063] [INFO ] c.c.s.controller.PaymentController [CartController.java:78] - All products were removed from shopping cart. 

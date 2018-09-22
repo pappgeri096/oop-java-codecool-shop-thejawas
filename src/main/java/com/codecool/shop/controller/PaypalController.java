@@ -34,7 +34,6 @@ public class PaypalController extends HttpServlet {
     private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
     private CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
 
-    private Map<String, Integer> productNameAndQuantityMap = cartDataManager.getProductNameAndQuantityMap();  // TODO: CARTDAO REFACTOR
     private Map<String, String> customerDataMap = customerDataManager.getCustomerDataMap();
 
 //    private CartDao cartDaoSql = CartDaoSql.getInstance();
@@ -46,13 +45,15 @@ public class PaypalController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        if (customerDataMap.size() == 0 || productNameAndQuantityMap.size() == 0) {
+        int numberOfProductsInCart = cartDataManager.getLastCart().getCartItemList().size();
+        if (customerDataMap.size() == 0 || numberOfProductsInCart == 0) {
             resp.sendRedirect("/");
             paypalLogger.debug("Empty user data or product quantity");
             paypalLogger.debug(
                     "User data size: {}. Product quantity: {}",
                     customerDataMap.size(),
-                    productNameAndQuantityMap.size());
+                    numberOfProductsInCart
+            );
         }
         paypalLogger.info("Customer is now redirected to paypal.com");
         //execute payment
@@ -85,21 +86,13 @@ public class PaypalController extends HttpServlet {
     }
 
     private void getItems(List<Item> payPalItems) {
-        Cart currentCart = cartDataManager.getLastCart();
+        List<CartItem> itemsIncCurrentCart = cartDataManager.getLastCart().getCartItemList();
 
-        for (Map.Entry<String, Integer> entry : productNameAndQuantityMap.entrySet()) {
+        for (CartItem cartItem : itemsIncCurrentCart) {
 
-            String name = entry.getKey();
-            String quantity = Integer.toString(entry.getValue());
-            String price = "1.1";
-
-            for (CartItem cartItem : currentCart.getCartItemList()) {
-                if (cartItem.getProduct().getName().equals(name)) {
-                    price = String.valueOf(cartItem.getProduct().getDefaulPrice());
-                    break;
-                }
-
-            }
+            String name = cartItem.getProduct().getName();
+            String quantity = Integer.toString(cartItem.getQuantity());
+            String price = String.valueOf(cartItem.getProduct().getDefaulPrice());
 
             addCartItem(payPalItems, name, quantity, price);
         }

@@ -84,20 +84,4 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
         return 0;
     }
 
-    @Override
-    public void createProductNameAndQuantityMaps() {
-        // TODO???????????
-    }
-
-    @Override
-    public Map<String, Integer> getProductNameAndQuantityMap() {
-        // TODO???????????
-        return null;
-    }
-
-    @Override
-    public void clearProductNameAndQuantityMap() {
-        // TODO
-    }
-
 }

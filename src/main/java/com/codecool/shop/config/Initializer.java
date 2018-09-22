@@ -55,13 +55,7 @@ public class Initializer implements ServletContextListener {
         } else if (CURRENT_IMPLEMENTATION == ImplementationType.DATABASE) {
 
         }
-
-
-
-
-
-
-
+        
 
     }
 

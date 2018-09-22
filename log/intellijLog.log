@@ -1,0 +1,90 @@
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building codecoolshop 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] >>> jetty-maven-plugin:9.4.11.v20180605:run (default-cli) > test-compile @ codecoolshop >>>
+Downloading: https://repo.maven.apache.org/maven2/com/paypal/sdk/rest-api-sdk/maven-metadata.xml
+2/2 KB            Downloaded: https://repo.maven.apache.org/maven2/com/paypal/sdk/rest-api-sdk/maven-metadata.xml (2 KB at 2.7 KB/sec)
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ codecoolshop ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 9 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.7.0:compile (default-compile) @ codecoolshop ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ codecoolshop ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/akincsei/IntelliJ/4TW-codecoolShop/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.7.0:testCompile (default-testCompile) @ codecoolshop ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] <<< jetty-maven-plugin:9.4.11.v20180605:run (default-cli) < test-compile @ codecoolshop <<<
+[INFO] 
+[INFO] --- jetty-maven-plugin:9.4.11.v20180605:run (default-cli) @ codecoolshop ---
+[INFO] webAppSourceDirectory not set. Trying src/main/webapp
+[INFO] Reload Mechanic: manual
+[INFO] nonBlocking:false
+[INFO] Classes = /home/akincsei/IntelliJ/4TW-codecoolShop/target/classes
+[INFO] Configuring Jetty for project: codecoolshop
+[INFO] Logging initialized @7686ms to org.eclipse.jetty.util.log.Slf4jLog
+[INFO] Context path = /
+[INFO] Tmp directory = /home/akincsei/IntelliJ/4TW-codecoolShop/target/tmp
+[INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
+[INFO] Web overrides =  none
+[INFO] web.xml file = file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/WEB-INF/web.xml
+[INFO] Webapp directory = /home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp
+[INFO] jetty-9.4.11.v20180605; built: 2018-06-05T18:24:03.829Z; git: d5fc0523cfa96bfebfbda19606cad384d772f04c; jvm 1.8.0_181-b13
+[WARNING] Unknown asm implementation version, assuming version 393216
+[INFO] Scanning elapsed time=317ms
+[WARNING] com.codecool.shop.config.TemplateEngineUtil does not implement one of the servlet listener interfaces
+16:13:31,665 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+16:13:31,665 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
+16:13:31,665 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [file:/home/akincsei/IntelliJ/4TW-codecoolShop/target/classes/logback.xml]
+16:13:31,763 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+16:13:31,767 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+16:13:31,773 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+16:13:31,774 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@7:24 - no applicable action for [withJansi], current ElementPath  is [[configuration][appender][encoder][withJansi]]
+16:13:31,800 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+16:13:31,803 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [FILE]
+16:13:31,808 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@2085713965 - setting totalSizeCap to 30 MB
+16:13:31,810 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@2085713965 - Archive files will be limited to [3 MB] each.
+16:13:31,813 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@2085713965 - No compression will be used
+16:13:31,814 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@2085713965 - Will use the pattern log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html for the active file
+16:13:31,817 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@4e642ee1 - The date pattern is 'yyyy-MM-dd' from file name pattern 'log/order_logs/%d{yyyy-MM-dd}/OrderLog.StartedAt.%d{HH}:00.hours.%i.html'.
+16:13:31,817 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@4e642ee1 - Roll-over at midnight.
+16:13:31,817 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@4e642ee1 - Setting initial period to Sat Sep 22 16:13:31 CEST 2018
+16:13:31,821 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@27:40 - no applicable action for [outputPatternAsHeader], current ElementPath  is [[configuration][appender][encoder][layout][outputPatternAsHeader]]
+16:13:31,822 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - Active log file name: log/order_logs/2018-09-22/OrderLog.StartedAt.16:00.hours.0.html
+16:13:31,822 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - File property is set to [null]
+16:13:31,823 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.classic.db.DBAppender]
+16:13:31,857 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [DB]
+16:13:31,941 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@695c938d - Driver name=PostgreSQL JDBC Driver
+16:13:31,941 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@695c938d - Driver version=42.2.4
+16:13:31,941 |-INFO in ch.qos.logback.core.db.DriverManagerConnectionSource@695c938d - supportsGetGeneratedKeys=true
+16:13:31,944 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.paypal] to INFO
+16:13:31,944 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.paypal]
+16:13:31,945 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.codecool.shop.controller] to INFO
+16:13:31,945 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.codecool.shop.controller]
+16:13:31,945 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.braintreegateway] to INFO
+16:13:31,945 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[com.braintreegateway]
+16:13:31,945 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to INFO
+16:13:31,945 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+16:13:31,945 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [DB] to Logger[ROOT]
+16:13:31,945 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+16:13:31,945 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@7b477141 - Registering current configuration as safe fallback point
+16:13:31,638 |-INFO in ch.qos.logback.classic.servlet.LogbackServletContainerInitializer@a098d76 - Adding an instance of  class ch.qos.logback.classic.servlet.LogbackServletContextListener to the current web-app
+[INFO] DefaultSessionIdManager workerName=node0
+[INFO] No SessionScavenger set, using defaults
+[INFO] node0 Scavenging every 660000ms
+[INFO] Started o.e.j.m.p.JettyWebAppContext@41fe8e5f{CodecoolShop Application,/,file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/,AVAILABLE}{file:///home/akincsei/IntelliJ/4TW-codecoolShop/src/main/webapp/}
+[INFO] Started ServerConnector@60e06f7d{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+[INFO] Started @9249ms
+[INFO] Started Jetty Server
+[INFO] Console reloading is ENABLED. Hit ENTER on the console to restart the context.
+[16:13:49.425] [INFO ] c.c.s.controller.ProductController [ProductController.java:69] - Sebastian Body Pillow successfully added to cart 
+[16:13:52.331] [INFO ] c.c.s.controller.ProductController [ProductController.java:69] - Amazon Fire HD 8 successfully added to cart 
+[16:13:54.115] [INFO ] c.c.s.controller.ProductController [ProductController.java:69] - Lenovo IdeaPad Miix 700 successfully added to cart 

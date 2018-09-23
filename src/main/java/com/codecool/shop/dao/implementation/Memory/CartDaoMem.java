@@ -4,6 +4,7 @@ import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.CartItem;
 import com.codecool.shop.model.Product;
+import com.codecool.shop.util.CartStatusType;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -89,8 +90,53 @@ public class CartDaoMem implements CartDao {
 
     @Override
     public void saveChangesInCartAutomatically(List<CartItem> currentCartsItemList) {
+        getLastCart().setCartStatusType(CartStatusType.UNFINISHED);
         System.out.println("Cart is already saved in memory");
         System.out.println(currentCartsItemList);
+    }
+
+    @Override
+    public BigDecimal getSubTotalPriceFromLastCartByProduct(int id) {
+        BigDecimal defaultPrice = getDefaultPriceFromLastCartBy(id);
+        BigDecimal quantity = getQuantityFromLastCartBy(id);
+
+        BigDecimal bigDecimalSubtotal = defaultPrice.multiply(quantity);
+
+        BigDecimal subtotal = bigDecimalSubtotal.setScale(2, RoundingMode.HALF_UP);
+        return subtotal;
+    }
+
+    @Override
+    public BigDecimal getDefaultPriceFromLastCartBy(int productId) {
+        for (CartItem cartItem : getLastCart().getCartItemList()) {
+            Product product = cartItem.getProduct();
+            if (product.getId() == productId) {
+                return product.getDefaulPrice();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public BigDecimal getQuantityFromLastCartBy(int productId) {
+        for (CartItem cartItem : getLastCart().getCartItemList()) {
+            if (cartItem.getProduct().getId() == productId) {
+                return new BigDecimal(cartItem.getQuantity());
+            }
+        }
+        return null;
+
+    }
+
+    @Override
+    public Currency getCurrencyFromLastCartBy(int productId) {
+        for (CartItem cartItem : getLastCart().getCartItemList()) {
+            Product product = cartItem.getProduct();
+            if (product.getId() == productId) {
+                return product.getDefaultCurrency();
+            }
+        }
+        return null;
     }
 
 }

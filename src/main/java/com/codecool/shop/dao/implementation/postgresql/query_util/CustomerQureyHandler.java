@@ -31,7 +31,7 @@ public class CustomerQureyHandler extends QueryHandler {
                 "  shipping_city,\n" +
                 "  shipping_zipcode,\n" +
                 "  shipping_address\n" +
-                ") VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                ") VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         String name = customer.getName();
         String email = customer.getEmail();
@@ -99,7 +99,7 @@ public class CustomerQureyHandler extends QueryHandler {
     protected Customer createCustomerObjectBy(int customerId) throws IndexOutOfBoundsException {
 
         String query = "SELECT * FROM \"user\"\n" +
-                        "WHERE id = " + customerId + ";";
+                        " WHERE id = " + customerId + ";";
 
         return getCustomers(query).get(0);
     }

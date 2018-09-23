@@ -52,7 +52,7 @@ public class QueryHandler extends DatabaseConnectionHandler {
 
     /**
      * Example:
-     * String tableName = "public.order";
+     * String tableName = "public.\"order\"";
      * String aggregateFunctionWithColumnName = "MAX(id)";
      * String columnAlias = "largest_id";
      *

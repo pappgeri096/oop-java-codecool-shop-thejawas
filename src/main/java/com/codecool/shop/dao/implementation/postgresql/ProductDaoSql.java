@@ -6,6 +6,7 @@ import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,8 +44,20 @@ public class ProductDaoSql extends ProductQueryHandler implements ProductDao {
 
     @Override
     public Product find(int id) {
-        String query = "SELECT * FROM product WHERE id ='" + id + "';";
-        return getProducts(query).get(0);
+        String query = "SELECT * FROM product WHERE id = " + id + ";";
+
+        Product product;
+        int numberOfProductsReturned = getProducts(query).size();
+        if (getProducts(query).isEmpty()) {
+            product = null;
+        } else {
+            product = getProducts(query).get(numberOfProductsReturned - 1);
+            if (numberOfProductsReturned > 1) {
+                throw new IllegalArgumentException("There are more than one product with the same id");
+            }
+        }
+
+        return product;
     }
 
 
@@ -57,7 +70,16 @@ public class ProductDaoSql extends ProductQueryHandler implements ProductDao {
     @Override
     public List<Product> getAll() {
         String query = "SELECT * FROM product;";
-        return getProducts(query);
+
+        List<Product> productList;
+        if (getProducts(query).isEmpty()) {
+            productList = null;
+        } else {
+            productList = getProducts(query);
+        }
+
+
+        return productList;
 
     }
 

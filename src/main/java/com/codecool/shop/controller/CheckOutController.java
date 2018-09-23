@@ -27,8 +27,6 @@ public class CheckOutController extends HttpServlet {
 
     private CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
 
-//    private CustomerDao customerDaoSql = CustomerDaoSql.getInstance();
-
     private static final Logger checkoutLogger = LoggerFactory.getLogger(CheckOutController.class);
 
     @Override

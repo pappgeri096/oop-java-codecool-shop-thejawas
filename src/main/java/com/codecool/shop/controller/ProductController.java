@@ -34,20 +34,13 @@ public class ProductController extends HttpServlet {
     private static final ch.qos.logback.classic.Logger productControllerLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProductController.class);
     private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
 
-    private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
-    private ProductDao productDataManager = IMPLEMENTATION_FACTORY.getProductDataManagerInstance();
-    private ProductCategoryDao productCategoryHandler = IMPLEMENTATION_FACTORY.getProductCategoryDataManagerInstance();
-    private SupplierDao supplierDataManager = IMPLEMENTATION_FACTORY.getSupplierDataManagerInstance();
-
-//    private CartDao cartDataManagerS = CartDaoSql.getInstance();
-//    private ProductDao productDataManagerS = ProductDaoSql.getInstance();
-//    private ProductCategoryDao productCategoryHandlerS = ProductCategoryDaoSql.getInstance();
-//    private SupplierDao supplierDataManagerS = SupplierDaoSql.getInstance();
+    private final CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
+    private final ProductDao productDataManager = IMPLEMENTATION_FACTORY.getProductDataManagerInstance();
+    private final ProductCategoryDao productCategoryHandler = IMPLEMENTATION_FACTORY.getProductCategoryDataManagerInstance();
+    private final SupplierDao supplierDataManager = IMPLEMENTATION_FACTORY.getSupplierDataManagerInstance();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        List<Product> productList = productDataManager.getAll();
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, NullPointerException {
 
         String productParameter = req.getParameter("product");
 
@@ -63,6 +56,8 @@ public class ProductController extends HttpServlet {
         String categoryParameter = req.getParameter("category");
         String supplierParameter = req.getParameter("supplier");
         WebContext context = new WebContext(req, resp, req.getServletContext());
+
+        List<Product> productList = productDataManager.getAll();
 
         if (categoryParameter != null) {
             int productCategoryId = Integer.parseInt(categoryParameter);

@@ -19,6 +19,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.codecool.shop.model.Customer;
+import com.codecool.shop.model.Product;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 
 public class EmailUtil {
@@ -96,12 +97,9 @@ public class EmailUtil {
     public static void sendVerificationEmail() {
 
         Cart currentCart = cartDataManager.getLastCart();
+        List<CartItem> cartItemList = currentCart.getCartItemList();
 
         Customer currentCustomer = customerDataManager.getCurrent();
-//        Map<String, String> userDataMap = ((CartDaoMem) cartDaoMem).getCustomerDataMap(); // TODO: DO THE SAME WITH SQL
-
-
-        List<CartItem> cartItemList = currentCart.getCartItemList();
 
         String subject = "Order#"+ currentCart.getId();
         String email = currentCustomer.getEmail();
@@ -112,9 +110,16 @@ public class EmailUtil {
         message.append("Email: ").append(email).append("\n");
         message.append("Items:");
 
-        for(CartItem item : cartItemList){
-            message.append(item.getProduct().getName()).append(" ");
-            message.append(item.getSubTotalPrice()).append("\n");
+        for(CartItem cartItem : cartItemList){
+            Product productInCartItem = cartItem.getProduct();
+            message
+                    .append(productInCartItem.getName())
+                    .append(" ");
+            message
+                    .append(cartDataManager.getSubTotalPriceFromLastCartByProduct(productInCartItem.getId()))
+                    .append(" ")
+                    .append(productInCartItem.getDefaultCurrency())
+                    .append("\n");
         }
 
 

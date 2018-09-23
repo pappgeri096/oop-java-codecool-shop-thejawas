@@ -18,7 +18,7 @@ public class CartQueryHandler extends QueryHandler {
     // TODO: SELECT QUERIES
 
     protected int getLargestCartId(){
-        String tableName = "public.order";
+        String tableName = "public.\"order\"";
         String aggregateFunctionWithColumnName = "MAX(id)";
         String columnAlias = "largest_id";
 
@@ -27,13 +27,15 @@ public class CartQueryHandler extends QueryHandler {
 
     public BigDecimal getTotalPriceOfLastCart() {
 
-        String columnLabel = "default_price";
+        String columnNameAlias = "subtotal_prices";
 
-        String query = "SELECT" + columnLabel + " FROM product \n" +
-                "FULL OUTER JOIN order_product op on product.id = op.product_id \n" +
-                "WHERE op.order_id = " + getLargestCartId() + ";";
+        String query = "SELECT default_price * op.product_quantity AS " + columnNameAlias + "\n" +
+                "FROM product\n" +
+                "  FULL OUTER JOIN order_product op on product.id = op.product_id\n" +
+                "  FULL OUTER JOIN \"order\" o on op.order_id = o.id\n" +
+                "WHERE o.id = " + getLargestCartId() + ";";
 
-        List<Integer> eachItemsPriceList = executeQueryWithColumnLabel_ReturnIntegerList(query, columnLabel);
+        List<Integer> eachItemsPriceList = executeQueryWithColumnLabel_ReturnIntegerList(query, columnNameAlias);
 
         Integer integerSum = eachItemsPriceList
                 .stream()
@@ -57,6 +59,9 @@ public class CartQueryHandler extends QueryHandler {
                 "  FULL OUTER JOIN product p on op.product_id = p.id\n" +
                 "WHERE \"order\".id = '" + id + "'\n" +
                 "ORDER BY id_from_order;";
+
+        // TODO: RETURN 0 IF CART IS EMPTY
+
         return getCarts(query).get(0);
     }
 
@@ -111,6 +116,8 @@ public class CartQueryHandler extends QueryHandler {
             while (resultSet.next()) {
                 cartId = resultSet.getInt("id_from_order");
 
+                boolean isCartNotEmpty = resultSet.getInt("id_from_product") > 0;
+
                 if (previousCartId != cartId) {
                     cartItemCounter = 1;
                     cart = new Cart(
@@ -119,13 +126,16 @@ public class CartQueryHandler extends QueryHandler {
                             CartStatusType.valueOf(resultSet.getString("status"))
                     );
 
-                    CartItem cartItem = new CartItem(
-                            cartItemCounter,
-                            productDataManager.find(resultSet.getInt("id_from_product")),
-                            resultSet.getInt("product_quantity")
-                    );
+                    if (isCartNotEmpty) {
+                        CartItem cartItem = new CartItem(
+                                cartItemCounter,
+                                productDataManager.find(resultSet.getInt("id_from_product")),
+                                resultSet.getInt("product_quantity")
+                        );
 
-                    cart.addToCartItemList(cartItem);
+                        cart.addToCartItemList(cartItem);
+
+                    }
 
                     resultList.add(cart);
 
@@ -174,7 +184,7 @@ public class CartQueryHandler extends QueryHandler {
     }
 
     public void insertEmptyCart(int userId, CartStatusType cartStatusType, BigDecimal totalPrice) {
-        String prePreparedQuery = "INSERT INTO public.order (id, user_id, status, total_price)" +
+        String prePreparedQuery = "INSERT INTO public.\"order\" (id, user_id, status, total_price)" +
                 "VALUES (DEFAULT, ?, ?, ?);";
 
         insertIntoTable_order(prePreparedQuery, userId, cartStatusType.getStatusString(), totalPrice);
@@ -203,9 +213,9 @@ public class CartQueryHandler extends QueryHandler {
 
     }
 
-    protected void updateQuantityIn_order_product(int orderId, int existingCartItemProductId, int quantity) {
+    protected void updateQuantityAndStatusIn_order_product(int orderId, int existingCartItemProductId, int quantity, CartStatusType cartStatusType) {
         String prePreparedQuery = "UPDATE public.order_product\n" +
-                "SET product_quantity = ?\n" +
+                "SET product_quantity = ? \n" +
                 "WHERE product_id = ? AND order_id = ?;";
         DMLPreparedQuery3Parameters(prePreparedQuery, quantity, existingCartItemProductId, orderId);
 

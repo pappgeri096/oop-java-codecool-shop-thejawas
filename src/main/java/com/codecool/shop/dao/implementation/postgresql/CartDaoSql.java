@@ -5,9 +5,11 @@ import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.CartItem;
 import com.codecool.shop.model.Product;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import com.codecool.shop.dao.implementation.postgresql.query_util.CartQueryHandler;
+import com.codecool.shop.util.CartStatusType;
 
 public class CartDaoSql extends CartQueryHandler implements CartDao {
 
@@ -76,7 +78,7 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
         for (CartItem cartItem: getLastCart().getCartItemList()) {
             int existingCartItemProductId = cartItem.getProduct().getId();
             if (newProductId == existingCartItemProductId) {
-                updateQuantityIn_order_product(getLargestCartId(), existingCartItemProductId, cartItem.getQuantity() + 1);
+                updateQuantityAndStatusIn_order_product(getLargestCartId(), existingCartItemProductId, (cartItem.getQuantity() + 1), CartStatusType.UNFINISHED);
                 productNotInCart = false;
                 break;
             }
@@ -89,7 +91,12 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
 
     @Override
     public int getQuantityOfProductsInLastCart() {
-        return getLastCart().getCartItemList().size();
+        List<CartItem> lastCartItemList = getLastCart().getCartItemList();
+        int numberOfProducts = 0;
+        for (CartItem cartItem : lastCartItemList) {
+            numberOfProducts += cartItem.getQuantity();
+        }
+        return numberOfProducts;
     }
 
     @Override
@@ -105,10 +112,14 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
                 int updatedProductId = updatedCartItem.getProduct().getId();
                 int updatedProductQuantity = updatedCartItem.getQuantity();
 
+                System.out.println("unsavedProductId: " + unsavedProductId);
+                System.out.println("unsavedProductQuantity: " + unsavedProductQuantity);
+                System.out.println("updatedProductId: " + updatedProductId);
+                System.out.println("updatedProductQuantity: " + updatedProductQuantity);
                 if (unsavedProductId == updatedProductId) {
                     updatedCartItemDeleted = false;
                     if (updatedProductQuantity != unsavedProductQuantity) {
-                        updateQuantityIn_order_product(getLargestCartId(), updatedProductId, updatedProductQuantity);
+                        updateQuantityAndStatusIn_order_product(getLargestCartId(), updatedProductId, updatedProductQuantity, CartStatusType.UNFINISHED);
                     }
                     break;
                 }
@@ -118,5 +129,28 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
                 deleteCartItemFromCart(getLargestCartId(), unsavedProductId);
             }
         }
+        System.out.println(updatedCartsItemList);
+        System.out.println(unsavedCartsItemList);
+    }
+
+    // TODO: IMPLEMENT all below
+    @Override
+    public BigDecimal getSubTotalPriceFromLastCartByProduct(int id) {
+        return null;
+    }
+
+    @Override
+    public BigDecimal getDefaultPriceFromLastCartBy(int productId) {
+        return null;
+    }
+
+    @Override
+    public BigDecimal getQuantityFromLastCartBy(int productId) {
+        return null;
+    }
+
+    @Override
+    public Currency getCurrencyFromLastCartBy(int productId) {
+        return null;
     }
 }

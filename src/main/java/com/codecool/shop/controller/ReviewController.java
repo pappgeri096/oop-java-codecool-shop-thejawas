@@ -25,18 +25,15 @@ public class ReviewController extends HttpServlet {
     private static final Logger reviewLogger = LoggerFactory.getLogger(PaymentController.class);
     private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
 
-    private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
-
-//    private CartDao cartDaoSql = CartDaoSql.getInstance();
+    private final CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Cart currentOrder = cartDataManager.getLastCart();
-
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        context.setVariable("orderMem", currentOrder);
+        context.setVariable("cartDataManager", cartDataManager);
+        context.setVariable("numberOfProductsInLastCart", cartDataManager.getLastCart().getCartItemList().size());
         context.setVariable("totalPrice", cartDataManager.getTotalPriceOfLastCart());
         engine.process("product/review.html", context, resp.getWriter());
         reviewLogger.info("Get request received for SHOPPING CART REVIEW page");

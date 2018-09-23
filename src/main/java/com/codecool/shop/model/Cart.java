@@ -1,7 +1,9 @@
 package com.codecool.shop.model;
 
+import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.util.CartStatusType;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,10 @@ public class Cart extends BaseModel {
         return cartStatusType;
     }
 
+    public void setCartStatusType(CartStatusType cartStatusType) {
+        this.cartStatusType = cartStatusType;
+    }
+
     public List<CartItem> getCartItemList() {
         return cartItemList;
     }
@@ -41,6 +47,8 @@ public class Cart extends BaseModel {
     public void addToCartItemList(CartItem cartItem) {
         cartItemList.add(cartItem);
     }
+
+
 
     @Override
     public String toString() {

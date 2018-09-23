@@ -57,7 +57,7 @@ public class Initializer implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
 
         // setting up a guest user until registration and adding it to Customer data manager
-        Customer guest = new Customer(CUSTOMER_DATA_MANAGER.generateIdForNewCustomer());
+        Customer guest = new Customer(CUSTOMER_DATA_MANAGER.generateIdForNewCustomer(), "Guest", "jawas@jawas.hu", 702225555, "Hungary", "Budapest", "1133", "Blaha Lujza tér 1.", "Hungary", "Budapest", "1133", "Blaha Lujza tér 1.");
         CUSTOMER_DATA_MANAGER.add(guest);
 
         // setting up a new shopping cart and adding it to its data manager:

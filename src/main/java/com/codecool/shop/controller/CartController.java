@@ -3,7 +3,6 @@ package com.codecool.shop.controller;
 import com.codecool.shop.config.Initializer;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
-import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
 import com.codecool.shop.model.CartItem;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import org.thymeleaf.TemplateEngine;
@@ -29,18 +28,15 @@ public class CartController extends HttpServlet {
 
     private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
 
-//    private CartDao cartDaoSql = CartDaoSql.getInstance();
-//    private Cart currentOrderSql = cartDaoSql.getLastCart();
-
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        CartDao orderDataStore = CartDaoMem.getInstance();
-
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        context.setVariable("orderMem", orderDataStore.getLastCart());
+
+        context.setVariable("cartDataManager", cartDataManager);
+        context.setVariable("numberOfProductsInLastCart", cartDataManager.getLastCart().getCartItemList().size());
         engine.process("product/cart.html", context, resp.getWriter());
 
         cartLogger.info("Shopping cart editor page displayed");

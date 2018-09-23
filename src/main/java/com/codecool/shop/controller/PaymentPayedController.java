@@ -28,6 +28,7 @@ public class PaymentPayedController extends HttpServlet {
     private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
 
     private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
+    private CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
 
 //    CartDao cartDaoSql = CartDaoSql.getInstance();
 
@@ -43,9 +44,8 @@ public class PaymentPayedController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("payment/payed.html", context, resp.getWriter());
 
-        cartDataManager.add(new Cart());
-
-//        cartDaoSql.add(cartDaoMem.getLastCart());
+        // Adds new empty cart with ID
+        cartDataManager.add(new Cart(customerDataManager.generateIdForNewCustomer()));
 
         paymentPayedLogger.info("Payment approved by online payment service provider");
 

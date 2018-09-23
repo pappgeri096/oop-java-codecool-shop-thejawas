@@ -17,7 +17,7 @@ public class CartQueryHandler extends QueryHandler {
 
     // TODO: SELECT QUERIES
 
-    protected int getLastCartId(){
+    protected int getLargestCartId(){
         String tableName = "public.order";
         String aggregateFunctionWithColumnName = "MAX(id)";
         String columnAlias = "largest_id";
@@ -31,7 +31,7 @@ public class CartQueryHandler extends QueryHandler {
 
         String query = "SELECT" + columnLabel + " FROM product \n" +
                 "FULL OUTER JOIN order_product op on product.id = op.product_id \n" +
-                "WHERE op.order_id = " + getLastCartId() + ";";
+                "WHERE op.order_id = " + getLargestCartId() + ";";
 
         List<Integer> eachItemsPriceList = executeQueryWithColumnLabel_ReturnIntegerList(query, columnLabel);
 
@@ -162,7 +162,7 @@ public class CartQueryHandler extends QueryHandler {
 
         insertIntoTable_order(prePreparedQuery, userId, status, totalPrice);
 
-        int orderId = getLastCartId();
+        int orderId = getLargestCartId();
         for (CartItem cartItem : cart.getCartItemList()) {
 
             prePreparedQuery = "INSERT INTO public.order_product (id, order_id, product_id, product_quantity) " +
@@ -215,7 +215,7 @@ public class CartQueryHandler extends QueryHandler {
         String prePreparedQuery = "INSERT INTO public.order_product (id, order_id, product_id, product_quantity) " +
                 "VALUES (DEFAULT, ?, ?, ?);";
 
-        DMLPreparedQuery3Parameters(prePreparedQuery, getLastCartId(), newProductId, 1);
+        DMLPreparedQuery3Parameters(prePreparedQuery, getLargestCartId(), newProductId, 1);
     }
 
     protected void deleteCartItemFromCart(int lastCartId, int deletedProductId) {

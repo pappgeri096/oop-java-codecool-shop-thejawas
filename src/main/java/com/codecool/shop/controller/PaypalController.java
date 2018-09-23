@@ -4,8 +4,8 @@ package com.codecool.shop.controller;
 import com.codecool.shop.config.Initializer;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.CustomerDao;
-import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.CartItem;
+import com.codecool.shop.model.Customer;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 
 @WebServlet(urlPatterns = {"/paypal"})
@@ -34,31 +33,31 @@ public class PaypalController extends HttpServlet {
     private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
     private CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
 
-    private Map<String, String> customerDataMap = customerDataManager.getCustomerDataMap();
-
+    // TODO: DO THE SAME WITH SQL
 //    private CartDao cartDaoSql = CartDaoSql.getInstance();
 //    private CustomerDao customerDaoSql = CustomerDaoSql.getInstance();
-//    private Map<String, String> userDataMap = customerDaoSql.getCustomerDataMap();
-//    private Map<String, Integer> productNameAndQuantityMap = cartDaoSql.getProductNameAndQuantityMap();
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         int numberOfProductsInCart = cartDataManager.getLastCart().getCartItemList().size();
-        if (customerDataMap.size() == 0 || numberOfProductsInCart == 0) {
+
+        boolean anyCustomerDataMissing = customerDataManager.checkIfAnyCustomerDataMissing();
+        if (anyCustomerDataMissing || numberOfProductsInCart == 0) {
             resp.sendRedirect("/");
-            paypalLogger.debug("Empty user data or product quantity");
+            paypalLogger.debug("Not enough user data provided or no product was selected fot purchase");
             paypalLogger.debug(
-                    "User data size: {}. Product quantity: {}",
-                    customerDataMap.size(),
+                    "All user data are provided: {}. Product quantity: {}",
+                    anyCustomerDataMissing,
                     numberOfProductsInCart
             );
-        }
-        paypalLogger.info("Customer is now redirected to paypal.com");
-        //execute payment
-        payment(resp);
+        } else {
+            paypalLogger.info("Customer is now redirected to paypal.com");
+            //execute payment
+            payment(resp);
 
+        }
     }
 
 
@@ -194,12 +193,13 @@ public class PaypalController extends HttpServlet {
 
     private ShippingAddress getAddress() {
         ShippingAddress address = new ShippingAddress();
-        address.setPhone(customerDataMap.get("telephoneNumber"));
+        Customer currentCustomer = customerDataManager.getCurrent();
+        address.setPhone(String.valueOf(currentCustomer.getPhoneNumber()));
         address.setCountryCode("HU");
-        address.setCity(customerDataMap.get("cityBill"));
-        address.setLine1(customerDataMap.get("addressBill"));
-        address.setPostalCode(customerDataMap.get("zipCodeBill"));
-        address.setState(customerDataMap.get("Pest"));
+        address.setCity(currentCustomer.getBillingCity());
+        address.setLine1(currentCustomer.getBillingAddress());
+        address.setPostalCode(currentCustomer.getBillingZipCode());
+        address.setState("Pest"); // TODO: GET STATE AUTOMATICALLY BASED ON CITY NAME
         return address;
     }
 

@@ -80,4 +80,9 @@ public class ProductDaoSql extends ProductQueryHandler implements ProductDao {
         return getProducts(query).get(0);
     }
 
+    @Override
+    public List<Product> getBy(String keyWord) {
+        // TODO TO WORK FOR SEARCH
+        return null;
+    }
 }

@@ -1,17 +1,14 @@
 package com.codecool.shop.dao.implementation.postgresql;
 
 import com.codecool.shop.dao.CustomerDao;
+import com.codecool.shop.dao.implementation.postgresql.query_util.CustomerQureyHandler;
 import com.codecool.shop.model.Customer;
 
 import java.util.*;
 
-public class CustomerDaoSql implements CustomerDao {
+public class CustomerDaoSql extends CustomerQureyHandler implements CustomerDao {
 
     private static CustomerDaoSql instance = null;
-    private List<Customer> data = new ArrayList<>();
-
-    private List<String> checkoutData = Arrays.asList("name", "emailAddress", " telephoneNumber", "countryBill", "cityBill", "zipCodeBill", "addressBill", "countryShip", "cityShip", "zipCodeShip", "addressShip"); // TODO: moves to customer
-    private Map<String, String> customerDataMap = new HashMap<>();
 
     private CustomerDaoSql() {
     }
@@ -23,27 +20,39 @@ public class CustomerDaoSql implements CustomerDao {
         return instance;
     }
 
-
-
-
-    @Override
-    public Customer getCurrent() {
-        return null;
-    }
-
-    @Override
-    public Map<String, String> getCustomerDataMap() {
-        return null;
-    }
-
-    @Override
-    public void createCustomerDataMap() {
-
-    }
-
     @Override
     public void add(Customer objectType) {
+        saveCustomerObject(objectType);
+    }
 
+    @Override
+    public int generateIdForNewCustomer() {
+        return getLargestCustomerId() + 1;
+    }
+
+    @Override
+    public Customer getCurrent() throws IndexOutOfBoundsException, NullPointerException {
+        return createCustomerObjectBy(getLargestCustomerId());
+    }
+
+    @Override
+    public boolean checkIfAnyCustomerDataMissing() {
+        int largestUserIdInDatabase = getLargestCustomerId();
+        boolean anyDataMissing = true;
+        try {
+            Customer customer = createCustomerObjectBy(largestUserIdInDatabase);
+            customer.getId();
+            anyDataMissing = false;
+        } catch (IndexOutOfBoundsException ioube) {
+            System.out.println("No customer exist in database with an ID: " + largestUserIdInDatabase);
+            System.out.println(ioube.getMessage());
+            ioube.printStackTrace();
+        } catch (NullPointerException npe) {
+            System.out.println("No customer exist in database with an ID: " + largestUserIdInDatabase);
+            System.out.println(npe.getMessage());
+            npe.printStackTrace();
+        }
+        return anyDataMissing;
     }
 
     @Override
@@ -62,4 +71,6 @@ public class CustomerDaoSql implements CustomerDao {
         // DOES NOTHING
         return null;
     }
+
+
 }

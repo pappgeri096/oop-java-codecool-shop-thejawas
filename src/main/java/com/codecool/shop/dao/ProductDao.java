@@ -11,5 +11,6 @@ public interface ProductDao extends BaseDAO<Product> {
     List<Product> getBy(Supplier supplier);
     List<Product> getBy(ProductCategory productCategory);
     Product getBy(int id);
+    List<Product> getBy(String keyWord);
 
 }

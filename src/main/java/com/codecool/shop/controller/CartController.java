@@ -28,7 +28,6 @@ public class CartController extends HttpServlet {
     private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
 
     private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
-//    private Cart currentCart = ;
 
 //    private CartDao cartDaoSql = CartDaoSql.getInstance();
 //    private Cart currentOrderSql = cartDaoSql.getLastCart();

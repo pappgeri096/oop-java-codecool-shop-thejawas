@@ -49,18 +49,23 @@ public class Initializer implements ServletContextListener {
     }
 
 
-    private final CartDao CART_DATA_MANAGER;
+    private final CartDao CART_DATA_MANAGER = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
+    private final CustomerDao CUSTOMER_DATA_MANAGER = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
 
-    {
-        CART_DATA_MANAGER = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
-    }
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
 
+        // setting up a guest user until registration and adding it to Customer data manager
+        Customer guest = new Customer(CUSTOMER_DATA_MANAGER.generateIdForNewCustomer());
+        CUSTOMER_DATA_MANAGER.add(guest);
+
+        // setting up a new shopping cart and adding it to its data manager:
+        CART_DATA_MANAGER.add(new Cart(CUSTOMER_DATA_MANAGER.generateIdForNewCustomer()));
+
+
         if (CURRENT_IMPLEMENTATION == ImplementationType.MEMORY) {
             initializeFromMemory();
-        } else if (CURRENT_IMPLEMENTATION == ImplementationType.DATABASE) {
 
         }
         
@@ -110,15 +115,6 @@ public class Initializer implements ServletContextListener {
         productDataManager.add(new Product(7, "Maiden Body Pillow", BigDecimal.valueOf(80.33), "USD", "Maiden body pillow, designed to fulfill all your desires.", bodyPillow, ebay));
         productDataManager.add(new Product(8, "Levi Body Pillow", BigDecimal.valueOf(50.76), "USD", "A body pillow of Levi, designed to fulfill all your desires.", bodyPillow, ebay));
         productDataManager.add(new Product(9, "Sebastian Body Pillow", BigDecimal.valueOf(40.43), "USD", "A body pillow of Sebastian, designed to fulfill all your desires.", bodyPillow, ebay));
-
-        // setting up a guest user until registration and adding it to Customer data manager
-        Customer guest = new Customer(1, "Guest", "jawas@jawas.hu", 702225555, "Hungary", "Budapest", "1133", "Blaha Lujza tér 1.", "Hungary", "Budapest", "1133", "Blaha Lujza tér 1.");
-        CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
-        customerDataManager.add(guest);
-
-        // setting up a new shopping cart and adding it to its data manager:
-        CART_DATA_MANAGER.add(new Cart());
-
 
     }
 }

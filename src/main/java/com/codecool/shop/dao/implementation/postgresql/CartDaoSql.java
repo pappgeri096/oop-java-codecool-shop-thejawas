@@ -60,10 +60,10 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
     public Cart getLastCart() {
         Cart lastCart;
 
-        if (getLastCartId() == 0) {
-            lastCart = new Cart();
+        if (getLargestCartId() == 0) {
+            lastCart = new Cart(getLargestCartId() + 1);
         } else {
-            lastCart = getCartByOrder(getLastCartId());
+            lastCart = getCartByOrder(getLargestCartId());
         }
 
         return lastCart;
@@ -76,7 +76,7 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
         for (CartItem cartItem: getLastCart().getCartItemList()) {
             int existingCartItemProductId = cartItem.getProduct().getId();
             if (newProductId == existingCartItemProductId) {
-                updateQuantityIn_order_product(getLastCartId(), existingCartItemProductId, cartItem.getQuantity() + 1);
+                updateQuantityIn_order_product(getLargestCartId(), existingCartItemProductId, cartItem.getQuantity() + 1);
                 productNotInCart = false;
                 break;
             }
@@ -84,6 +84,7 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
         if (productNotInCart) {
             addNewProductToLastCart(newProductId);
         }
+        getLargestCartId();
     }
 
     @Override
@@ -107,14 +108,14 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
                 if (unsavedProductId == updatedProductId) {
                     updatedCartItemDeleted = false;
                     if (updatedProductQuantity != unsavedProductQuantity) {
-                        updateQuantityIn_order_product(getLastCartId(), updatedProductId, updatedProductQuantity);
+                        updateQuantityIn_order_product(getLargestCartId(), updatedProductId, updatedProductQuantity);
                     }
                     break;
                 }
             }
 
             if (updatedCartItemDeleted) {
-                deleteCartItemFromCart(getLastCartId(), unsavedProductId);
+                deleteCartItemFromCart(getLargestCartId(), unsavedProductId);
             }
         }
     }

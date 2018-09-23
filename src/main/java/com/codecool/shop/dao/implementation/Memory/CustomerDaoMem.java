@@ -10,9 +10,6 @@ public class CustomerDaoMem implements CustomerDao {
     private static CustomerDaoMem instance = null;
     private List<Customer> data = new ArrayList<>();
 
-    private List<String> checkoutData = Arrays.asList("name", "emailAddress", " telephoneNumber", "countryBill", "cityBill", "zipCodeBill", "addressBill", "countryShip", "cityShip", "zipCodeShip", "addressShip"); // TODO: moves to customer
-    private Map<String, String> customerDataMap = new HashMap<>();
-
     private CustomerDaoMem() {
     }
 
@@ -25,6 +22,11 @@ public class CustomerDaoMem implements CustomerDao {
 
 
     @Override
+    public int generateIdForNewCustomer() {
+        return data.size() + 1;
+    }
+
+    @Override
     public void add(Customer objectType) {
         data.add(objectType);
     }
@@ -34,17 +36,29 @@ public class CustomerDaoMem implements CustomerDao {
         return data.get(data.size() - 1);
     }
 
-
     @Override
-    public void createCustomerDataMap() {
-        for (int i = 0; i < 11; i++) {
-            this.customerDataMap.put(checkoutData.get(i), getCurrent().getCustomerInputData().get(i));
-        }
-    }
+    public boolean checkIfAnyCustomerDataMissing() {
+        Customer customer = getCurrent();
+        int id = customer.getId();
+        String name = customer.getName();
+        String email = customer.getEmail();
+        int phoneNumber = customer.getPhoneNumber();
+        String billingCountry = customer.getBillingCountry();
+        String billingCity = customer.getBillingCity();
+        String billingZipCode = customer.getBillingZipCode();
+        String billingAddress = customer.getBillingAddress();
+        String shippingCountry = customer.getShippingCountry();
+        String shippingCity = customer.getShippingCity();
+        String shippingZipCode = customer.getShippingZipCode();
+        String shippingAddress = customer.getShippingAddress();
 
-    @Override
-    public Map<String, String> getCustomerDataMap() {
-        return customerDataMap;
+        boolean allDataIsProvided = id != 0 && name != null && email != null && phoneNumber != 0 &&
+                billingCountry != null && billingCity != null && billingZipCode != null && billingAddress != null &&
+                shippingCountry != null && shippingCity != null && shippingZipCode != null && shippingAddress != null;
+
+        System.out.println(customer);
+        System.out.println(allDataIsProvided);
+        return !allDataIsProvided;
     }
 
 

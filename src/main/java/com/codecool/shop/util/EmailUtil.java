@@ -8,7 +8,6 @@ import com.codecool.shop.model.CartItem;
 import com.codecool.shop.model.Cart;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -19,6 +18,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.codecool.shop.model.Customer;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 
 public class EmailUtil {
@@ -95,20 +95,20 @@ public class EmailUtil {
 
     public static void sendVerificationEmail() {
 
-        Cart currentOrder = cartDataManager.getLastCart();
+        Cart currentCart = cartDataManager.getLastCart();
 
-        Map<String, String> customerDataMap = customerDataManager.getCustomerDataMap();
-//        Map<String, String> userDataMap = ((CartDaoMem) cartDaoMem).getCustomerDataMap();
+        Customer currentCustomer = customerDataManager.getCurrent();
+//        Map<String, String> userDataMap = ((CartDaoMem) cartDaoMem).getCustomerDataMap(); // TODO: DO THE SAME WITH SQL
 
 
-        List<CartItem> cartItemList = currentOrder.getCartItemList();
+        List<CartItem> cartItemList = currentCart.getCartItemList();
 
-        String subject = "Order#"+ currentOrder.getId();
-        String email = customerDataMap.get("emailAddress");
+        String subject = "Order#"+ currentCart.getId();
+        String email = currentCustomer.getEmail();
 
         StringBuilder message = new StringBuilder();
 
-        message.append("Name: ").append(customerDataMap.get("fullName")).append("\n");
+        message.append("Name: ").append(currentCustomer.getName()).append("\n");
         message.append("Email: ").append(email).append("\n");
         message.append("Items:");
 

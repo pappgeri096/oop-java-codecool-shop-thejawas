@@ -13,8 +13,11 @@ public class Cart extends BaseModel {
 
     private List<CartItem> cartItemList = new ArrayList<>();
 
-
     public Cart() {
+    }
+
+    public Cart(int id) {
+        super(id);
     }
 
     public Cart(int id, int userId, CartStatusType cartStatusType) {
@@ -33,14 +36,6 @@ public class Cart extends BaseModel {
 
     public List<CartItem> getCartItemList() {
         return cartItemList;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public void setCartStatusType(CartStatusType cartStatusType) {
-        this.cartStatusType = cartStatusType;
     }
 
     public void addToCartItemList(CartItem cartItem) {

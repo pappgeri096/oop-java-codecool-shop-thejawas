@@ -54,7 +54,7 @@ public class ProductController extends HttpServlet {
         if (productParameter != null) {
             int productId = Integer.parseInt(productParameter);
             Product productToAdd = productDataManager.getBy(productId);
-            cartDataManager.addToCartItemList(productToAdd);
+            cartDataManager.addToLastCart(productToAdd);
 
             productControllerLogger.info("{} successfully added to cart", productToAdd.getName());
 
@@ -80,7 +80,7 @@ public class ProductController extends HttpServlet {
         context.setVariable("categories", productCategoryHandler.getAll());
         context.setVariable("suppliers", supplierDataManager.getAll());
         context.setVariable("products", productList);
-        context.setVariable("quantityOfProducts", cartDataManager.getQuantityOfProducts());
+        context.setVariable("quantityOfProducts", cartDataManager.getQuantityOfProductsInLastCart());
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         engine.process("product/index.html", context, resp.getWriter());

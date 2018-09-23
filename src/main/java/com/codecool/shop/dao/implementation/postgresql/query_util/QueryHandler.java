@@ -1,15 +1,14 @@
 package com.codecool.shop.dao.implementation.postgresql.query_util;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class QueryHandler extends DatabaseConnectionHandler {
 
-    protected boolean executeInsertUpdateOrDelete(String query) {
+    // METHODS EXECUTING DATA MANIPULATION LANGUAGE STATEMENTS: INSERT, UPDATE, DELETE
+
+    protected boolean DMLQuery(String query) {
 
         int numberOfRowsAffected;
         try (Connection connection = getConnection();
@@ -24,6 +23,32 @@ public class QueryHandler extends DatabaseConnectionHandler {
 
         return numberOfRowsAffected == 1;
     }
+
+    protected void DMLPreparedQuery3Parameters(String prePreparedQuery, int firstParameter, int secondParameter, int thirdParameter) {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try (Connection connection = getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery)
+        ) {
+            pstmt.setInt(1, firstParameter);
+            pstmt.setInt(2, secondParameter);
+            pstmt.setInt(3, thirdParameter);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    // SELECT QUERIES
+
 
     /**
      * Example:

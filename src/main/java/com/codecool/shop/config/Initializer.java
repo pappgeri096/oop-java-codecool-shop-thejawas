@@ -7,6 +7,7 @@ import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
 import com.codecool.shop.model.*;
 import com.codecool.shop.util.ConfigurationHandler;
 import com.codecool.shop.util.ImplementationType;
+import com.codecool.shop.util.implementation_factory.DatabaseFactory;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import com.codecool.shop.util.implementation_factory.MemoryFactory;
 
@@ -28,7 +29,7 @@ public class Initializer implements ServletContextListener {
 
     static {
         implementationFactoryEnumMap.put(ImplementationType.MEMORY, new MemoryFactory());
-//        implementationFactoryEnumMap.put(ImplementationType.DATABASE, new DatabaseFactory());
+        implementationFactoryEnumMap.put(ImplementationType.DATABASE, new DatabaseFactory());
 
         String currentConfiguration = ConfigurationHandler.readConfigurationProperty(CONFIGURATION_PROPERTY_NAME);
         CURRENT_IMPLEMENTATION = ImplementationType.valueOf(currentConfiguration);

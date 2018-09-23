@@ -1,32 +1,32 @@
 package com.codecool.shop.util.implementation_factory;
 
 import com.codecool.shop.dao.*;
-import com.codecool.shop.dao.implementation.Memory.*;
-import com.codecool.shop.dao.implementation.postgresql.CustomerDaoSql;
+import com.codecool.shop.dao.implementation.postgresql.*;
 
-public class MemoryFactory implements ImplementationFactory {
+public class DatabaseFactory implements ImplementationFactory {
     @Override
     public CartDao getCartDataManagerInstance() {
-        return CartDaoMem.getInstance();
+        return CartDaoSql.getInstance();
     }
 
     @Override
     public CustomerDao getCustomerDataManagerInstance() {
-        return CustomerDaoMem.getInstance();
+        return CustomerDaoSql.getInstance();
     }
 
     @Override
     public ProductCategoryDao getProductCategoryDataManagerInstance() {
-        return ProductCategoryDaoMem.getInstance();
+        return ProductCategoryDaoSql.getInstance();
     }
 
     @Override
     public ProductDao getProductDataManagerInstance() {
-        return ProductDaoMem.getInstance();
+        return ProductDaoSql.getInstance();
     }
 
     @Override
     public SupplierDao getSupplierDataManagerInstance() {
-        return SupplierDaoMem.getInstance();
+        return SupplierDaoSql.getInstance();
     }
+
 }

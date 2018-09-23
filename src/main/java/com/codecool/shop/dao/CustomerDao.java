@@ -8,8 +8,6 @@ public interface CustomerDao extends BaseDAO<Customer> {
 
     Customer getCurrent();
     Map<String, String> getCustomerDataMap();
-    void createUserDataMap();
-
-    void clearCustomerDataMap();
+    void createCustomerDataMap();
 
 }

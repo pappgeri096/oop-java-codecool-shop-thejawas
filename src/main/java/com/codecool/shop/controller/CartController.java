@@ -4,7 +4,6 @@ import com.codecool.shop.config.Initializer;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
-import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.CartItem;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import org.thymeleaf.TemplateEngine;
@@ -69,7 +68,8 @@ public class CartController extends HttpServlet {
                 }
             }
         }
-//        cartDataManager.createProductNameAndQuantityMaps(); // TODO: MAYBE AUTOMATIC SAVING SHOULD COME HERE?
+
+        cartDataManager.saveChangesInCartAutomatically(currentCartsItemList);
 
         if (currentCartsItemList.size() > 0) {
             resp.sendRedirect("/review");

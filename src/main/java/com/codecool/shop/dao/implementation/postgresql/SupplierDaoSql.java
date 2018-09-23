@@ -65,7 +65,7 @@ public class SupplierDaoSql extends SupplierQueryHandler implements SupplierDao 
     public void remove(int id) {
         String query = "DELETE FROM supplier WHERE id ='" + id + "';";
 
-        executeInsertUpdateOrDelete(query);
+        DMLQuery(query);
 
     }
 

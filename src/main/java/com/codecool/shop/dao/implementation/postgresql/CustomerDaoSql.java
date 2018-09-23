@@ -1,52 +1,50 @@
-package com.codecool.shop.dao.implementation.Memory;
+package com.codecool.shop.dao.implementation.postgresql;
 
 import com.codecool.shop.dao.CustomerDao;
 import com.codecool.shop.model.Customer;
 
 import java.util.*;
 
-public class CustomerDaoMem implements CustomerDao {
+public class CustomerDaoSql implements CustomerDao {
 
-    private static CustomerDaoMem instance = null;
+    private static CustomerDaoSql instance = null;
     private List<Customer> data = new ArrayList<>();
 
     private List<String> checkoutData = Arrays.asList("name", "emailAddress", " telephoneNumber", "countryBill", "cityBill", "zipCodeBill", "addressBill", "countryShip", "cityShip", "zipCodeShip", "addressShip"); // TODO: moves to customer
     private Map<String, String> customerDataMap = new HashMap<>();
 
-    private CustomerDaoMem() {
+    private CustomerDaoSql() {
     }
 
-    public static CustomerDaoMem getInstance() {
+    public static CustomerDaoSql getInstance() {
         if (instance == null) {
-            instance = new CustomerDaoMem();
+            instance = new CustomerDaoSql();
         }
         return instance;
     }
 
 
-    @Override
-    public void add(Customer objectType) {
-        data.add(objectType);
-    }
+
 
     @Override
     public Customer getCurrent() {
-        return data.get(data.size() - 1);
-    }
-
-
-    @Override
-    public void createCustomerDataMap() {
-        for (int i = 0; i < 11; i++) {
-            this.customerDataMap.put(checkoutData.get(i), getCurrent().getCustomerInputData().get(i));
-        }
+        return null;
     }
 
     @Override
     public Map<String, String> getCustomerDataMap() {
-        return customerDataMap;
+        return null;
     }
 
+    @Override
+    public void createCustomerDataMap() {
+
+    }
+
+    @Override
+    public void add(Customer objectType) {
+
+    }
 
     @Override
     public Customer find(int id) {

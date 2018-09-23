@@ -60,11 +60,11 @@ public class CartDaoMem implements CartDao {
     }
 
     @Override
-    public void addToCartItemList(Product product) {
+    public void addToLastCart(Product product) {
         boolean wasProductFound = false;
         for (CartItem cartItem : getLastCart().getCartItemList()) {
             if (cartItem.getProduct().getId() == (product.getId())) {
-                cartItem.increaseQuantity();
+                cartItem.incrementQuantity();
                 wasProductFound = true;
             }
         }
@@ -79,7 +79,7 @@ public class CartDaoMem implements CartDao {
     }
 
     @Override
-    public int getQuantityOfProducts() {
+    public int getQuantityOfProductsInLastCart() {
         int numberOfItems = 0;
         for (CartItem cartItem : getLastCart().getCartItemList()) {
             numberOfItems += cartItem.getQuantity();
@@ -87,6 +87,9 @@ public class CartDaoMem implements CartDao {
         return numberOfItems;
     }
 
-
-
+    @Override
+    public void saveChangesInCartAutomatically(List<CartItem> currentCartsItemList) {
+        System.out.println("Cart is already saved in memory");
+        System.out.println(currentCartsItemList);
+    }
 }

@@ -4,8 +4,6 @@ import com.codecool.shop.config.Initializer;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.CustomerDao;
-import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
-import com.codecool.shop.dao.implementation.Memory.CustomerDaoMem;
 //import com.codecool.shop.dao.implementation.postgresql.CartDaoSql;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.util.EmailUtil;
@@ -30,10 +28,8 @@ public class PaymentPayedController extends HttpServlet {
     private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
 
     private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
-    private CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
 
 //    CartDao cartDaoSql = CartDaoSql.getInstance();
-//    CustomerDao customerDaoSql = CustomerDaoSql.getInstance();
 
     private static final Logger paymentPayedLogger = LoggerFactory.getLogger(PaymentPayedController.class);
 
@@ -50,9 +46,6 @@ public class PaymentPayedController extends HttpServlet {
         cartDataManager.add(new Cart());
 
 //        cartDaoSql.add(cartDaoMem.getLastCart());
-//        cartDaoSql.clearProductNameAndQuantityMap();
-
-        customerDataManager.clearCustomerDataMap();
 
         paymentPayedLogger.info("Payment approved by online payment service provider");
 

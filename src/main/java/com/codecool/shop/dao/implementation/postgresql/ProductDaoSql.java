@@ -51,7 +51,7 @@ public class ProductDaoSql extends ProductQueryHandler implements ProductDao {
     @Override
     public void remove(int id) {
         String query = "DELETE FROM product WHERE id ='" + id + "';";
-        executeInsertUpdateOrDelete(query);
+        DMLQuery(query);
     }
 
     @Override

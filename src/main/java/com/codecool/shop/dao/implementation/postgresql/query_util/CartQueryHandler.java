@@ -169,7 +169,7 @@ public class CartQueryHandler extends QueryHandler {
                     "VALUES (DEFAULT, ?, ?, ?);";
             int product_id = cartItem.getProduct().getId();
             int product_quantity = cartItem.getQuantity();
-            insertIntoTable_order_product(prePreparedQuery, orderId, product_id, product_quantity);
+            DMLPreparedQuery3Parameters(prePreparedQuery, orderId, product_id, product_quantity);
         }
     }
 
@@ -203,27 +203,25 @@ public class CartQueryHandler extends QueryHandler {
 
     }
 
-    private void insertIntoTable_order_product(String prePreparedQuery, int cartId, int productId, int quantity) {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try (Connection connection = getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery)
-        ) {
-            pstmt.setInt(1, cartId);
-            pstmt.setInt(2, productId);
-            pstmt.setInt(3, quantity);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    protected void updateQuantityIn_order_product(int orderId, int existingCartItemProductId, int quantity) {
+        String prePreparedQuery = "UPDATE public.order_product\n" +
+                "SET product_quantity = ?\n" +
+                "WHERE product_id = ? AND order_id = ?;";
+        DMLPreparedQuery3Parameters(prePreparedQuery, quantity, existingCartItemProductId, orderId);
 
     }
 
+    protected void addNewProductToLastCart(int newProductId) {
+        String prePreparedQuery = "INSERT INTO public.order_product (id, order_id, product_id, product_quantity) " +
+                "VALUES (DEFAULT, ?, ?, ?);";
+
+        DMLPreparedQuery3Parameters(prePreparedQuery, getLastCartId(), newProductId, 1);
+    }
+
+    protected void deleteCartItemFromCart(int lastCartId, int deletedProductId) {
+        String query = "DELETE FROM order_product\n" +
+                "WHERE order_id = " + lastCartId + " AND product_id = " + deletedProductId + ";";
+        DMLQuery(query);
+    }
 
 }

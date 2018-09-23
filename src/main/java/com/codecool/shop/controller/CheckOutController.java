@@ -3,7 +3,6 @@ package com.codecool.shop.controller;
 import com.codecool.shop.config.Initializer;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CustomerDao;
-import com.codecool.shop.dao.implementation.Memory.CustomerDaoMem;
 import com.codecool.shop.model.Customer;
 import com.codecool.shop.util.CustomerContactLabel;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
@@ -60,7 +59,7 @@ public class CheckOutController extends HttpServlet {
         }
 
         customerDataManager.add(new Customer(customerData));
-        customerDataManager.createUserDataMap();
+        customerDataManager.createCustomerDataMap();
 
         resp.sendRedirect("/payment");
     }

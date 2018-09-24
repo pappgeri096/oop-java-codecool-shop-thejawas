@@ -67,14 +67,17 @@
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Total</th>
+                    <th>Currency</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="lineitem,iterStat : ${cartDataManager.getLastCart().getCartItemList()}">
                     <td th:text="${lineitem.getProduct().name}"></td>
                     <td th:text="${lineitem.getProduct().getPrice()}"></td>
-                    <td><input style="width: 100px" type="number" th:name="${lineitem.id}" value="1" th:attr="value=${(lineitem.getQuantity())}"></td>
-                    <td th:text="${cartDataManager.getSubTotalPriceFromLastCartByProduct(lineitem.getProduct().getId())} "></td>
+                    <td><label>
+                        <input style="width: 100px" type="number" th:name="${lineitem.id}" th:attr="value=${(lineitem.getQuantity())}">
+                    </label></td>
+                    <td th:text="${cartDataManager.getSubTotalPriceFromLastCartBy(lineitem.getProduct().getId())} "></td>
                     <td th:text="${lineitem.getProduct().getDefaultCurrency()}"></td>
                 </tr>
                 </tbody>

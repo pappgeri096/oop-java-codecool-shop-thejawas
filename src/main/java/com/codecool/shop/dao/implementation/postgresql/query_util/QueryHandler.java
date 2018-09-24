@@ -1,5 +1,8 @@
 package com.codecool.shop.dao.implementation.postgresql.query_util;
 
+import com.codecool.shop.util.CartStatusType;
+
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +11,7 @@ public class QueryHandler extends DatabaseConnectionHandler {
 
     // METHODS EXECUTING DATA MANIPULATION LANGUAGE STATEMENTS: INSERT, UPDATE, DELETE
 
-    protected boolean DMLQuery(String query) {
+    protected boolean DMLexecute(String query) {
 
         int numberOfRowsAffected;
         try (Connection connection = getConnection();
@@ -46,6 +49,29 @@ public class QueryHandler extends DatabaseConnectionHandler {
 
     }
 
+    protected void DMLPreparedQuery4Parameters(String prePreparedQuery, int firstParameter, String secondParameter, int thirdParameter, int fourthParameter) {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try (Connection connection = getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery)
+        ) {
+            pstmt.setInt(1, firstParameter);
+            pstmt.setString(2, secondParameter);
+            pstmt.setInt(3, thirdParameter);
+            pstmt.setInt(4, fourthParameter);
+
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     // SELECT QUERIES
 
@@ -74,15 +100,15 @@ public class QueryHandler extends DatabaseConnectionHandler {
         return requiredInt;
     }
 
-    protected List<Integer> executeQueryWithColumnLabel_ReturnIntegerList(String query, String columnLabel) {
+    protected List<Double> executeQueryWithColumnLabel_ReturnIntegerList(String query, String columnLabel) {
 
-        List<Integer> eachItemsPriceList = new ArrayList<>();
+        List<Double> eachItemsPriceList = new ArrayList<>();
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
-                Integer requiredField = resultSet.getInt(columnLabel);
+                Double requiredField = resultSet.getDouble(columnLabel);
                 eachItemsPriceList.add(requiredField);
             }
 
@@ -94,6 +120,59 @@ public class QueryHandler extends DatabaseConnectionHandler {
         return eachItemsPriceList;
     }
 
+    protected String executeQueryWithColumnLabelById_ReturnString(String query, String columnLabel) {
+
+        String requiredField = null;
+
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            if (resultSet.next()) {
+                requiredField = resultSet.getString(columnLabel);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return requiredField;
+    }
+
+    protected BigDecimal executeQueryWithColumnLabel_ReturnBigDecimal(String query, String columnLabel) {
+
+        BigDecimal requiredField = null;
+
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            if (resultSet.next()) {
+                requiredField = resultSet.getBigDecimal(columnLabel);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return requiredField;
+    }
+
+    protected int executeQueryWithColumnLabel_ReturnInt(String query, String columnLabel) {
+
+        int requiredField = 0;
+
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            if (resultSet.next()) {
+                requiredField = resultSet.getInt(columnLabel);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return requiredField;
+    }
 
 
 }

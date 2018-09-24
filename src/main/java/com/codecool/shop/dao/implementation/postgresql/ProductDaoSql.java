@@ -6,7 +6,6 @@ import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,7 +63,7 @@ public class ProductDaoSql extends ProductQueryHandler implements ProductDao {
     @Override
     public void remove(int id) {
         String query = "DELETE FROM product WHERE id ='" + id + "';";
-        DMLQuery(query);
+        DMLexecute(query);
     }
 
     @Override

@@ -44,8 +44,8 @@ public class PaymentPayedController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("payment/payed.html", context, resp.getWriter());
 
-        // Adds new empty cart with ID
-        cartDataManager.add(new Cart(customerDataManager.generateIdForNewCustomer()));
+        // Adds new empty cart with ID TODO: ONLY MEMORY IMPLEMENTATION NEEDS THIS??
+        cartDataManager.add(new Cart(cartDataManager.generateIdForNewCart()));
 
         paymentPayedLogger.info("Payment approved by online payment service provider");
 

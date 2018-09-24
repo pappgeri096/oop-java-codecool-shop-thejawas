@@ -116,7 +116,7 @@ public class EmailUtil {
                     .append(productInCartItem.getName())
                     .append(" ");
             message
-                    .append(cartDataManager.getSubTotalPriceFromLastCartByProduct(productInCartItem.getId()))
+                    .append(cartDataManager.getSubTotalPriceFromLastCartBy(productInCartItem.getId()))
                     .append(" ")
                     .append(productInCartItem.getDefaultCurrency())
                     .append("\n");

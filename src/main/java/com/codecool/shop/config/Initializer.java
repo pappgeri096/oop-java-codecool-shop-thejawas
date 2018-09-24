@@ -5,6 +5,7 @@ import com.codecool.shop.dao.implementation.Memory.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.Memory.ProductDaoMem;
 import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
 import com.codecool.shop.model.*;
+import com.codecool.shop.util.CartStatusType;
 import com.codecool.shop.util.ConfigurationHandler;
 import com.codecool.shop.util.ImplementationType;
 import com.codecool.shop.util.implementation_factory.DatabaseFactory;
@@ -56,17 +57,14 @@ public class Initializer implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
 
-        // setting up a guest user until registration and adding it to Customer data manager
-        Customer guest = new Customer(CUSTOMER_DATA_MANAGER.generateIdForNewCustomer(), "Guest", "jawas@jawas.hu", 702225555, "Hungary", "Budapest", "1133", "Blaha Lujza tér 1.", "Hungary", "Budapest", "1133", "Blaha Lujza tér 1.");
-        CUSTOMER_DATA_MANAGER.add(guest);
-
-        // setting up a new shopping cart and adding it to its data manager:
-        CART_DATA_MANAGER.add(new Cart(CUSTOMER_DATA_MANAGER.generateIdForNewCustomer()));
-
+        // TODO: CONTINUE: CARTQUERYHANDLER, LINE 172, T O D O
 
         if (CURRENT_IMPLEMENTATION == ImplementationType.MEMORY) {
             initializeFromMemory();
-
+        } else if (CURRENT_IMPLEMENTATION == ImplementationType.DATABASE) {
+            // setting up a new shopping cart and adding it to its data manager:
+            CART_DATA_MANAGER.add(new Cart(CART_DATA_MANAGER.generateIdForNewCart(), CART_DATA_MANAGER.getGuestId(), CartStatusType.EMPTY));
+            System.out.println("Now, running with data persistence");
         }
         
 
@@ -115,6 +113,13 @@ public class Initializer implements ServletContextListener {
         productDataManager.add(new Product(7, "Maiden Body Pillow", BigDecimal.valueOf(80.33), "USD", "Maiden body pillow, designed to fulfill all your desires.", bodyPillow, ebay));
         productDataManager.add(new Product(8, "Levi Body Pillow", BigDecimal.valueOf(50.76), "USD", "A body pillow of Levi, designed to fulfill all your desires.", bodyPillow, ebay));
         productDataManager.add(new Product(9, "Sebastian Body Pillow", BigDecimal.valueOf(40.43), "USD", "A body pillow of Sebastian, designed to fulfill all your desires.", bodyPillow, ebay));
+
+        // setting up a guest user until registration and adding it to Customer data manager
+        Customer guest = new Customer(CUSTOMER_DATA_MANAGER.generateIdForNewCustomer(), "Guest");
+        CUSTOMER_DATA_MANAGER.add(guest);
+
+        // setting up a new shopping cart and adding it to its data manager:
+        CART_DATA_MANAGER.add(new Cart(CART_DATA_MANAGER.generateIdForNewCart(), guest.getId(), CartStatusType.EMPTY));
 
     }
 }

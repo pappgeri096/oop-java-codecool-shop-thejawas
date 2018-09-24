@@ -16,8 +16,8 @@ public class Customer extends BaseModel {
     private String shippingZipCode;
     private String shippingAddress;
 
-    public Customer(int id) {
-        super(id);
+    public Customer(int id, String name) {
+        super(id, name);
     }
 
     public Customer(

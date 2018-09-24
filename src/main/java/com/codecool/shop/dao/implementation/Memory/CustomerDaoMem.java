@@ -23,7 +23,11 @@ public class CustomerDaoMem implements CustomerDao {
 
     @Override
     public int generateIdForNewCustomer() {
-        return data.size() + 1;
+        return getData().size() + 1;
+    }
+
+    public List<Customer> getData() {
+        return data;
     }
 
     @Override

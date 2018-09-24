@@ -4,6 +4,7 @@ import com.codecool.shop.config.Initializer;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.model.CartItem;
+import com.codecool.shop.util.CartStatusType;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -31,6 +32,8 @@ public class CartController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        cartDataManager.updateCartStatusBy(cartDataManager.getLargestCartId(), CartStatusType.UNFINISHED);
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
@@ -64,6 +67,7 @@ public class CartController extends HttpServlet {
             }
         }
 
+        // TODO: SAVE TOTAL PRICE IN DATABASE: USE METHOD IN REVIEW CONTROLLER
         cartDataManager.saveChangesInCartAutomatically(currentCartsItemList);
 
         if (currentCartsItemList.size() > 0) {

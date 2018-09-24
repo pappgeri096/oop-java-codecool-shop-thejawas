@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.codecool.shop.config.Initializer;
+import com.codecool.shop.util.CartStatusType;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -43,11 +44,12 @@ public class ProductController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, NullPointerException {
 
         String productParameter = req.getParameter("product");
-
+        System.out.println(productParameter);
         if (productParameter != null) {
             int productId = Integer.parseInt(productParameter);
             Product productToAdd = productDataManager.getBy(productId);
-            cartDataManager.addToLastCart(productToAdd);
+            // TODO: REMOVE STATUS SETTING FROM THIS METHOD. cALL UPDATE STATUS SEPARATELY
+            cartDataManager.addToLastCart(productToAdd, CartStatusType.UNFINISHED);
 
             productControllerLogger.info("{} successfully added to cart", productToAdd.getName());
 

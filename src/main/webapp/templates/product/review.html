@@ -67,6 +67,7 @@
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Total</th>
+                        <th>Currency</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -74,7 +75,7 @@
                         <td th:text="${lineitem.getProduct().getName()}"></td>
                         <td th:text="${lineitem.getProduct().getPrice()}"></td>
                         <td th:text="${(lineitem.getQuantity())}"></td>
-                        <td th:text="${cartDataManager.getSubTotalPriceFromLastCartByProduct(lineitem.getProduct().getId())} "></td>
+                        <td th:text="${cartDataManager.getSubTotalPriceFromLastCartBy(lineitem.getProduct().getId())} "></td>
                         <td th:text="${lineitem.getProduct().getDefaultCurrency()}"></td>
                     </tr>
                     </tbody>

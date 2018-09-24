@@ -10,7 +10,7 @@ import java.util.List;
 // TODO: DOES NOT USE ID, NAME AND DESCRIPTION FIELDS. calling getName() and getDescription() methods can cause problems
 public class Cart extends BaseModel {
 
-    private int userId = 1;
+    private int userId;
     private CartStatusType cartStatusType = CartStatusType.EMPTY;
 
     private List<CartItem> cartItemList = new ArrayList<>();
@@ -30,6 +30,10 @@ public class Cart extends BaseModel {
 
     public int getUserId() {
         return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public CartStatusType getCartStatusType() {

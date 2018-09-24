@@ -69,7 +69,7 @@ public class ProductCategoryDaoSql extends ProductCategoryQueryHandler implement
     public void remove(int id) {
         String query = "DELETE FROM product_category WHERE id ='" + id + "';";
 
-        DMLQuery(query);
+        DMLexecute(query);
 
     }
 

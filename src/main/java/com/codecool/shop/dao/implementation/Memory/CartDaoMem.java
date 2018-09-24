@@ -11,6 +11,9 @@ import java.math.RoundingMode;
 import java.util.*;
 
 public class CartDaoMem implements CartDao {
+
+    private static final int GUEST_ID = 1;
+
     private static CartDao instance = null;
 
     private List<Cart> data = new ArrayList<>();
@@ -23,6 +26,21 @@ public class CartDaoMem implements CartDao {
             instance = new CartDaoMem();
         }
         return instance;
+    }
+
+    @Override
+    public void addProductToCart(int cartId, Product newProduct, CartStatusType status) {
+        // todo: does memory needs this?
+    }
+
+    @Override
+    public int getGuestId() {
+        return GUEST_ID;
+    }
+
+    @Override
+    public int generateIdForNewCart() {
+        return data.size() + 1;
     }
 
     @Override
@@ -61,7 +79,7 @@ public class CartDaoMem implements CartDao {
     }
 
     @Override
-    public void addToLastCart(Product product) {
+    public void addToLastCart(Product product, CartStatusType status) {
         boolean wasProductFound = false;
         for (CartItem cartItem : getLastCart().getCartItemList()) {
             if (cartItem.getProduct().getId() == (product.getId())) {
@@ -72,7 +90,7 @@ public class CartDaoMem implements CartDao {
         if (!wasProductFound){
             getLastCart().getCartItemList().add(new CartItem(createIdForCartItem(), product));
         }
-
+        updateLastCartStatus(status);
     }
 
     private int createIdForCartItem() {
@@ -96,14 +114,13 @@ public class CartDaoMem implements CartDao {
     }
 
     @Override
-    public BigDecimal getSubTotalPriceFromLastCartByProduct(int id) {
-        BigDecimal defaultPrice = getDefaultPriceFromLastCartBy(id);
-        BigDecimal quantity = getQuantityFromLastCartBy(id);
+    public BigDecimal getSubTotalPriceFromLastCartBy(int productId) {
+        BigDecimal defaultPrice = getDefaultPriceFromLastCartBy(productId);
+        BigDecimal quantity = getQuantityFromLastCartBy(productId);
 
         BigDecimal bigDecimalSubtotal = defaultPrice.multiply(quantity);
 
-        BigDecimal subtotal = bigDecimalSubtotal.setScale(2, RoundingMode.HALF_UP);
-        return subtotal;
+        return bigDecimalSubtotal.setScale(2, RoundingMode.HALF_UP);
     }
 
     @Override
@@ -139,4 +156,18 @@ public class CartDaoMem implements CartDao {
         return null;
     }
 
+    @Override
+    public void updateCartStatusBy(int cartId, CartStatusType status) {
+        find(cartId).setCartStatusType(status);
+    }
+
+    @Override
+    public void updateLastCartStatus(CartStatusType status) {
+        getLastCart().setCartStatusType(status);
+    }
+
+    @Override
+    public int getLargestCartId() {
+        return getLastCart().getId();
+    }
 }

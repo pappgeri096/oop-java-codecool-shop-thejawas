@@ -15,9 +15,9 @@ public class Cart extends BaseModel {
 
     private List<CartItem> cartItemList = new ArrayList<>();
 
-    public Cart() {
-    }
-
+//    public Cart() {
+//    }
+//
     public Cart(int id) {
         super(id);
     }

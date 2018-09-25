@@ -20,8 +20,6 @@ public class SearchController extends HttpServlet {
 
     private ProductDao productDataManager = IMPLEMENTATION_FACTORY.getProductDataManagerInstance();
 
-//    private ProductDao productDaoSql = ProductDaoSql.getInstance();
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
@@ -33,20 +31,15 @@ public class SearchController extends HttpServlet {
         for (Product product : productList) {
             html.append("<div class='item col-xs-4 col-lg-4'>");
             html.append("<div class='thumbnail'>");
-            html.append("<img class='group list-group-image' src='/static/img/product_" + product.getId() + ".jpg'>");
+            html.append("<img class='group list-group-image' src='/static/img/product_").append(product.getId()).append(".jpg'>");
             html.append("<div class='caption'>");
             html.append("<h4 class='group inner list-group-item-heading'>").append(product.getName()).append("</h4>");
             html.append("<p class='group inner list-group-item-text'>").append(product.getDescription()).append("</p>");
             html.append("<div class='row'> <div class='col-xs-12 col-md-6'>");
             html.append("<p class='lead'>").append(product.getPrice()).append("</p></div>");
-            html.append("    <div class='col-xs-12 col-md-6'>\n" +
-                    "                        <a class=\"btn btn-success\" href='/index?product=1'\n" +
-                    "                    >Add\n" +
-                    "            to cart</a>\n" +
-                    "                    </div>\n" +
-                    "                </div>\n" +
-                    "            </div>\n" +
-                    "        </div></div>");
+            html.append("<div class='col-xs-12 col-md-6'>\n")
+                    .append("<a class=\"btn btn-success\" href='/index?product=1'>Add to cart</a>\n")
+                    .append("</div></div></div></div></div>\n");
 
         }
 

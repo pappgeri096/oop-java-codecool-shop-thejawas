@@ -83,44 +83,28 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
     }
 
     @Override
-    public void addToLastCart(Product newProduct, CartStatusType status) { // TODO: PUT THIS INTO ADDPRODUCTTOCART()
-        int newProductId = newProduct.getId();
-        boolean productNotInCart = true;
-        for (CartItem cartItem: getLastCart().getCartItemList()) {
-            int existingCartItemProductId = cartItem.getProduct().getId();
-            if (newProductId == existingCartItemProductId) {
-                updateQuantityIn_order_product(
-                        getLargestCartId(), existingCartItemProductId, (cartItem.getQuantity() + 1)
-                );
-                productNotInCart = false;
-                break;
-            }
-        }
-        if (productNotInCart) {
-            addNewProductToLastCart(newProductId);
-        }
-        updateLastCartStatus(status);
+    public void addToLastCart(Product newProduct, CartStatusType status) {
+        addProductToCartBy(getLargestCartId(), newProduct, status);
     }
 
     @Override
-    public void addProductToCart(int cartId, Product newProduct, CartStatusType status) {
-        // TODO: TO BE CONTINUED: ADD PRODUCT TO CART ON
+    public void addProductToCartBy(int cartId, Product newProduct, CartStatusType status) {
         int newProductId = newProduct.getId();
         boolean productNotInCart = true;
-        for (CartItem cartItem: getLastCart().getCartItemList()) {
+        for (CartItem cartItem: find(cartId).getCartItemList()) {
             int existingCartItemProductId = cartItem.getProduct().getId();
             if (newProductId == existingCartItemProductId) {
                 updateQuantityIn_order_product(
-                        getLargestCartId(), existingCartItemProductId, (cartItem.getQuantity() + 1)
+                        cartId, existingCartItemProductId, (cartItem.getQuantity() + 1)
                 );
                 productNotInCart = false;
                 break;
             }
         }
         if (productNotInCart) {
-            addNewProductToLastCart(newProductId);
+            addNewProductToCartBy(cartId, newProductId);
         }
-        updateLastCartStatus(status);
+        updateCartStatusBy(cartId, status);
     }
 
 

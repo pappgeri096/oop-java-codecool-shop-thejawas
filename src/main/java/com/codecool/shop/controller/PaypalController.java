@@ -33,11 +33,6 @@ public class PaypalController extends HttpServlet {
     private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
     private CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
 
-    // TODO: DO THE SAME WITH SQL
-//    private CartDao cartDaoSql = CartDaoSql.getInstance();
-//    private CustomerDao customerDaoSql = CustomerDaoSql.getInstance();
-
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

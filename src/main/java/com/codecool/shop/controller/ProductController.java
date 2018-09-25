@@ -44,11 +44,12 @@ public class ProductController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, NullPointerException {
 
         String productParameter = req.getParameter("product");
-        System.out.println(productParameter);
+
         if (productParameter != null) {
             int productId = Integer.parseInt(productParameter);
             Product productToAdd = productDataManager.getBy(productId);
             // TODO: REMOVE STATUS SETTING FROM THIS METHOD. cALL UPDATE STATUS SEPARATELY
+            // TODO: UPDATE TOTAL PRICE EVERY PRODUCT ADD FROM INDEX PAGE
             cartDataManager.addToLastCart(productToAdd, CartStatusType.UNFINISHED);
 
             productControllerLogger.info("{} successfully added to cart", productToAdd.getName());

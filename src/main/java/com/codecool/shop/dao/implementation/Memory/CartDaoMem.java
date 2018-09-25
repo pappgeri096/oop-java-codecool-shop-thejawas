@@ -29,11 +29,6 @@ public class CartDaoMem implements CartDao {
     }
 
     @Override
-    public void addProductToCart(int cartId, Product newProduct, CartStatusType status) {
-        // todo: does memory needs this?
-    }
-
-    @Override
     public int getGuestId() {
         return GUEST_ID;
     }
@@ -45,7 +40,7 @@ public class CartDaoMem implements CartDao {
 
     @Override
     public void add(Cart objectType) {
-        objectType.setId(data.size() + 1);
+//        objectType.setId(data.size() + 1);
         data.add(objectType);
     }
 
@@ -71,27 +66,41 @@ public class CartDaoMem implements CartDao {
 
     @Override
     public BigDecimal getTotalPriceOfLastCart() {
+        return getTotalPriceBy(getLargestCartId());
+    }
+
+    public BigDecimal getTotalPriceBy(int cartId) {
         BigDecimal sumPrice = BigDecimal.valueOf(0);
-        for (CartItem cartItem : getLastCart().getCartItemList()) {
+        for (CartItem cartItem : find(cartId).getCartItemList()) {
             sumPrice = cartItem.getProduct().getDefaultPrice().multiply(new BigDecimal(cartItem.getQuantity())).add(sumPrice);
         }
         return sumPrice.setScale(2, RoundingMode.HALF_UP);
+
     }
 
     @Override
     public void addToLastCart(Product product, CartStatusType status) {
+        addProductToCartBy(getLargestCartId(), product, status);
+    }
+
+    @Override
+    public void addProductToCartBy(int cartId, Product newProduct, CartStatusType status) {
         boolean wasProductFound = false;
-        for (CartItem cartItem : getLastCart().getCartItemList()) {
-            if (cartItem.getProduct().getId() == (product.getId())) {
+        for (CartItem cartItem : find(cartId).getCartItemList()) {
+            if (cartItem.getProduct().getId() == (newProduct.getId())) {
                 cartItem.incrementQuantity();
                 wasProductFound = true;
             }
         }
         if (!wasProductFound){
-            getLastCart().getCartItemList().add(new CartItem(createIdForCartItem(), product));
+            find(cartId).getCartItemList().add(new CartItem(createIdForCartItem(), newProduct));
         }
-        updateLastCartStatus(status);
+        updateCartStatusBy(cartId, status);
+
     }
+
+
+
 
     private int createIdForCartItem() {
         return getLastCart().getCartItemList().size() + 1;
@@ -109,8 +118,6 @@ public class CartDaoMem implements CartDao {
     @Override
     public void saveChangesInCartAutomatically(List<CartItem> currentCartsItemList) {
         getLastCart().setCartStatusType(CartStatusType.UNFINISHED);
-        System.out.println("Cart is already saved in memory");
-        System.out.println(currentCartsItemList);
     }
 
     @Override

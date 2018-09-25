@@ -6,6 +6,7 @@ import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.CustomerDao;
 //import com.codecool.shop.dao.implementation.postgresql.CartDaoSql;
 import com.codecool.shop.model.Cart;
+import com.codecool.shop.util.CartStatusType;
 import com.codecool.shop.util.EmailUtil;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import org.thymeleaf.TemplateEngine;
@@ -30,8 +31,6 @@ public class PaymentPayedController extends HttpServlet {
     private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
     private CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
 
-//    CartDao cartDaoSql = CartDaoSql.getInstance();
-
     private static final Logger paymentPayedLogger = LoggerFactory.getLogger(PaymentPayedController.class);
 
 
@@ -44,8 +43,10 @@ public class PaymentPayedController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("payment/payed.html", context, resp.getWriter());
 
-        // Adds new empty cart with ID TODO: ONLY MEMORY IMPLEMENTATION NEEDS THIS??
-        cartDataManager.add(new Cart(cartDataManager.generateIdForNewCart()));
+
+        cartDataManager.updateLastCartStatus(CartStatusType.UNSHIPPED);
+
+        cartDataManager.add(new Cart(cartDataManager.generateIdForNewCart(), cartDataManager.getGuestId(), CartStatusType.EMPTY));
 
         paymentPayedLogger.info("Payment approved by online payment service provider");
 

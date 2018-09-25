@@ -6,6 +6,7 @@ import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -103,7 +104,18 @@ public class ProductDaoSql extends ProductQueryHandler implements ProductDao {
 
     @Override
     public List<Product> getBy(String keyWord) {
-        // TODO TO WORK FOR SEARCH
-        return null;
+
+        List<Product> products = new ArrayList<>();
+
+        try {
+            for(Product product : getAll()){
+                if(product.getName().toLowerCase().contains(keyWord) || product.getDescription().toLowerCase().contains(keyWord))
+                    products.add(product);
+            }
+        } catch (NullPointerException npe) {
+            System.out.println("No product found while dynamic searchin");
+        }
+
+        return products;
     }
 }

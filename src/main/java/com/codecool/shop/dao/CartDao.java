@@ -14,6 +14,9 @@ public interface CartDao extends BaseDAO<Cart> {
 
     Cart getLastCart();
     BigDecimal getTotalPriceOfLastCart();
+    BigDecimal getTotalPriceBy(int cartId);
+
+
     BigDecimal getSubTotalPriceFromLastCartBy(int productId);
     BigDecimal getDefaultPriceFromLastCartBy(int productId);
     BigDecimal getQuantityFromLastCartBy(int productId);
@@ -21,7 +24,7 @@ public interface CartDao extends BaseDAO<Cart> {
 
     void addToLastCart(Product product, CartStatusType status);
 
-    void addProductToCart(int cartId, Product newProduct, CartStatusType status);
+    void addProductToCartBy(int cartId, Product newProduct, CartStatusType status);
 
     int getQuantityOfProductsInLastCart();
 

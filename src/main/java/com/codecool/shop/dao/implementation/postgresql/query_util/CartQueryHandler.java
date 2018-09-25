@@ -36,14 +36,17 @@ public class CartQueryHandler extends QueryHandler {
     }
 
     public BigDecimal getTotalPriceOfLastCart() {
+        return getTotalPriceBy(getLargestCartId());
+    }
 
+    public BigDecimal getTotalPriceBy(int cartId) {
         String columnNameAlias = "subtotal_prices";
 
         String query = "SELECT default_price * op.product_quantity AS " + columnNameAlias + "\n" +
                 "FROM product\n" +
                 "  FULL OUTER JOIN order_product op on product.id = op.product_id\n" +
                 "  FULL OUTER JOIN \"order\" o on op.order_id = o.id\n" +
-                "WHERE o.id = " + getLargestCartId() + ";";
+                "WHERE o.id = " + cartId + ";";
 
         List<Double> eachItemsPriceList = executeQueryWithColumnLabel_ReturnIntegerList(query, columnNameAlias);
 
@@ -169,7 +172,17 @@ public class CartQueryHandler extends QueryHandler {
 
         int userId = cart.getUserId();
         String status = cart.getCartStatusType().getStatusString();
-        BigDecimal totalPrice = getTotalPriceOfLastCart(); // TODO: WHEN ADDING A NEW CART, ADDS THE TOTAL PRICE OF THE LAST CART
+
+        BigDecimal totalPrice;
+
+        if (cart.getId() - getLargestCartId() == 1) {
+            totalPrice = BigDecimal.valueOf(0);
+        } else if (cart.getId() == getLargestCartId()) {
+            totalPrice = getTotalPriceOfLastCart();
+        } else {
+            totalPrice = null;
+            System.out.println("Oh, oh, it seems there is a third option:\ncartQueryHandler.java, protected void insertInto_order_And_order_product(Cart cart)");
+        }
 
         insertIntoTable_order(prePreparedQuery, userId, status, totalPrice);
 
@@ -220,6 +233,14 @@ public class CartQueryHandler extends QueryHandler {
 
         DMLPreparedQuery3Parameters(prePreparedQuery, getLargestCartId(), newProductId, 1);
     }
+
+    protected void addNewProductToCartBy(int cartId, int newProductId) {
+        String prePreparedQuery = "INSERT INTO public.order_product (id, order_id, product_id, product_quantity) " +
+                "VALUES (DEFAULT, ?, ?, ?);";
+
+        DMLPreparedQuery3Parameters(prePreparedQuery, cartId, newProductId, 1);
+    }
+
 
     protected void deleteCartItemFromCart(int lastCartId, int deletedProductId) {
         String query = "DELETE FROM order_product\n" +

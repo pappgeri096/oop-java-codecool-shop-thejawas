@@ -3,7 +3,6 @@ package com.codecool.shop.controller;
 import com.codecool.shop.config.Initializer;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
-import com.codecool.shop.model.Cart;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;

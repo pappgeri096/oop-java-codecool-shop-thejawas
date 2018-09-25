@@ -11,12 +11,12 @@ class OrderMemDaoMemTest {
 
 
     private void addOrder(){
-        Cart orderFromMemory = new Cart();
+        Cart orderFromMemory = new Cart(1);
         cartDaoMem.add(orderFromMemory);
     }
 
     private Cart addOrderAndReturn(){
-        Cart orderFromMemory = new Cart();
+        Cart orderFromMemory = new Cart(1);
         cartDaoMem.add(orderFromMemory);
         return orderFromMemory;
     }

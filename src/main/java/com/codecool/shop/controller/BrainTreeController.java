@@ -18,8 +18,6 @@ public class BrainTreeController  extends HttpServlet {
 
     private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
 
-//    private CartDao cartDataManager = CartDaoSql.getInstance();
-
     private static BraintreeGateway gateway = new BraintreeGateway(
             Environment.SANDBOX,
             "r63vmkrc39s63j9m",

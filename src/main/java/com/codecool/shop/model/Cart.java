@@ -1,42 +1,58 @@
 package com.codecool.shop.model;
 
+import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.util.CartStatusType;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: DOES NOT ID USE NAME AND DESCRIPTION FIELDS. calling getName() and getDescription() methods can cause problems
+// TODO: DOES NOT USE ID, NAME AND DESCRIPTION FIELDS. calling getName() and getDescription() methods can cause problems
 public class Cart extends BaseModel {
+
+    private int userId;
+    private CartStatusType cartStatusType = CartStatusType.EMPTY;
 
     private List<CartItem> cartItemList = new ArrayList<>();
 
-    public void addProduct(Product product) {
-        boolean wasProductFound = false;
-        for (CartItem cartItem : cartItemList) {
-            if (cartItem.getProduct().getId() == (product.getId())) {
-                cartItem.increaseQuantity();
-                wasProductFound = true;
-            }
-        }
-        if (!wasProductFound){
-            cartItemList.add(new CartItem(createIdForLineItem(), product));
-        }
-
+//    public Cart() {
+//    }
+//
+    public Cart(int id) {
+        super(id);
     }
 
-    private int createIdForLineItem() {
-        return cartItemList.size() + 1;
+    public Cart(int id, int userId, CartStatusType cartStatusType) {
+        super(id);
+        this.userId = userId;
+        this.cartStatusType = cartStatusType;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public CartStatusType getCartStatusType() {
+        return cartStatusType;
+    }
+
+    public void setCartStatusType(CartStatusType cartStatusType) {
+        this.cartStatusType = cartStatusType;
     }
 
     public List<CartItem> getCartItemList() {
         return cartItemList;
     }
 
-    public int getQuantityOfProducts() {
-        int numberOfItems = 0;
-        for (CartItem cartItem : cartItemList) {
-            numberOfItems += cartItem.getQuantity();
-        }
-        return numberOfItems;
+    public void addToCartItemList(CartItem cartItem) {
+        cartItemList.add(cartItem);
     }
+
+
 
     @Override
     public String toString() {

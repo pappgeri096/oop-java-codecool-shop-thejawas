@@ -1,16 +1,19 @@
 package com.codecool.shop.dao.implementation.postgresql;
 
 import com.codecool.shop.dao.CartDao;
-import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.CartItem;
+import com.codecool.shop.model.Product;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.*;
 import java.util.*;
 
-public class CartDaoSql extends DaoSqlConnectionDML implements CartDao {
+import com.codecool.shop.dao.implementation.postgresql.query_util.CartQueryHandler;
+import com.codecool.shop.util.CartStatusType;
+
+public class CartDaoSql extends CartQueryHandler implements CartDao {
+
     private static CartDaoSql singletonInstance = null;
 
     private CartDaoSql() {
@@ -24,163 +27,233 @@ public class CartDaoSql extends DaoSqlConnectionDML implements CartDao {
     }
 
     @Override
+    public int generateIdForNewCart() {
+        return getLargestCartId() + 1;
+    }
+
+    /**
+     * Initializes empty Cart with an ID.
+     * */
+    @Override
     public void add(Cart cart) {
-        String prePreparedQuery = "INSERT INTO public.order (id, user_id, status, total_price)" +
-                "VALUES (DEFAULT, ?, ?, ?);";
 
-        int userId = 1;
-        String status = "unshipped";
-        BigDecimal totalPrice = CartDaoMem.getInstance().getTotalPrice(); // TODO: USES MEMORY: REWRITE
+        insertInto_order_And_order_product(cart);
 
-        addToOrderSql(prePreparedQuery, userId, status, totalPrice);
-
-        int orderId = getCurrentOrderId();
-        for (CartItem cartItem : cart.getCartItemList()) {
-
-            prePreparedQuery = "INSERT INTO public.order_product (id, order_id, product_id, product_quantity) " +
-                    "VALUES (DEFAULT, ?, ?, ?);";
-            int product_id = cartItem.getProduct().getId();
-            int product_quantity = cartItem.getQuantity();
-            addToOrder_ProductSql(prePreparedQuery, orderId, product_id, product_quantity);
-        }
     }
 
     @Override
     public Cart find(int id) {
-        return null; // TODO----------------------------------
-    }
 
-    @Override
-    public void remove(int id) {
-        // TODO----------------------------------
-    }
-
-    @Override
-    public List<Cart> getAll() {
-        return null; // TODO----------------------------------
-    }
-
-    @Override
-    public Cart getCurrent() {
-        String query = "SELECT * FROM order WHERE id ='" + getCurrentOrderId() + "';";
-        return null; // TODO----------------------------------
-    }
-
-    @Override
-    public BigDecimal getTotalPrice() { // TODO: USES MEMORA: REWRITE
-        BigDecimal sumPrice = BigDecimal.valueOf(0);
-        for (CartItem cartItem : getCurrent().getCartItemList()) {
-            sumPrice = cartItem.getProduct().getDefaultPrice().multiply(new BigDecimal(cartItem.getQuantity())).add(sumPrice);
-        }
-        return sumPrice.setScale(2, RoundingMode.HALF_UP);
-    }
-
-    @Override
-    public void createProductNameAndQuantityMaps() {
-
-    }
-
-    @Override
-    public Map<String, Integer> getProductNameAndQuantityMap() {
-        return null;
-    }
-
-    List<Cart> getOrdersBy(int userId) {
         String query = "SELECT\n" +
                 "  \"order\".id AS id_from_order,\n" +
+                "  \"order\".user_id AS id_from_user,\n" +
+                "  \"order\".status,\n" +
+                "  p.id AS id_from_product,\n" +
                 "  p.name,\n" +
                 "  p.default_price,\n" +
                 "  op.product_quantity\n" +
                 "FROM \"order\"\n" +
                 "  FULL OUTER JOIN order_product op on \"order\".id = op.order_id\n" +
                 "  FULL OUTER JOIN product p on op.product_id = p.id\n" +
-                "WHERE \"order\".user_id = 1\n" +
+                "WHERE \"order\".id = '" + id + "'\n" +
                 "ORDER BY id_from_order;";
-        return getOrders(query);
+
+        return getCartByOrder(query);
     }
 
-    private List<Cart> getOrders(String query) {
-        List<Cart> resultList = new ArrayList<>();
+    @Override
+    public void remove(int id) {
+        String orderProductQuery = "DELETE FROM order_product WHERE order_id ='" + id + "';";
+        boolean deletionFromOrderProductSuccessful = DMLexecute(orderProductQuery);
 
-        try (Connection connection = getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)
-        ) {
-            while (resultSet.next()) {
-                Cart order = new Cart();
-                resultList.add(order);
+        String orderQuery = "DELETE FROM order WHERE id ='" + id + "';";
+        boolean deletionFromOrderSuccessful = DMLexecute(orderQuery);
+
+        if (!(deletionFromOrderProductSuccessful && deletionFromOrderSuccessful)) {
+            System.out.println("Unsuccessful deletion of cart with id: " + id);
+        }
+    }
+
+    @Override
+    public List<Cart> getAll() {
+        return getAllCarts();
+    }
+
+    @Override
+    public Cart getLastCart() {
+        Cart lastCart;
+
+        if (getLargestCartId() == 0) {
+            lastCart = new Cart(1);
+        } else {
+            lastCart = find(getLargestCartId());
+        }
+
+        return lastCart;
+    }
+
+    @Override
+    public void addToLastCart(Product newProduct) {
+        addProductToCartBy(getLargestCartId(), newProduct);
+    }
+
+    @Override
+    public void addProductToCartBy(int cartId, Product newProduct) {
+        int newProductId = newProduct.getId();
+        boolean productNotInCart = true;
+        for (CartItem cartItem: find(cartId).getCartItemList()) {
+            int existingCartItemProductId = cartItem.getProduct().getId();
+            if (newProductId == existingCartItemProductId) {
+                updateQuantityIn_order_product(
+                        cartId, existingCartItemProductId, (cartItem.getQuantity() + 1)
+                );
+                productNotInCart = false;
+                break;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return resultList;
+        if (productNotInCart) {
+            addNewProductToCartBy(cartId, newProductId);
+        }
     }
 
 
-    private void addToOrderSql(String prePreparedQuery, int userId, String status, BigDecimal totalprice) {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+    @Override
+    public int getQuantityOfProductsInLastCart() {
+        List<CartItem> lastCartItemList = getLastCart().getCartItemList();
+        int numberOfProducts = 0;
+        for (CartItem cartItem : lastCartItemList) {
+            numberOfProducts += cartItem.getQuantity();
         }
-
-        try (Connection connection = getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery)
-        ) {
-            pstmt.setInt(1, userId);
-            pstmt.setString(2, status);
-            pstmt.setBigDecimal(3, totalprice);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-    private int getCurrentOrderId(){
-        String query = "SELECT MAX(id) FROM public.order;";
-
-        int orderId = 0;
-        try (Connection connection = getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
-            if(resultSet.next()) {
-                orderId = resultSet.getInt("max");
-             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return orderId;
+        return numberOfProducts;
     }
 
+    @Override
+    public void saveChangesInCartAutomatically(List<CartItem> updatedCartsItemList) {
 
+        List<CartItem> obsoleteCartsItemList = getLastCart().getCartItemList();
+        for (CartItem obsoleteCartItem : obsoleteCartsItemList) {
+            int obsoleteProductId = obsoleteCartItem.getProduct().getId();
+            int obsoleteProductQuantity = obsoleteCartItem.getQuantity();
 
-    private void addToOrder_ProductSql(String prePreparedQuery, int orderId, int productId, int quantity) {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            boolean updatedCartItemDeleted = true;
+            for (CartItem updatedCartItem: updatedCartsItemList) {
+
+                int updatedProductId = updatedCartItem.getProduct().getId();
+                int updatedProductQuantity = updatedCartItem.getQuantity();
+
+                if (obsoleteProductId == updatedProductId) {
+                    updatedCartItemDeleted = false;
+                    if (updatedProductQuantity != obsoleteProductQuantity) {
+                        updateQuantityIn_order_product(
+                                getLargestCartId(), updatedProductId, updatedProductQuantity
+                        );
+                        break;
+                    }
+                }
+            }
+
+            if (updatedCartItemDeleted) {
+                deleteCartItemFromCart(getLargestCartId(), obsoleteProductId);
+            }
         }
 
-        try (Connection connection = getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery)
-        ) {
-            pstmt.setInt(1, orderId);
-            pstmt.setInt(2, productId);
-            pstmt.setInt(3, quantity);
+        updateTotalPriceOfCartBy(getLargestCartId());
 
-            pstmt.executeUpdate();
+    }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    private void updateTotalPriceOfCartBy(int cartId) {
+        BigDecimal totalPriceValue = getTotalPriceOfLastCart();
+
+        String query = "UPDATE \"order\"\n" +
+                " SET total_price = " + totalPriceValue + "\n" +
+                " WHERE id = " + cartId + ";";
+
+        DMLexecute(query);
 
     }
 
     @Override
-    public void clearProductNameAndQuantityMap() {
+    public BigDecimal getSubTotalPriceFromLastCartBy(int productId) {
+        BigDecimal defaultPrice = getDefaultPriceFromLastCartBy(productId);
+        BigDecimal quantity = getQuantityFromLastCartBy(productId);
 
+        BigDecimal bigDecimalSubtotal = defaultPrice.multiply(quantity);
+
+        return bigDecimalSubtotal.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    @Override
+    public BigDecimal getDefaultPriceFromLastCartBy(int productId) {
+
+        String columnName = "default_price";
+
+        String query = "SELECT " + columnName + "\n" +
+                " FROM product\n" +
+                " WHERE id = " + productId + ";";
+
+        BigDecimal possiblyDefaultPrice = executeQueryWithColumnLabel_ReturnBigDecimal(query, columnName);
+
+        if (possiblyDefaultPrice == null) {
+            throw new NullPointerException();
+        }
+
+        return possiblyDefaultPrice.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    @Override
+    public BigDecimal getQuantityFromLastCartBy(int productId) {
+        String columnName = "product_quantity";
+
+        String query = "SELECT\n" +
+                "  op.product_quantity\n" +
+                " FROM product AS p\n" +
+                "  FULL OUTER JOIN order_product op on p.id = op.product_id\n" +
+                " WHERE p.id = " + productId + " AND op.order_id = " + getLargestCartId() + ";";
+
+        BigDecimal possiblyProductQuantity = executeQueryWithColumnLabel_ReturnBigDecimal(query, columnName);
+
+        if (possiblyProductQuantity == null) {
+            throw new NullPointerException();
+        }
+
+        return possiblyProductQuantity.setScale(2, RoundingMode.HALF_UP);
+
+    }
+
+    @Override
+    public Currency getCurrencyFromLastCartBy(int productId) throws NullPointerException {
+
+        String columnName = "default_currency";
+
+        String query = "SELECT " + columnName + "\n" +
+                " FROM product\n" +
+                " WHERE id = " + productId + ";";
+
+        String possiblyCurrency = executeQueryWithColumnLabelById_ReturnString(query, columnName);
+
+        if (possiblyCurrency == null) {
+            throw new NullPointerException("There is no product with given ID: " + productId);
+        }
+
+        return Currency.getInstance(possiblyCurrency);
+    }
+
+    @Override
+    public void updateLastCartStatus(CartStatusType status) {
+        String updateStatus = "UPDATE \"order\"\n" +
+                "SET status = '" + status + "'\n" +
+                "WHERE id = " + getLargestCartId() + ";";
+
+        DMLexecute(updateStatus);
+
+    }
+
+    @Override
+    public void updateCartStatusBy(int cartId, CartStatusType status) {
+        String updateStatus = "UPDATE \"order\"\n" +
+                "SET status = '" + status + "'\n" +
+                "WHERE id = " + cartId + ";";
+
+        DMLexecute(updateStatus);
     }
 }

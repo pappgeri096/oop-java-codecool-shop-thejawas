@@ -11,12 +11,12 @@ class OrderMemDaoMemTest {
 
 
     private void addOrder(){
-        Cart orderFromMemory = new Cart();
+        Cart orderFromMemory = new Cart(1);
         cartDaoMem.add(orderFromMemory);
     }
 
     private Cart addOrderAndReturn(){
-        Cart orderFromMemory = new Cart();
+        Cart orderFromMemory = new Cart(1);
         cartDaoMem.add(orderFromMemory);
         return orderFromMemory;
     }
@@ -30,12 +30,12 @@ class OrderMemDaoMemTest {
     @Test
     void getCurrentTest() {
         addOrder();
-        assertNotNull(cartDaoMem.getCurrent());
+        assertNotNull(cartDaoMem.getLastCart());
     }
 
     @Test
     void addTest() {
-        assertEquals(addOrderAndReturn(), cartDaoMem.getCurrent());
+        assertEquals(addOrderAndReturn(), cartDaoMem.getLastCart());
     }
 
     @Test

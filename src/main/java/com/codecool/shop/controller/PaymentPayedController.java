@@ -1,13 +1,13 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.config.Initializer;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.CustomerDao;
-import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
-import com.codecool.shop.dao.implementation.Memory.CustomerDaoMem;
-import com.codecool.shop.dao.implementation.postgresql.CartDaoSql;
 import com.codecool.shop.model.Cart;
+import com.codecool.shop.util.CartStatusType;
 import com.codecool.shop.util.EmailUtil;
+import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -25,9 +25,10 @@ import org.slf4j.LoggerFactory;
 @WebServlet(urlPatterns = {"/success"})
 public class PaymentPayedController extends HttpServlet {
 
-    CartDao cartDaoMem = CartDaoMem.getInstance();
-    CustomerDao customerDao = CustomerDaoMem.getInstance();
-    CartDao cartDaoSql = CartDaoSql.getInstance();
+    private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
+
+    private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
+    private CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
 
     private static final Logger paymentPayedLogger = LoggerFactory.getLogger(PaymentPayedController.class);
 
@@ -41,10 +42,10 @@ public class PaymentPayedController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("payment/payed.html", context, resp.getWriter());
 
-        cartDaoSql.add(cartDaoMem.getCurrent());
-        cartDaoMem.add(new Cart());
-        cartDaoMem.clearProductNameAndQuantityMap();
-        customerDao.clearCustomerDataMap();
+
+        cartDataManager.updateLastCartStatus(CartStatusType.UNSHIPPED);
+
+        cartDataManager.add(new Cart(cartDataManager.generateIdForNewCart(), customerDataManager.getGuestId(), CartStatusType.EMPTY));
 
         paymentPayedLogger.info("Payment approved by online payment service provider");
 

@@ -54,11 +54,11 @@
 <div class="container">
     <div class="well well-sm">
 
-        <div th:if="${orderMem.getCartItemList().size() < 1}">
+        <div th:if="${numberOfProductsInLastCart < 1}">
             <div>Your cart is empty!</div>
         </div>
 
-        <div th:if="${orderMem.getCartItemList().size() > 0}">
+        <div th:if="${numberOfProductsInLastCart > 0}">
             <form action="/cart" method="post">
                 <table class="table">
                     <thead class="thead-active">
@@ -67,14 +67,16 @@
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Total</th>
+                        <th>Currency</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="lineitem,iterStat : ${orderMem.getCartItemList()}">
-                        <td th:text="${lineitem.getProduct().name}"></td>
+                    <tr th:each="lineitem,iterStat : ${cartDataManager.lastCart.getCartItemList()}">
+                        <td th:text="${lineitem.getProduct().getName()}"></td>
                         <td th:text="${lineitem.getProduct().getPrice()}"></td>
                         <td th:text="${(lineitem.getQuantity())}"></td>
-                        <td th:text="${lineitem.getSubTotalPrice()}"></td>
+                        <td th:text="${cartDataManager.getSubTotalPriceFromLastCartBy(lineitem.getProduct().getId())} "></td>
+                        <td th:text="${lineitem.getProduct().getDefaultCurrency()}"></td>
                     </tr>
                     </tbody>
                 </table>

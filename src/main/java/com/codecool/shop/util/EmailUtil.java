@@ -1,15 +1,13 @@
 package com.codecool.shop.util;
 
 
+import com.codecool.shop.config.Initializer;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.CustomerDao;
-import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
-import com.codecool.shop.dao.implementation.Memory.CustomerDaoMem;
 import com.codecool.shop.model.CartItem;
 import com.codecool.shop.model.Cart;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -20,11 +18,16 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.codecool.shop.model.Customer;
+import com.codecool.shop.model.Product;
+import com.codecool.shop.util.implementation_factory.ImplementationFactory;
+
 public class EmailUtil {
 
-    private static CartDao cartDaoMem = CartDaoMem.getInstance();
+    private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
 
-    private static CustomerDao customerDaoMem = CustomerDaoMem.getInstance();
+    private static CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
+    private static CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
 
 
     private static void sendEmail(String email, String subject, String msg){
@@ -93,26 +96,30 @@ public class EmailUtil {
 
     public static void sendVerificationEmail() {
 
-        Cart currentOrder = cartDaoMem.getCurrent();
+        Cart currentCart = cartDataManager.getLastCart();
+        List<CartItem> cartItemList = currentCart.getCartItemList();
 
-        Map<String, String> customerDataMap = customerDaoMem.getCustomerDataMap();
-//        Map<String, String> userDataMap = ((CartDaoMem) cartDaoMem).getCustomerDataMap();
+        Customer currentCustomer = customerDataManager.getCurrent();
 
-
-        List<CartItem> cartItemList = currentOrder.getCartItemList();
-
-        String subject = "Order#"+ currentOrder.getId();
-        String email = customerDataMap.get("emailAddress");
+        String subject = "Order#"+ currentCart.getId();
+        String email = currentCustomer.getEmail();
 
         StringBuilder message = new StringBuilder();
 
-        message.append("Name: ").append(customerDataMap.get("fullName")).append("\n");
+        message.append("Name: ").append(currentCustomer.getName()).append("\n");
         message.append("Email: ").append(email).append("\n");
         message.append("Items:");
 
-        for(CartItem item : cartItemList){
-            message.append(item.getProduct().getName()).append(" ");
-            message.append(item.getSubTotalPrice()).append("\n");
+        for(CartItem cartItem : cartItemList){
+            Product productInCartItem = cartItem.getProduct();
+            message
+                    .append(productInCartItem.getName())
+                    .append(" ");
+            message
+                    .append(cartDataManager.getSubTotalPriceFromLastCartBy(productInCartItem.getId()))
+                    .append(" ")
+                    .append(productInCartItem.getDefaultCurrency())
+                    .append("\n");
         }
 
 

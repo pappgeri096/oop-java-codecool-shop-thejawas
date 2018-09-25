@@ -26,7 +26,7 @@ public class DatabaseUnitTestingMethods {
     private static final String ORDER_PRODUCT_FILE_PATH = "src/main/resources/sql/db_dumps/jawas_webshop_public_order_product.sql";
     private static final String CREATE_DB_SCHEMA = "src/main/resources/sql/db_dumps/jawas_webshop_create_db_schema.sql";
 
-    public DatabaseUnitTestingMethods() {
+    private DatabaseUnitTestingMethods() {
         executeUpdateFromFile(CREATE_DB_SCHEMA);
         executeUpdateFromFile(PRODUCT_CATEGORY_FILE_PATH);
         executeUpdateFromFile(SUPPLIER_FILE_PATH);
@@ -36,7 +36,7 @@ public class DatabaseUnitTestingMethods {
         executeUpdateFromFile(ORDER_PRODUCT_FILE_PATH);
     }
 
-    public Connection getConnection() {
+    private Connection getConnection() {
         try {
             return DriverManager.getConnection(
                     DATABASE,
@@ -49,7 +49,7 @@ public class DatabaseUnitTestingMethods {
         return null;
     }
 
-    public void executeUpdate(String query) throws SQLException {
+    private void executeUpdate(String query) throws SQLException {
         try (Connection connection = getConnection()) {
 
             PreparedStatement statement = connection.prepareStatement(query);
@@ -96,7 +96,7 @@ public class DatabaseUnitTestingMethods {
         }
     }
 
-    public void executeUpdateFromFile(String filePath) {
+    private void executeUpdateFromFile(String filePath) {
         String query = "";
         try {
             query = new String(Files.readAllBytes(Paths.get(filePath)));

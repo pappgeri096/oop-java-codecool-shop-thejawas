@@ -13,27 +13,23 @@ import java.util.List;
 public interface CartDao extends BaseDAO<Cart> {
 
     Cart getLastCart();
-    BigDecimal getTotalPriceOfLastCart();
-    BigDecimal getTotalPriceBy(int cartId);
-
-
+    int getLargestCartId();
     BigDecimal getSubTotalPriceFromLastCartBy(int productId);
     BigDecimal getDefaultPriceFromLastCartBy(int productId);
     BigDecimal getQuantityFromLastCartBy(int productId);
     Currency getCurrencyFromLastCartBy(int productId);
-
-    void addToLastCart(Product product, CartStatusType status);
-
-    void addProductToCartBy(int cartId, Product newProduct, CartStatusType status);
-
     int getQuantityOfProductsInLastCart();
+
+    BigDecimal getTotalPriceOfLastCart();
+    BigDecimal getTotalPriceBy(int cartId);
+
+    void addToLastCart(Product product);
+    void addProductToCartBy(int cartId, Product newProduct);
 
     void saveChangesInCartAutomatically(List<CartItem> currentCartsItemList);
 
     void updateCartStatusBy(int cartId, CartStatusType status);
     void updateLastCartStatus(CartStatusType status);
-    int getLargestCartId();
 
     int generateIdForNewCart();
-    int getGuestId();
 }

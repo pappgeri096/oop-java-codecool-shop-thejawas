@@ -56,6 +56,19 @@ public class CustomerDaoSql extends CustomerQureyHandler implements CustomerDao 
     }
 
     @Override
+    public int getGuestId() {
+        return getIdByName("Guest");
+    }
+
+    protected int getIdByName(String name) {
+
+        String columnName = "id";
+        String query = "SELECT " + columnName + " FROM \"user\"\n" +
+                " WHERE name = '" + name + "';";
+        return executeQueryWithColumnLabel_ReturnInt(query, columnName);
+    }
+
+    @Override
     public Customer find(int id) {
         // DOES NOTHING
         return null;

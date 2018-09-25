@@ -50,7 +50,8 @@ public class ProductController extends HttpServlet {
             Product productToAdd = productDataManager.getBy(productId);
             // TODO: REMOVE STATUS SETTING FROM THIS METHOD. cALL UPDATE STATUS SEPARATELY
             // TODO: UPDATE TOTAL PRICE EVERY PRODUCT ADD FROM INDEX PAGE
-            cartDataManager.addToLastCart(productToAdd, CartStatusType.UNFINISHED);
+            cartDataManager.addToLastCart(productToAdd);
+            cartDataManager.updateCartStatusBy(cartDataManager.getLargestCartId(), CartStatusType.UNFINISHED);
 
             productControllerLogger.info("{} successfully added to cart", productToAdd.getName());
 

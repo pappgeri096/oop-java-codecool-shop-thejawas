@@ -7,4 +7,6 @@ public interface CustomerDao extends BaseDAO<Customer> {
     int generateIdForNewCustomer();
     Customer getCurrent();
     boolean checkIfAnyCustomerDataMissing();
+
+    int getGuestId();
 }

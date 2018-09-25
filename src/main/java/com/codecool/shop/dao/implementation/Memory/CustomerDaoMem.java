@@ -7,6 +7,7 @@ import java.util.*;
 
 public class CustomerDaoMem implements CustomerDao {
 
+    private final int GUEST_ID = 1;
     private static CustomerDaoMem instance = null;
     private List<Customer> data = new ArrayList<>();
 
@@ -63,6 +64,11 @@ public class CustomerDaoMem implements CustomerDao {
         System.out.println(customer);
         System.out.println(allDataIsProvided);
         return !allDataIsProvided;
+    }
+
+    @Override
+    public int getGuestId() {
+        return GUEST_ID;
     }
 
 

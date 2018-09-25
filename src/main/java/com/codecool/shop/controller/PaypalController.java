@@ -64,7 +64,9 @@ public class PaypalController extends HttpServlet {
 
         ItemList itemList = getItemList(address, paypalItemLists);
 
-        Amount amount = getAmount();
+        String currency = String.valueOf(cartDataManager.getCurrencyFromLastCartBy(cartDataManager.getLastCart().getCartItemList().get(0).getProduct().getId()));
+
+        Amount amount = getAmount(currency);
 
         List<Transaction> transactions = getTransactions(itemList, amount);
 
@@ -87,8 +89,9 @@ public class PaypalController extends HttpServlet {
             String name = cartItem.getProduct().getName();
             String quantity = Integer.toString(cartItem.getQuantity());
             String price = String.valueOf(cartItem.getProduct().getDefaulPrice());
+            String currency = String.valueOf(cartDataManager.getCurrencyFromLastCartBy(cartItem.getProduct().getId()));
 
-            addCartItem(payPalItems, name, quantity, price);
+            addCartItem(payPalItems, name, quantity, price, currency);
         }
     }
 
@@ -101,7 +104,7 @@ public class PaypalController extends HttpServlet {
 
 
 
-    private void addCartItem(List<Item> payPalItems, String name, String quantity, String price) {
+    private void addCartItem(List<Item> payPalItems, String name, String quantity, String price, String currency) {
 
         Item payPalItem = new Item();
 
@@ -109,7 +112,7 @@ public class PaypalController extends HttpServlet {
         payPalItem.setPrice(price);
         payPalItem.setCategory("PHYSICAL");
         payPalItem.setQuantity(quantity);
-        payPalItem.setCurrency("USD");
+        payPalItem.setCurrency(currency);
         
         payPalItems.add(payPalItem);
     }
@@ -179,9 +182,9 @@ public class PaypalController extends HttpServlet {
         return transactions;
     }
 
-    private Amount getAmount() {
+    private Amount getAmount(String currency) {
         Amount amount = new Amount();
-        amount.setCurrency("USD");
+        amount.setCurrency(currency);
         amount.setTotal(Double.toString(cartDataManager.getTotalPriceOfLastCart().doubleValue()));
         return amount;
     }

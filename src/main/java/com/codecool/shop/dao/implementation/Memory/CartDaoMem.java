@@ -12,8 +12,6 @@ import java.util.*;
 
 public class CartDaoMem implements CartDao {
 
-    private static final int GUEST_ID = 1;
-
     private static CartDao instance = null;
 
     private List<Cart> data = new ArrayList<>();
@@ -26,11 +24,6 @@ public class CartDaoMem implements CartDao {
             instance = new CartDaoMem();
         }
         return instance;
-    }
-
-    @Override
-    public int getGuestId() {
-        return GUEST_ID;
     }
 
     @Override
@@ -79,12 +72,12 @@ public class CartDaoMem implements CartDao {
     }
 
     @Override
-    public void addToLastCart(Product product, CartStatusType status) {
-        addProductToCartBy(getLargestCartId(), product, status);
+    public void addToLastCart(Product product) {
+        addProductToCartBy(getLargestCartId(), product);
     }
 
     @Override
-    public void addProductToCartBy(int cartId, Product newProduct, CartStatusType status) {
+    public void addProductToCartBy(int cartId, Product newProduct) {
         boolean wasProductFound = false;
         for (CartItem cartItem : find(cartId).getCartItemList()) {
             if (cartItem.getProduct().getId() == (newProduct.getId())) {
@@ -95,7 +88,7 @@ public class CartDaoMem implements CartDao {
         if (!wasProductFound){
             find(cartId).getCartItemList().add(new CartItem(createIdForCartItem(), newProduct));
         }
-        updateCartStatusBy(cartId, status);
+
 
     }
 

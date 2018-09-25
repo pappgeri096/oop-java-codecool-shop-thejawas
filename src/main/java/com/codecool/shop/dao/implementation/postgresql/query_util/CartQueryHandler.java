@@ -15,16 +15,7 @@ import java.util.List;
 public class CartQueryHandler extends QueryHandler {
 
 
-    // TODO: SELECT QUERIES
-
-    protected int getIdByName(String name) {
-
-        String columnName = "id";
-        String query = "SELECT " + columnName + " FROM \"user\"\n" +
-                " WHERE name = '" + name + "';";
-        return executeQueryWithColumnLabel_ReturnInt(query, columnName);
-    }
-
+    // SELECT QUERIES
 
 
     public int getLargestCartId() {
@@ -58,20 +49,7 @@ public class CartQueryHandler extends QueryHandler {
         return BigDecimal.valueOf(doubleSum).setScale(2, RoundingMode.HALF_UP);
     }
 
-    protected Cart getCartByOrder(int id) {
-        String query = "SELECT\n" +
-                "  \"order\".id AS id_from_order,\n" +
-                "  \"order\".user_id AS id_from_user,\n" +
-                "  \"order\".status,\n" +
-                "  p.id AS id_from_product,\n" +
-                "  p.name,\n" +
-                "  p.default_price,\n" +
-                "  op.product_quantity\n" +
-                "FROM \"order\"\n" +
-                "  FULL OUTER JOIN order_product op on \"order\".id = op.order_id\n" +
-                "  FULL OUTER JOIN product p on op.product_id = p.id\n" +
-                "WHERE \"order\".id = '" + id + "'\n" +
-                "ORDER BY id_from_order;";
+    protected Cart getCartByOrder(String query) {
 
         Cart cartById;
         int numberOfCartItemsInCart = getCarts(query).size();

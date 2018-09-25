@@ -4,7 +4,6 @@ import com.codecool.shop.config.Initializer;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.CustomerDao;
-//import com.codecool.shop.dao.implementation.postgresql.CartDaoSql;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.util.CartStatusType;
 import com.codecool.shop.util.EmailUtil;
@@ -46,7 +45,7 @@ public class PaymentPayedController extends HttpServlet {
 
         cartDataManager.updateLastCartStatus(CartStatusType.UNSHIPPED);
 
-        cartDataManager.add(new Cart(cartDataManager.generateIdForNewCart(), cartDataManager.getGuestId(), CartStatusType.EMPTY));
+        cartDataManager.add(new Cart(cartDataManager.generateIdForNewCart(), customerDataManager.getGuestId(), CartStatusType.EMPTY));
 
         paymentPayedLogger.info("Payment approved by online payment service provider");
 

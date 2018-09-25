@@ -37,18 +37,28 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
     @Override
     public void add(Cart cart) {
 
-        insertInto_order_And_order_product(cart); // TODO: DOES THIS WORK WITH AN EMPTY CART? insertEmptyCart();
+        insertInto_order_And_order_product(cart);
 
-    }
-
-    @Override
-    public int getGuestId() {
-        return getIdByName("Guest");
     }
 
     @Override
     public Cart find(int id) {
-        return getCartByOrder(id);
+
+        String query = "SELECT\n" +
+                "  \"order\".id AS id_from_order,\n" +
+                "  \"order\".user_id AS id_from_user,\n" +
+                "  \"order\".status,\n" +
+                "  p.id AS id_from_product,\n" +
+                "  p.name,\n" +
+                "  p.default_price,\n" +
+                "  op.product_quantity\n" +
+                "FROM \"order\"\n" +
+                "  FULL OUTER JOIN order_product op on \"order\".id = op.order_id\n" +
+                "  FULL OUTER JOIN product p on op.product_id = p.id\n" +
+                "WHERE \"order\".id = '" + id + "'\n" +
+                "ORDER BY id_from_order;";
+
+        return getCartByOrder(query);
     }
 
     @Override
@@ -73,22 +83,22 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
     public Cart getLastCart() {
         Cart lastCart;
 
-        if (getLargestCartId() == 0) { // TODO: STRANGE: WHY IS THIS HERE?
-            lastCart = new Cart(getLargestCartId() + 1);
+        if (getLargestCartId() == 0) {
+            lastCart = new Cart(1);
         } else {
-            lastCart = getCartByOrder(getLargestCartId());
+            lastCart = find(getLargestCartId());
         }
 
         return lastCart;
     }
 
     @Override
-    public void addToLastCart(Product newProduct, CartStatusType status) {
-        addProductToCartBy(getLargestCartId(), newProduct, status);
+    public void addToLastCart(Product newProduct) {
+        addProductToCartBy(getLargestCartId(), newProduct);
     }
 
     @Override
-    public void addProductToCartBy(int cartId, Product newProduct, CartStatusType status) {
+    public void addProductToCartBy(int cartId, Product newProduct) {
         int newProductId = newProduct.getId();
         boolean productNotInCart = true;
         for (CartItem cartItem: find(cartId).getCartItemList()) {
@@ -104,7 +114,6 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
         if (productNotInCart) {
             addNewProductToCartBy(cartId, newProductId);
         }
-        updateCartStatusBy(cartId, status);
     }
 
 
@@ -163,7 +172,6 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
 
     }
 
-    // TODO: IMPLEMENT all below
     @Override
     public BigDecimal getSubTotalPriceFromLastCartBy(int productId) {
         BigDecimal defaultPrice = getDefaultPriceFromLastCartBy(productId);

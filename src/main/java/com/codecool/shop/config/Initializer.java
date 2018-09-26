@@ -57,13 +57,12 @@ public class Initializer implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
 
-        // TODO: CONTINUE: Remove empty orders (and order products) from database. Where? here or?
-        // TODO: REFACTOR DATABASE: NAME AND DESCRIPTION CHANGED. iNTRODUCE COMPOSITE PRIMARY KEY IN ORDER_PRODUCT
-        // TODO: PUT ALL SQL QUERIES INTO DAOSQL AND QUERYHANDLERS INTO HANDLERS
-
         if (CURRENT_IMPLEMENTATION == ImplementationType.MEMORY) {
             initializeFromMemory();
+            System.out.println("Now, data is stored in memory");
         } else if (CURRENT_IMPLEMENTATION == ImplementationType.DATABASE) {
+            // Emptying unused empty carts:
+            CART_DATA_MANAGER.remove(CartStatusType.EMPTY);
             // setting up a new shopping cart and adding it to its data manager:
             CART_DATA_MANAGER.add(new Cart(CART_DATA_MANAGER.generateIdForNewCart(), CUSTOMER_DATA_MANAGER.getGuestId(), CartStatusType.EMPTY));
             System.out.println("Now, running with data persistence");

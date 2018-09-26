@@ -37,7 +37,7 @@ public class ProductController extends HttpServlet {
 
     private final CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
     private final ProductDao productDataManager = IMPLEMENTATION_FACTORY.getProductDataManagerInstance();
-    private final ProductCategoryDao productCategoryHandler = IMPLEMENTATION_FACTORY.getProductCategoryDataManagerInstance();
+    private final ProductCategoryDao productCategoryManager = IMPLEMENTATION_FACTORY.getProductCategoryDataManagerInstance();
     private final SupplierDao supplierDataManager = IMPLEMENTATION_FACTORY.getSupplierDataManagerInstance();
 
     @Override
@@ -66,8 +66,8 @@ public class ProductController extends HttpServlet {
         if (categoryParameter != null) {
             int productCategoryId = Integer.parseInt(categoryParameter);
 
-            if (productCategoryId > 0 && productCategoryId <= productCategoryHandler.getAll().size()) {
-                productList = productDataManager.getBy(productCategoryHandler.find(productCategoryId));
+            if (productCategoryId > 0 && productCategoryId <= productCategoryManager.getAll().size()) {
+                productList = productDataManager.getBy(productCategoryManager.find(productCategoryId));
             }
         } else if (supplierParameter != null) {
             int supplierId = Integer.parseInt(supplierParameter);
@@ -76,7 +76,7 @@ public class ProductController extends HttpServlet {
             }
         }
 
-        context.setVariable("categories", productCategoryHandler.getAll());
+        context.setVariable("categories", productCategoryManager.getAll());
         context.setVariable("suppliers", supplierDataManager.getAll());
         context.setVariable("products", productList);
         context.setVariable("quantityOfProducts", cartDataManager.getQuantityOfProductsInLastCart());

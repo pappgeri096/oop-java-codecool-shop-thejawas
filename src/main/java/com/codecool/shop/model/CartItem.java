@@ -1,16 +1,19 @@
 package com.codecool.shop.model;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 public class CartItem {
     public int id;
     private Product product;
     private int quantity = 1;
 
-    CartItem(int id, Product product){
-        this.product = product;
+    public CartItem(int id, Product product){
         this.id = id;
+        this.product = product;
+    }
+
+    public CartItem(int id, Product product, int quantity) {
+        this.id = id;
+        this.product = product;
+        this.quantity = quantity;
     }
 
     public int getQuantity() {
@@ -25,14 +28,8 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    void increaseQuantity(){
+    public void incrementQuantity(){
         quantity++;
-    }
-
-    public String getSubTotalPrice(){
-        BigDecimal bigDecimalSubtotal = product.getDefaulPrice().multiply(new BigDecimal(quantity));
-        BigDecimal subtotal = bigDecimalSubtotal.setScale(2, RoundingMode.HALF_UP);
-        return subtotal.toString() + " " + product.getDefaultCurrency();
     }
 
     @Override

@@ -61,6 +61,12 @@ public class ProductDaoMem implements ProductDao {
         return data.stream().filter(t -> t.getProductCategory().equals(productCategory)).collect(Collectors.toList());
     }
 
+    @Override
+    public Product getBy(int id){
+        return data.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+    }
+
+    @Override
     public List<Product> getBy(String keyWord){
         List<Product> products = new ArrayList<>();
         for(Product product : data){
@@ -71,7 +77,5 @@ public class ProductDaoMem implements ProductDao {
         return products;
     }
 
-    public Product getBy(int id){
-        return data.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
-    }
+
 }

@@ -85,7 +85,7 @@
         </div>
     </div>
 </nav>
-<a class="navbar-form navbar-right shopping-cart" href="/cart"><i class="fas fa-cart-arrow-down fa-lg" th:text="${orderMem.getQuantityOfProducts()}">0</i></a>
+<a class="navbar-form navbar-right shopping-cart" href="/cart"><i class="fas fa-cart-arrow-down fa-lg" th:text="${quantityOfProducts}">0</i></a>
 <div id="products" class="row list-group">
 
     <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products}">

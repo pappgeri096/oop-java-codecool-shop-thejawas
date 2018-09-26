@@ -61,14 +61,18 @@ public class Initializer implements ServletContextListener {
             initializeFromMemory();
             System.out.println("Now, data is stored in memory");
         } else if (CURRENT_IMPLEMENTATION == ImplementationType.DATABASE) {
-            // Emptying unused empty carts:
-            CART_DATA_MANAGER.remove(CartStatusType.EMPTY);
-            // setting up a new shopping cart and adding it to its data manager:
-            CART_DATA_MANAGER.add(new Cart(CART_DATA_MANAGER.generateIdForNewCart(), CUSTOMER_DATA_MANAGER.getGuestId(), CartStatusType.EMPTY));
+            initializeFromDatabase();
             System.out.println("Now, running with data persistence");
         }
         
 
+    }
+
+    private void initializeFromDatabase() {
+        // Emptying unused empty carts:
+        CART_DATA_MANAGER.remove(CartStatusType.EMPTY);
+        // setting up a new shopping cart and adding it to its data manager:
+        CART_DATA_MANAGER.add(new Cart(CART_DATA_MANAGER.generateIdForNewCart(), CUSTOMER_DATA_MANAGER.getGuestId(), CartStatusType.EMPTY));
     }
 
     private void initializeFromMemory() {

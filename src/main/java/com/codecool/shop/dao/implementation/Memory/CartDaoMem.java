@@ -48,6 +48,16 @@ public class CartDaoMem implements CartDao {
     }
 
     @Override
+    public void remove(CartStatusType status) {
+        for (Cart cart :
+                data) {
+            if (cart.getCartStatusType() == status) {
+                data.remove(cart);
+            }
+        }
+    }
+
+    @Override
     public List<Cart> getAll() {
         return data;
     }
@@ -91,9 +101,6 @@ public class CartDaoMem implements CartDao {
 
 
     }
-
-
-
 
     private int createIdForCartItem() {
         return getLastCart().getCartItemList().size() + 1;

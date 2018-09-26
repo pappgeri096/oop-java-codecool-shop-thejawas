@@ -65,7 +65,7 @@ public class CartQueryHandler extends QueryHandler {
         return cartById;
     }
 
-    protected List<Cart> getCarts(String query) { // TODO: ITT A HIBA!!!!!!!!!!!!
+    protected List<Cart> getCarts(String query) {
         List<Cart> resultList = new ArrayList<>();
 
         try (Connection connection = getConnection();
@@ -76,7 +76,7 @@ public class CartQueryHandler extends QueryHandler {
             ProductDao productDataManager = Initializer.getImplementationFactory().getProductDataManagerInstance();
 
             Cart cart;
-            int cartItemCounter = 1; // TODO: ITT A HIBA!!!!!!!!!!!!
+            int cartItemCounter = 1;
             int cartId;
             int previousCartId = -1;
             while (resultSet.next()) {
@@ -85,7 +85,7 @@ public class CartQueryHandler extends QueryHandler {
                 boolean isCartNotEmpty = resultSet.getInt("id_from_product") > 0;
 
                 if (previousCartId != cartId) {
-                    cartItemCounter = 1; // TODO: ITT A HIBA!!!!!!!!!!!!
+                    cartItemCounter = 1;
                     cart = new Cart(
                             resultSet.getInt("id_from_order"),
                             resultSet.getInt("id_from_user"),
@@ -213,8 +213,8 @@ public class CartQueryHandler extends QueryHandler {
     }
 
     protected void addNewProductToCartBy(int cartId, int newProductId) {
-        String prePreparedQuery = "INSERT INTO public.order_product (id, order_id, product_id, product_quantity) " +
-                "VALUES (DEFAULT, ?, ?, ?);";
+        String prePreparedQuery = "INSERT INTO public.order_product (order_id, product_id, product_quantity) " +
+                "VALUES (?, ?, ?);";
 
         DMLPreparedQuery3Parameters(prePreparedQuery, cartId, newProductId, 1);
     }

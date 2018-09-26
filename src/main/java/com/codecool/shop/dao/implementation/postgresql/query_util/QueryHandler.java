@@ -1,7 +1,5 @@
 package com.codecool.shop.dao.implementation.postgresql.query_util;
 
-import com.codecool.shop.util.CartStatusType;
-
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;

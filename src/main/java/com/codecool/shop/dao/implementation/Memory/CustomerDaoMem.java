@@ -71,6 +71,10 @@ public class CustomerDaoMem implements CustomerDao {
         return GUEST_ID;
     }
 
+    @Override
+    public Customer loginCustomer(String username, String password) {
+        return null;
+    }
 
     @Override
     public Customer find(int id) {

@@ -83,7 +83,7 @@
             </form>
             <h4 th:text="'Total: ' + ${totalPrice}"> </h4>
             <a href="/cart"><button type="submit" class="btn btn-secondary "> Edit </button></a>
-            <a href="/checkout"><button type="submit" class="btn btn-secondary "> Proceed </button></a>
+            <a th:href="${isActiveSession} ? '/checkout' : '/login'"><button type="submit" class="btn btn-secondary "> Proceed </button></a>
         </div>
     </div>
 

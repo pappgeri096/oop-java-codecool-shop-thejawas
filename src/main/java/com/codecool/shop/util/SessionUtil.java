@@ -4,7 +4,7 @@ import javax.servlet.http.HttpSession;
 
 public class SessionUtil {
     private static final SessionUtil INSTANCE = new SessionUtil();
-    private HttpSession session;
+    static private HttpSession session;
 
     private SessionUtil() {}
 
@@ -22,5 +22,12 @@ public class SessionUtil {
 
     public String getSessionValue(String key) {
         return session.getAttribute(key).toString();
+    }
+
+    public static boolean isActiveSession() {
+        if (session == null){
+            return false;
+        }
+        return true;
     }
 }

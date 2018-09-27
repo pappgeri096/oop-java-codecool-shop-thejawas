@@ -9,4 +9,5 @@ public interface CustomerDao extends BaseDAO<Customer> {
     boolean checkIfAnyCustomerDataMissing();
 
     int getGuestId();
+    Customer loginCustomer(String username, String password);
 }

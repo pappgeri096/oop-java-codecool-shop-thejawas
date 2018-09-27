@@ -3,6 +3,7 @@ package com.codecool.shop.controller;
 import com.codecool.shop.config.Initializer;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.util.SessionUtil;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -34,6 +35,7 @@ public class ReviewController extends HttpServlet {
         context.setVariable("cartDataManager", cartDataManager);
         context.setVariable("numberOfProductsInLastCart", cartDataManager.getLastCart().getCartItemList().size());
         context.setVariable("totalPrice", cartDataManager.getTotalPriceOfLastCart());
+        context.setVariable("isActiveSession", SessionUtil.isActiveSession());
         engine.process("product/review.html", context, resp.getWriter());
         reviewLogger.info("Get request received for SHOPPING CART REVIEW page");
     }

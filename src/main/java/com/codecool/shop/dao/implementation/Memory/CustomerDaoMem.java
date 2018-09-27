@@ -67,8 +67,18 @@ public class CustomerDaoMem implements CustomerDao {
     }
 
     @Override
+    public void updateCustomerInformation(int id, String name, String email, int phoneNumber, String billingCountry, String billingCity, String billingZipCode, String billingAddress, String shippingCountry, String shippingCity, String shippingZipCode, String shippingAddress) {
+
+    }
+
+    @Override
     public int getGuestId() {
         return GUEST_ID;
+    }
+
+    @Override
+    public Customer loginCustomer(String username, String password) {
+        return null;
     }
 
 

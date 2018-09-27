@@ -57,6 +57,10 @@ public class CustomerDaoSql extends CustomerQureyHandler implements CustomerDao 
     }
 
     @Override
+    public void updateCustomerInformation(int id, String name, String email, int phoneNumber, String billingCountry, String billingCity, String billingZipCode, String billingAddress, String shippingCountry, String shippingCity, String shippingZipCode, String shippingAddress) {
+    }
+
+    @Override
     public int getGuestId() {
         return getIdByName("Guest");
     }

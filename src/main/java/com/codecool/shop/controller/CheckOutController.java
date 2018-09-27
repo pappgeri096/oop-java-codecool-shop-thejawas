@@ -5,6 +5,7 @@ import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CustomerDao;
 import com.codecool.shop.model.Customer;
 import com.codecool.shop.util.CustomerDataField;
+import com.codecool.shop.util.SessionUtil;
 import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class CheckOutController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
-        Customer customer = customerDataManager.find(sessionUtil.getSessionValue("id"));
+        Customer customer = customerDataManager.find(Integer.parseInt(sessionUtil.getSessionValue("id")));
 
         context.setVariable("customer", customer);
 

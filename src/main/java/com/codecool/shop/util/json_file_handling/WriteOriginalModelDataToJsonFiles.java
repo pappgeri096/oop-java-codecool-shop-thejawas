@@ -7,17 +7,11 @@ import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
-import com.codecool.shop.util.implementation_factory.ImplementationFactory;
-import com.codecool.shop.util.implementation_factory.MemoryFactory;
 
 import java.math.BigDecimal;
 import java.util.*;
 
-class WriteOriginalModelDataToJsonFiles extends JsonMappingHandler {
-
-    private static final ImplementationFactory MEMORY_FACTORY = new MemoryFactory();
-//    private static final CartDao CART_DATA_MANAGER = MEMORY_FACTORY.getCartDataManagerInstance();
-//    private static final CustomerDao CUSTOMER_DATA_MANAGER = MEMORY_FACTORY.getCustomerDataManagerInstance();
+class WriteOriginalModelDataToJsonFiles {
 
     private static final SupplierDao SUPPLIER_DATA_MANAGER = SupplierDaoMem.getInstance();
     private static final ProductCategoryDao PRODUCT_CATEGORY_DATA_MANAGER = ProductCategoryDaoMem.getInstance();
@@ -77,18 +71,18 @@ class WriteOriginalModelDataToJsonFiles extends JsonMappingHandler {
     }
 
     private static void saveProducts(String filePath) {
-        listToJsonFile(filePath, PRODUCT_DATA_MANAGER.getAll());
+        JsonMappingHandler.listToJsonFile(filePath, PRODUCT_DATA_MANAGER.getAll());
     }
 
     private static void saveProductCategoriesNoProductList(String filePath) {
         List<ProductCategory> productCategoryList = PRODUCT_CATEGORY_DATA_MANAGER.getAll();
-        listToJsonFile(filePath, productCategoryList);
+        JsonMappingHandler.listToJsonFile(filePath, productCategoryList);
 
     }
 
     private static void saveSuppliersNoProductList(String filePath) {
         List<Supplier> supplierList = SUPPLIER_DATA_MANAGER.getAll();
-        listToJsonFile(filePath, supplierList);
+        JsonMappingHandler.listToJsonFile(filePath, supplierList);
 
     }
 }

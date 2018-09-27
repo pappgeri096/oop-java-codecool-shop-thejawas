@@ -1,15 +1,7 @@
 package com.codecool.shop.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class ProductCategory extends BaseModel {
     private String department;
-//    @JsonIgnore
-//    private List<Product> products;
-
 
     public ProductCategory() {
     }
@@ -17,28 +9,11 @@ public class ProductCategory extends BaseModel {
     public ProductCategory(int id, String name, String department, String description) {
         super(id, name, description);
         this.department = department;
-//        this.products = new ArrayList<>();
     }
 
     public String getDepartment() {
         return department;
     }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-//    public void setProducts(ArrayList<Product> products) {
-//        this.products = products;
-//    }
-//
-//    public List<Product> getProducts() {
-//        return this.products;
-//    }
-//
-//    void addProduct(Product product) {
-//        this.products.add(product);
-//    }
 
     public String toString() {
         return String.format(

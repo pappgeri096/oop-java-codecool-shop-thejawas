@@ -60,44 +60,46 @@ public class Initializer implements ServletContextListener {
 
         if (CURRENT_IMPLEMENTATION == ImplementationType.MEMORY) {
             initializeFromMemory();
-            System.out.println("Now, data is stored in memory");
         } else if (CURRENT_IMPLEMENTATION == ImplementationType.DATABASE) {
             initializeFromDatabase();
-            System.out.println("Now, running with data persistence");
         }
         
 
     }
 
     private void initializeFromDatabase() {
-        // deleting unused empty carts:
+        deleteEmptyCarts();
+
+        addGuestToNewCartBy(CUSTOMER_DATA_MANAGER.getGuestId());
+    }
+
+    private void deleteEmptyCarts() {
         CART_DATA_MANAGER.remove(CartStatusType.EMPTY);
-        // setting up a new shopping cart and adding it to its data manager:
-        CART_DATA_MANAGER.add(new Cart(CART_DATA_MANAGER.generateIdForNewCart(), CUSTOMER_DATA_MANAGER.getGuestId(), CartStatusType.EMPTY));
     }
 
     private void initializeFromMemory() {
 
-        // Initializing model data from json files
-        //      Suppliers
         String filePathForSupplierData = "src/main/resources/json_data_persistence/supplier_data.json";
         loadSuppliersIntoMemory(filePathForSupplierData);
 
-        //      Product categories
         String filePathForProductCategoryData = "src/main/resources/json_data_persistence/product_category_data.json";
         loadProductCategoriesIntoMemory(filePathForProductCategoryData);
 
-        //      Products
         String filePathForProductData = "src/main/resources/json_data_persistence/product_data.json";
         loadProductsIntoMemory(filePathForProductData);
 
-        // setting up a guest user until registration and adding it to Customer data manager
+        addGuestToNewCartBy(createGuestUser());
+
+    }
+
+    private void addGuestToNewCartBy(int guestId) {
+        CART_DATA_MANAGER.add(new Cart(CART_DATA_MANAGER.generateIdForNewCart(), guestId, CartStatusType.EMPTY));
+    }
+
+    private int createGuestUser() {
         Customer guest = new Customer(CUSTOMER_DATA_MANAGER.generateIdForNewCustomer(), "Guest");
         CUSTOMER_DATA_MANAGER.add(guest);
-
-        // setting up a new shopping cart and adding it to its data manager:
-        CART_DATA_MANAGER.add(new Cart(CART_DATA_MANAGER.generateIdForNewCart(), guest.getId(), CartStatusType.EMPTY));
-
+        return guest.getId();
     }
 
     private void loadSuppliersIntoMemory(String filePath) {

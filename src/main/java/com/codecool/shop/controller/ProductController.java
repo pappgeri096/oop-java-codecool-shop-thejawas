@@ -49,7 +49,7 @@ public class ProductController extends HttpServlet {
             int productId = Integer.parseInt(productParameter);
             Product productToAdd = productDataManager.getBy(productId);
 
-            // TODO: UPDATE TOTAL PRICE EVERY PRODUCT ADD FROM INDEX PAGE
+            // TODO: UPDATE SUBTOTAL PRICE OF EVERY PRODUCT ADDED FROM INDEX PAGE
             cartDataManager.addToLastCart(productToAdd);
             cartDataManager.updateCartStatusBy(cartDataManager.getLargestCartId(), CartStatusType.UNFINISHED);
 

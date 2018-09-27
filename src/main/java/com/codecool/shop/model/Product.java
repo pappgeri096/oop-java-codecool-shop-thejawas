@@ -41,7 +41,7 @@ public class Product extends BaseModel {
     }
 
     public BigDecimal getDefaultPrice() {
-        return defaultPrice;
+        return defaultPrice.setScale(2, RoundingMode.HALF_UP);
     }
 
     public Currency getDefaultCurrency() {
@@ -53,17 +53,12 @@ public class Product extends BaseModel {
         return String.valueOf(this.defaultPrice) + " " + this.defaultCurrency.toString();
     }
 
-    public BigDecimal getDefaulPrice(){
-        return defaultPrice.setScale(2, RoundingMode.HALF_UP);
-    }
-
     public ProductCategory getProductCategory() {
         return productCategory;
     }
 
     private void setProductCategory(ProductCategory productCategory) {
         this.productCategory = productCategory;
-//        this.productCategory.addProduct(this);
     }
 
     public Supplier getSupplier() {
@@ -72,7 +67,6 @@ public class Product extends BaseModel {
 
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
-//        this.supplier.addProduct(this);
     }
 
     @Override

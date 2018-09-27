@@ -48,7 +48,7 @@ public class ProductController extends HttpServlet {
         if (productParameter != null) {
             int productId = Integer.parseInt(productParameter);
             Product productToAdd = productDataManager.getBy(productId);
-            // TODO: REMOVE STATUS SETTING FROM THIS METHOD. cALL UPDATE STATUS SEPARATELY
+
             // TODO: UPDATE TOTAL PRICE EVERY PRODUCT ADD FROM INDEX PAGE
             cartDataManager.addToLastCart(productToAdd);
             cartDataManager.updateCartStatusBy(cartDataManager.getLargestCartId(), CartStatusType.UNFINISHED);
@@ -62,6 +62,8 @@ public class ProductController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
         List<Product> productList = productDataManager.getAll();
+        System.out.println(productList);
+        System.out.println("category parameter" + categoryParameter);
 
         if (categoryParameter != null) {
             int productCategoryId = Integer.parseInt(categoryParameter);

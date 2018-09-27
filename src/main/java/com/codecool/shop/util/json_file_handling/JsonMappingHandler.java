@@ -1,5 +1,8 @@
-package com.codecool.shop.util;
+package com.codecool.shop.util.json_file_handling;
 
+import com.codecool.shop.model.Product;
+import com.codecool.shop.model.ProductCategory;
+import com.codecool.shop.model.Supplier;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +17,7 @@ public class JsonMappingHandler {
 
     // From Java objects to JSON
 
-    <T> String objectToJsonString(T object) {
+    protected static <T> String objectToJsonString(T object) {
         ObjectMapper objectMapper = new ObjectMapper();
         String carAsString = "";
         try {
@@ -25,7 +28,7 @@ public class JsonMappingHandler {
         return carAsString;
     }
 
-    <T> void objectToJsonFile(String fileName, T object) {
+    protected static <T> void objectToJsonFile(String fileName, T object) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             objectMapper.writeValue(new FileOutputStream(fileName), object);
@@ -34,7 +37,7 @@ public class JsonMappingHandler {
         }
     }
 
-    public <E> String listToJsonString(List<E> list) {
+    protected static <E> String listToJsonString(List<E> list) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String listAsString = "";
@@ -46,7 +49,7 @@ public class JsonMappingHandler {
         return listAsString;
     }
 
-    public void listToJsonFile(String filePath, List list) {
+    public static void listToJsonFile(String filePath, List list) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -56,7 +59,7 @@ public class JsonMappingHandler {
         }
     }
 
-    public <K, V> String mapToJsonString(Map<K, V> map) {
+    protected static <K, V> String mapToJsonString(Map<K, V> map) {
         ObjectMapper objectMapper = new ObjectMapper();
         String carAsString = "";
         try {
@@ -76,7 +79,7 @@ public class JsonMappingHandler {
      *
      * */
 
-    public <T, K, V> void writeMapToFile(String filePath, Map<K, V> mapObject) {
+    protected static <T, K, V> void writeMapToFile(String filePath, Map<K, V> mapObject) {
 
         ObjectMapper orderMapper = new ObjectMapper();
         try {
@@ -88,7 +91,7 @@ public class JsonMappingHandler {
 
     // JSON TO JAVA OBJECTS
 
-    <T> T jsonStringToObject(String jsonString, Class<T> className) {
+    protected static <T> T jsonStringToObject(String jsonString, Class<T> className) {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -102,7 +105,7 @@ public class JsonMappingHandler {
         return someObject;
     }
 
-    <T> T jsonFileToObject(String pathName, Class<T> className) {
+    public static <T> T jsonFileToObject(String pathName, Class<T> className) {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -116,7 +119,7 @@ public class JsonMappingHandler {
         return someObject;
     }
 
-    <E> List<E> jsonArrayStringToObjectList(String jsonArray, Class<E> className) {
+    protected static <E> List<E> jsonArrayStringToObjectList(String jsonArray, Class<E> className) {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -130,13 +133,55 @@ public class JsonMappingHandler {
         return objectList;
     }
 
-    <E> List<E> jsonFileToObjectList(String fileName, Class<E> className) {
+    public static <E> List<E> jsonFileToObjectList(String fileName, E className) {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
         List<E> objectList = null;
         try {
             objectList = objectMapper.readValue(new File(fileName), new TypeReference<List<E>>() {});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return objectList;
+    }
+
+    public static List<Supplier> jsonFileToSupplierList(String fileName) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        List<Supplier> objectList = null;
+        try {
+            objectList = objectMapper.readValue(new File(fileName), new TypeReference<List<Supplier>>() {});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return objectList;
+    }
+
+    public static List<ProductCategory> jsonFileToProductCategoryList(String fileName) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        List<ProductCategory> objectList = null;
+        try {
+            objectList = objectMapper.readValue(new File(fileName), new TypeReference<List<ProductCategory>>() {});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return objectList;
+    }
+
+    public static List<Product> jsonFileToProductList(String fileName) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        List<Product> objectList = null;
+        try {
+            objectList = objectMapper.readValue(new File(fileName), new TypeReference<List<Product>>() {});
         } catch (IOException e) {
             e.printStackTrace();
         }

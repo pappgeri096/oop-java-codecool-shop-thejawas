@@ -1,6 +1,7 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.dao.implementation.postgresql.CustomerDaoSql;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -24,8 +25,9 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        CustomerDaoSql customerDaoSql = CustomerDaoSql.getInstance();
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        customerDaoSql.loginCustomer(username, password);
     }
 }

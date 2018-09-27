@@ -1,13 +1,18 @@
 package com.codecool.shop.dao.implementation.postgresql.query_util;
 
+import com.codecool.shop.controller.PaymentController;
 import com.codecool.shop.model.Customer;
 import com.codecool.shop.util.PasswordUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerQureyHandler extends QueryHandler {
+
+    private static final Logger loginLogger = LoggerFactory.getLogger(PaymentController.class);
 
     protected int getLargestCustomerId() {
         String tableName = "public.\"user\"";
@@ -196,20 +201,24 @@ public class CustomerQureyHandler extends QueryHandler {
         PasswordUtil passwordUtil = new PasswordUtil();
         try{
             Connection connection = getConnection();
-            String selectQuery = "SELECT * FROM user WHERE username = ?";
+            String selectQuery = "SELECT * FROM user WHERE email = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
             preparedStatement.setString(1, username);
             ResultSet user = preparedStatement.executeQuery(selectQuery);
-            String realPassword = user.getString("password");
+
+            String realPassword = user.getString("password_hash");
             String salt = user.getString("salt_password");
+            System.out.println(realPassword);
 
             if (PasswordUtil.verifyUserPassword(password, realPassword, salt)) {
+                loginLogger.info("Successful Login");
                 return user.getInt("id");
             }
             throw new SQLException();
             }
         catch (SQLException e) {
+            loginLogger.info("Unsuccessful Login");
             return null;
             }
         }

@@ -104,22 +104,18 @@ public class Initializer implements ServletContextListener {
         List<Supplier> supplierList = JsonMappingHandler.jsonFileToSupplierList(filePath);
         SupplierDaoMem supplierDataManager = SupplierDaoMem.getInstance();
         supplierDataManager.setData(supplierList);
-
-        System.out.println("suppliers:\n" + supplierList);
     }
 
     private void loadProductCategoriesIntoMemory(String filePathForProductCategoryData) {
         ProductCategoryDaoMem productCategoryDataManager = ProductCategoryDaoMem.getInstance();
         List<ProductCategory> productCategoryList = JsonMappingHandler.jsonFileToProductCategoryList(filePathForProductCategoryData);
         productCategoryDataManager.setData(productCategoryList);
-        System.out.println("product categories:\n" + productCategoryList);
     }
 
     private void loadProductsIntoMemory(String filePath) {
         ProductDaoMem productDataManager = ProductDaoMem.getInstance();
         List<Product> productList = JsonMappingHandler.jsonFileToProductList(filePath);
         productDataManager.setData(productList);
-        System.out.println("products:\n" + productList);
     }
 
 

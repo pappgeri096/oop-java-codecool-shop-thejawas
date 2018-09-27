@@ -62,14 +62,14 @@ public class ProductController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
         List<Product> productList = productDataManager.getAll();
-        System.out.println(productList);
-        System.out.println("category parameter" + categoryParameter);
 
         if (categoryParameter != null) {
             int productCategoryId = Integer.parseInt(categoryParameter);
 
             if (productCategoryId > 0 && productCategoryId <= productCategoryManager.getAll().size()) {
                 productList = productDataManager.getBy(productCategoryManager.find(productCategoryId));
+                System.out.println("product list by category parameter: " + categoryParameter + "\n" + productList);
+
             }
         } else if (supplierParameter != null) {
             int supplierId = Integer.parseInt(supplierParameter);

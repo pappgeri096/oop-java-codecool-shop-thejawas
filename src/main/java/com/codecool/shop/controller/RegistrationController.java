@@ -44,7 +44,7 @@ public class RegistrationController extends HttpServlet {
 
         customerDataManager.add(createNewCustomerFromUserInput(req));
 
-        resp.sendRedirect("/");
+        resp.sendRedirect("/login");
     }
 
     private Customer createNewCustomerFromUserInput(HttpServletRequest req) {

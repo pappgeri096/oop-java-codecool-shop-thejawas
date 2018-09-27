@@ -75,6 +75,17 @@ public class CartDaoSql extends CartQueryHandler implements CartDao {
     }
 
     @Override
+    public void remove(CartStatusType status) {
+        String orderProductQuery = "DELETE FROM public.\"order\" WHERE status = '" + status.getStatusString() + "';";
+        boolean deletionFromOrderProductSuccessful = DMLexecute(orderProductQuery);
+
+        if (!deletionFromOrderProductSuccessful) {
+            System.out.println("No cart was deleted");
+        }
+
+    }
+
+    @Override
     public List<Cart> getAll() {
         return getAllCarts();
     }

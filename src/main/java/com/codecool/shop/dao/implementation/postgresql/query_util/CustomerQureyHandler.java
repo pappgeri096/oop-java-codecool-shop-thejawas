@@ -1,6 +1,7 @@
 package com.codecool.shop.dao.implementation.postgresql.query_util;
 
 import com.codecool.shop.model.Customer;
+import com.codecool.shop.util.PasswordUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -186,8 +187,29 @@ public class CustomerQureyHandler extends QueryHandler {
         return resultList;
     }
 
+    protected Integer getCustomerID(String username, String password) {
+        PasswordUtil passwordUtil = new PasswordUtil();
+        try{
+            Connection connection = getConnection();
+            String selectQuery = "SELECT * FROM user WHERE username = ?";
 
-}
+            PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+            preparedStatement.setString(1, username);
+            ResultSet user = preparedStatement.executeQuery(selectQuery);
+            String realPassword = user.getString("password");
+            String salt = user.getString("salt_password");
+
+            if (passwordUtil.verifyUserPassword(password, realPassword, salt)) {
+                return user.getInt("id");
+            }
+            throw new SQLException();
+            }
+        catch (SQLException e) {
+            return null;
+            }
+        }
+    }
+
 
 
 

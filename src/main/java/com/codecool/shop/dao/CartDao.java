@@ -32,4 +32,6 @@ public interface CartDao extends BaseDAO<Cart> {
     void updateLastCartStatus(CartStatusType status);
 
     int generateIdForNewCart();
+
+    void remove(CartStatusType status);
 }

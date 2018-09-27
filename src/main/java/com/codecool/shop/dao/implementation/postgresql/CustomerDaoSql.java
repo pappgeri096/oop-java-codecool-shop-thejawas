@@ -3,6 +3,7 @@ package com.codecool.shop.dao.implementation.postgresql;
 import com.codecool.shop.dao.CustomerDao;
 import com.codecool.shop.dao.implementation.postgresql.query_util.CustomerQureyHandler;
 import com.codecool.shop.model.Customer;
+import com.codecool.shop.util.SessionUtil;
 
 import java.util.*;
 
@@ -70,8 +71,7 @@ public class CustomerDaoSql extends CustomerQureyHandler implements CustomerDao 
 
     @Override
     public Customer find(int id) {
-        // DOES NOTHING
-        return null;
+        return createCustomerObjectBy(id);
     }
 
     @Override
@@ -82,6 +82,17 @@ public class CustomerDaoSql extends CustomerQureyHandler implements CustomerDao 
     @Override
     public List<Customer> getAll() {
         // DOES NOTHING
+        return null;
+    }
+
+    @Override
+    public Customer loginCustomer(String username, String password) {
+        SessionUtil sessionUtil = SessionUtil.getInstance();
+        Integer customerID = getCustomerID(username, password);
+
+        if (customerID != null){
+            sessionUtil.addAttributeToSession("customerId", customerID);
+        }
         return null;
     }
 

@@ -22,4 +22,5 @@ public interface CustomerDao extends BaseDAO<Customer> {
             String shippingAddress);
 
     int getGuestId();
+    Customer loginCustomer(String username, String password);
 }

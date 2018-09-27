@@ -105,10 +105,10 @@ IS 'UNSHIPPED';
 
 CREATE TABLE public.order_product
 (
-  id               bigserial PRIMARY KEY,
   order_id         int    NOT NULL,
   product_id       bigint NOT NULL,
   product_quantity int    NOT NULL,
   CONSTRAINT order_product_fk_order_id FOREIGN KEY (order_id) REFERENCES public."order" (id),
-  CONSTRAINT order_product_fk_product_id FOREIGN KEY (product_id) REFERENCES public.product (id)
+  CONSTRAINT order_product_fk_product_id FOREIGN KEY (product_id) REFERENCES public.product (id),
+  CONSTRAINT order_id_product_id_composite_pk PRIMARY KEY (order_id, product_id)
 );

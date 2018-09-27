@@ -31,12 +31,13 @@ public class CustomerQureyHandler extends QueryHandler {
                 "  shipping_country,\n" +
                 "  shipping_city,\n" +
                 "  shipping_zipcode,\n" +
-                "  shipping_address\n" +
-                ") VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                "  shipping_address,\n" +
+                "  salt_password\n" +
+                ") VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         String name = customer.getName();
         String email = customer.getEmail();
-        String passwordHah = "5d9c68c6c50ed3d02a2fcf54f63993b6"; // TODO: CHANGE IT WHEN IMPLEMENTING USER REGISTRATION AND LOGIN
+        String passwordHash = customer.getPasswordHash(); // TODO: CHANGE IT WHEN IMPLEMENTING USER REGISTRATION AND LOGIN
         int phoneNumber = customer.getPhoneNumber();
         String billingCountry = customer.getBillingCountry();
         String billingCity = customer.getBillingCity();
@@ -46,11 +47,13 @@ public class CustomerQureyHandler extends QueryHandler {
         String shippingCity = customer.getShippingCity();
         String shippingZipCode = customer.getShippingZipCode();
         String shippingAddress = customer.getShippingAddress();
+        String salt = customer.getSalt();
 
 
         DMLPreparedQueryForInsertingNewCustomer(
-                prePreparedQuery, name, passwordHah, email, phoneNumber, billingCountry, billingCity, billingZipCode, billingAddress,
-                shippingCountry, shippingCity, shippingZipCode, shippingAddress
+                prePreparedQuery, name, passwordHash,
+                email, phoneNumber, billingCountry, billingCity, billingZipCode, billingAddress,
+                shippingCountry, shippingCity, shippingZipCode, shippingAddress, salt
         );
     }
 
@@ -67,7 +70,8 @@ public class CustomerQureyHandler extends QueryHandler {
             String shippingCountry,
             String shippingCity,
             String shippingZipCode,
-            String shippingAddress) {
+            String shippingAddress,
+            String salt) {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
@@ -89,6 +93,7 @@ public class CustomerQureyHandler extends QueryHandler {
             pstmt.setString(10, shippingCity);
             pstmt.setString(11, shippingZipCode);
             pstmt.setString(12, shippingAddress);
+            pstmt.setString(13, salt);
 
             pstmt.executeUpdate();
 
@@ -199,7 +204,7 @@ public class CustomerQureyHandler extends QueryHandler {
             String realPassword = user.getString("password");
             String salt = user.getString("salt_password");
 
-            if (passwordUtil.verifyUserPassword(password, realPassword, salt)) {
+            if (PasswordUtil.verifyUserPassword(password, realPassword, salt)) {
                 return user.getInt("id");
             }
             throw new SQLException();

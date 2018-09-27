@@ -27,7 +27,6 @@ public class RegistrationController extends HttpServlet {
     private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
 
     private CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
-    private PasswordUtil passwordUtil = new PasswordUtil();
 
     private static final Logger checkoutLogger = LoggerFactory.getLogger(RegistrationController.class);
 
@@ -53,8 +52,8 @@ public class RegistrationController extends HttpServlet {
         int id = customerDataManager.generateIdForNewCustomer();
         String name = req.getParameter(CustomerDataField.USER_NAME.getInputString());
 
-        String password = req.getParameter(CustomerDataField.PASSWORD_HASH.getInputString());
-        String salt = passwordUtil.getSalt(password.length());
+        String salt = PasswordUtil.getSalt(30);
+        String password = PasswordUtil.generateSecurePassword(req.getParameter(CustomerDataField.PASSWORD_HASH.getInputString()), salt);
 
         String email = req.getParameter(CustomerDataField.EMAIL_ADDRESS.getInputString());
         int phoneNumber = Integer.parseInt(req.getParameter(CustomerDataField.PHONE_NUMBER.getInputString()));
@@ -83,8 +82,8 @@ public class RegistrationController extends HttpServlet {
         }
 
         return new Customer(
-                id, name, password, salt, email, phoneNumber, billingCountry, billingCity, billingZipCode, billingAddress,
-                shippingCountry, shippingCity, shippingZipCode, shippingAddress
+                id, name, password, email, phoneNumber, billingCountry, billingCity, billingZipCode, billingAddress,
+                shippingCountry, shippingCity, shippingZipCode, shippingAddress, salt
         );
     }
 

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+
+    <link rel="stylesheet" href="https://bootswatch.com/3/flatly/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://bootswatch.com/3/flatly/_variables.less">
+
+    <link rel="stylesheet" href="https://bootswatch.com/3/flatly/_bootswatch.scss">
+
+    <link rel="stylesheet" href="static/css/checkout.css">
+
+    <title>Checkout</title>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Codecool shop</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+        </div>
+    </div>
+</nav>
+<div class="container" style="margin-bottom: 15px">
+    <div class="col-lg-6 col-lg-offset-3">
+        <h3 class="bg-success text-white p-5">Registration</h3>
+        <form action="/checkout" method="post">
+            <div class="form-group mx-auto">
+                Email address
+                <input class="form-control" placeholder="Enter email" type="email" name="email" required ><br>
+
+                Password
+                <input class="form-control" type="password" name="password_hash" id="password_hash" required ><br>
+
+                Confirm Password
+                <input class="form-control" type="password" name="password_confirmation" id="password_confirmation" required ><br>
+
+                Full Name
+                <input class="form-control" type="tel" name="name" required ><br>
+
+                Phone Number
+                <input class="form-control" placeholder="06-20-458-4578" type="text"  name="phone_number" required ><br>
+                <div class="form-group">
+                    <h3 class="bg-success text-white p-5">Billing Address</h3>
+
+                    Country<br>
+                    <input class="form-control" type="text" name="billing_country" required><br>
+
+                    City
+                    <input class="form-control" type="text" name="billing_city" required><br>
+
+                    Zipcode
+                    <input class="form-control" type="text" name="billing_zipcode" required><br>
+
+                    Address
+                    <input class="form-control" type="text" name="billing_address" required>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="true" id="sameAddress" name="sameAddress">
+                    <label class="form-check-label" for="sameAddress" style="font-size: 16px">
+                        Same
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <h3 class="bg-success text-white p-5">Shipping Address</h3>
+
+                    Country:<br>
+                    <input class="form-control shipping" type="text" name="shipping_country" ><br>
+
+                    City
+                    <input class="form-control shipping" type="text" name="shipping_city" ><br>
+
+                    Zipcode
+                    <input class="form-control shipping" type="text" name="shipping_zipcode" ><br>
+
+                    Address
+                    <input class="form-control shipping" type="text" name="shipping_address" ><br>
+                </div>
+                <button type="submit" value="Submit" id="submit" class="btn btn-primary btn-block" disabled>Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function toggleSameButton() {
+        let sameButton = document.querySelector("#sameAddress");
+        let addressFields = document.querySelectorAll(".shipping");
+        sameButton.addEventListener("change", function (evt) {
+            for(field of addressFields){
+                if(field.disabled === true){
+                    field.disabled = false;
+                }else{
+                    field.disabled = true;
+                }
+            }
+        })
+    }
+
+    function allowMatchingPasswords(){
+        let firstPassword = document.querySelector("#password_hash");
+        let secondPassword = document.querySelector("#password_confirmation");
+        let button = document.querySelector("#submit");
+
+        secondPassword.addEventListener("change", function (evt) {
+            if (firstPassword.value === secondPassword.value) {
+                button.disabled = false;
+            } else {
+                button.disabled = true;
+            }
+        })
+    }
+
+    allowMatchingPasswords();
+    toggleSameButton();
+</script>
+</body>
+</html>

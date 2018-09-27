@@ -3,6 +3,7 @@ package com.codecool.shop.model;
 public class Customer extends BaseModel {
 
     private String passwordHash;
+    private String salt;
     private String email;
     private int phoneNumber;
 
@@ -39,12 +40,13 @@ public class Customer extends BaseModel {
     }
 
     public Customer(
-            int id, String name, String passwordHash, String email, int phoneNumber,
+            int id, String name, String passwordHash, String salt, String email, int phoneNumber,
             String billingCountry, String billingCity, String billingZipCode, String billingAddress,
             String shippingCountry, String shippingCity, String shippingZipCode, String shippingAddress
     ) {
         super(id, name);
         this.passwordHash = passwordHash;
+        this.salt = salt;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.billingCountry = billingCountry;

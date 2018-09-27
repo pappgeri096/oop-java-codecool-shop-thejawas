@@ -29,10 +29,18 @@ public class CheckOutController extends HttpServlet {
 
     private static final Logger checkoutLogger = LoggerFactory.getLogger(CheckOutController.class);
 
+    private SessionUtil sessionUtil = SessionUtil.getInstance();
+
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
+
+        Customer customer = customerDataManager.find(sessionUtil.getSessionValue("id"));
+
+        context.setVariable("customer", customer);
+
         engine.process("product/checkout.html", context, resp.getWriter());
         checkoutLogger.info("Get request received for CHECKOUT page");
     }
@@ -40,12 +48,12 @@ public class CheckOutController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        customerDataManager.add(createNewCustomerFromUserInput(req));
+        updateCustomerFromUserInput(req);
 
         resp.sendRedirect("/payment");
     }
 
-    private Customer createNewCustomerFromUserInput(HttpServletRequest req) {
+    private void updateCustomerFromUserInput(HttpServletRequest req) {
         String SHIPPING_ADDRESS_SAME_AS_BILLING = req.getParameter(CustomerDataField.SHIPPING_ADDRESS_SAME.getInputString());
 
         int id = customerDataManager.generateIdForNewCustomer();
@@ -76,7 +84,7 @@ public class CheckOutController extends HttpServlet {
 
         }
 
-        return new Customer(
+        customerDataManager.updateCustomerInformation(
                 id, name, email, phoneNumber, billingCountry, billingCity, billingZipCode, billingAddress,
                 shippingCountry, shippingCity, shippingZipCode, shippingAddress
         );

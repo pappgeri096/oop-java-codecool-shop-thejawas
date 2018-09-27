@@ -88,7 +88,8 @@ CREATE TABLE public."user"
   shipping_country varchar(256) NOT NULL,
   shipping_city    varchar(256) NOT NULL,
   shipping_zipcode varchar(256) NOT NULL,
-  shipping_address varchar(256) NOT NULL
+  shipping_address varchar(256) NOT NULL,
+  salt_password    varchar(256) NOT NULL
 );
 
 CREATE TABLE public."order"

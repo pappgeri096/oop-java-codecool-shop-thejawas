@@ -104,6 +104,58 @@ public class CustomerQureyHandler extends QueryHandler {
         return getCustomers(query).get(0);
     }
 
+    protected void updateCustomerInformation(
+            int id,
+            String name,
+            String email,
+            int phoneNumber,
+            String billingCountry,
+            String billingCity,
+            String billingZipCode,
+            String billingAddress,
+            String shippingCountry,
+            String shippingCity,
+            String shippingZipCode,
+            String shippingAddress) {
+
+        String preparedQuery = "UPDATE Customers\n" +
+                "  name = ?,\n" +
+                "  email = ?,\n" +
+                "  phone_number = ?,\n" +
+                "  billing_country = ?,\n" +
+                "  billing_city = ?,\n" +
+                "  billing_zipcode = ?,\n" +
+                "  billing_address = ?,\n" +
+                "  shipping_country = ?,\n" +
+                "  shipping_city = ?,\n" +
+                "  shipping_zipcode = ?,\n" +
+                "  shipping_address = ?\n" +
+                ") WHERE id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(preparedQuery)
+        ) {
+            pstmt.setString(1, name);
+            pstmt.setString(2, email);
+            pstmt.setInt(3, phoneNumber);
+            pstmt.setString(4, billingCountry);
+            pstmt.setString(5, billingCity);
+            pstmt.setString(6, billingZipCode);
+            pstmt.setString(7, billingAddress);
+            pstmt.setString(8, shippingCountry);
+            pstmt.setString(9, shippingCity);
+            pstmt.setString(10, shippingZipCode);
+            pstmt.setString(11, shippingAddress);
+            pstmt.setInt(12, id);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private List<Customer> getCustomers(String query) {
         List<Customer> resultList = new ArrayList<>();
 
@@ -115,7 +167,6 @@ public class CustomerQureyHandler extends QueryHandler {
                 Customer customer = new Customer(
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
-                        resultSet.getString("password_hash"),
                         resultSet.getString("email"),
                         resultSet.getInt("phone_number"),
                         resultSet.getString("billing_country"),

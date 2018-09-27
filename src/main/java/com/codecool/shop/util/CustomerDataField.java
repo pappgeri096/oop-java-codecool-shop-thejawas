@@ -4,6 +4,7 @@ public enum CustomerDataField {
     USER_ID("id"),
     USER_NAME("name"),
     PASSWORD_HASH("password_hash"),
+    PASSWORD_CONFIRMATION("password_confirmation"),
     EMAIL_ADDRESS("email"),
     PHONE_NUMBER("phone_number"),
     COUNTRY_BILLING("billing_country"),

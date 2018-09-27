@@ -39,29 +39,29 @@
         <form action="/checkout" method="post">
             <div class="form-group mx-auto">
                 Name
-                <input class="form-control" placeholder="Enter your name" type="text" name="name" required ><br>
+                <input class="form-control" placeholder="Enter your name" type="text" name="name" required th:text="${customer.name}"><br>
 
                 Email address
-                <input class="form-control" placeholder="Enter email" type="text" name="email" required ><br>
+                <input class="form-control" placeholder="Enter email" type="text" name="email" required th:text="${customer.email}"><br>
 
                 Phone Number
-                <input class="form-control" placeholder="06-20-458-4578" type="text"  name="phone_number" required ><br>
+                <input class="form-control" placeholder="06-20-458-4578" type="text"  name="phone_number" required th:text="${customer.phone_number}"><br>
             </div>
 
             <div class="form-group">
-                <h3 class="bg-success text-white p-5">Billing Address</h3>
+                <h3 class="bg-success text-white p-5" th:text="${customer.name}">Billing Address</h3>
 
                 Country:<br>
-                <input class="form-control" type="text" name="billing_country" required><br>
+                <input class="form-control" type="text" name="billing_country" required th:text="${customer.billingCountry}"><br>
 
                 City
-                <input class="form-control" type="text" name="billing_city" required><br>
+                <input class="form-control" type="text" name="billing_city" required th:text="${customer.billingCity}"><br>
 
                 Zipcode
-                <input class="form-control" type="text" name="billing_zipcode" required><br>
+                <input class="form-control" type="text" name="billing_zipcode" required th:text="${customer.billingZipCode}"><br>
 
                 Address
-                <input class="form-control" type="text" name="billing_address" required>
+                <input class="form-control" type="text" name="billing_address" required th:text="${customer.billingAddress}">
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="true" id="sameAddress" name="sameAddress">
@@ -74,16 +74,16 @@
 
 
                 Country:<br>
-                <input class="form-control shipping" type="text" name="shipping_country" ><br>
+                <input class="form-control shipping" type="text" name="shipping_country" th:text="${customer.shippingCountry}"><br>
 
                 City
-                <input class="form-control shipping" type="text" name="shipping_city" ><br>
+                <input class="form-control shipping" type="text" name="shipping_city" th:text="${customer.shippingCity}"><br>
 
                 Zipcode
-                <input class="form-control shipping" type="text" name="shipping_zipcode" ><br>
+                <input class="form-control shipping" type="text" name="shipping_zipcode" th:text="${customer.shippingZipCode}"><br>
 
                 Address
-                <input class="form-control shipping" type="text" name="shipping_address" ><br>
+                <input class="form-control shipping" type="text" name="shipping_address" th:text="${customer.shippingAddress}"><br>
             </div>
             <button type="submit" value="Submit" class="btn btn-primary btn-block">Submit</button>
         </form>

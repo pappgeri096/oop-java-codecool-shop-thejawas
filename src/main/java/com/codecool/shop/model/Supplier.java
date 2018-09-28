@@ -1,26 +1,12 @@
 package com.codecool.shop.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Supplier extends BaseModel {
-    private List<Product> products;
+
+    public Supplier() {
+    }
 
     public Supplier(int id, String name, String description) {
         super(id, name, description);
-        this.products = new ArrayList<>();
-    }
-
-    public void setProducts(ArrayList<Product> products) {
-        this.products = products;
-    }
-
-    public List<Product> getProducts() {
-        return this.products;
-    }
-
-    void addProduct(Product product) {
-        this.products.add(product);
     }
 
     public String toString() {

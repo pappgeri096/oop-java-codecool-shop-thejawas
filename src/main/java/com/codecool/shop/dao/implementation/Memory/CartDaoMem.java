@@ -33,7 +33,6 @@ public class CartDaoMem implements CartDao {
 
     @Override
     public void add(Cart objectType) {
-//        objectType.setId(data.size() + 1);
         data.add(objectType);
     }
 
@@ -135,7 +134,7 @@ public class CartDaoMem implements CartDao {
         for (CartItem cartItem : getLastCart().getCartItemList()) {
             Product product = cartItem.getProduct();
             if (product.getId() == productId) {
-                return product.getDefaulPrice();
+                return product.getDefaultPrice();
             }
         }
         return null;

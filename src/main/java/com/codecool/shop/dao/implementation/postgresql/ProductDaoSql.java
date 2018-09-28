@@ -35,7 +35,7 @@ public class ProductDaoSql extends ProductQueryHandler implements ProductDao {
                 prePreparedQuery,
                 product.getName(),
                 product.getDescription(),
-                product.getDefaulPrice(),
+                product.getDefaultPrice(),
                 String.valueOf(product.getDefaultCurrency()),
                 product.getProductCategory().getId(),
                 product.getSupplier().getId()

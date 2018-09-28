@@ -88,7 +88,7 @@ public class PaypalController extends HttpServlet {
 
             String name = cartItem.getProduct().getName();
             String quantity = Integer.toString(cartItem.getQuantity());
-            String price = String.valueOf(cartItem.getProduct().getDefaulPrice());
+            String price = String.valueOf(cartItem.getProduct().getDefaultPrice());
             String currency = String.valueOf(cartDataManager.getCurrencyFromLastCartBy(cartItem.getProduct().getId()));
 
             addCartItem(payPalItems, name, quantity, price, currency);

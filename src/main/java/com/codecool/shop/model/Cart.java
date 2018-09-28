@@ -1,9 +1,7 @@
 package com.codecool.shop.model;
 
-import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.util.CartStatusType;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +13,6 @@ public class Cart extends BaseModel {
 
     private List<CartItem> cartItemList = new ArrayList<>();
 
-//    public Cart() {
-//    }
-//
     public Cart(int id) {
         super(id);
     }
@@ -30,10 +25,6 @@ public class Cart extends BaseModel {
 
     public int getUserId() {
         return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public CartStatusType getCartStatusType() {

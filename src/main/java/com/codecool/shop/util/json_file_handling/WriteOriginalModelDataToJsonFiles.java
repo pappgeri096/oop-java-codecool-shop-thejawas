@@ -29,6 +29,8 @@ class WriteOriginalModelDataToJsonFiles {
     private static ProductCategory energy = new ProductCategory(2, "Energy", "Esoteric", "Paranormal energies.");
     private static ProductCategory bodyPillow = new ProductCategory(3, "Body Pillow", "Pillow", "Confortable Pillows.");
 
+    //setting up products
+    private static Product amazonFire = new Product(1, "Amazon Fire",BigDecimal.valueOf(49.91), "USD", "Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support.", tablet, amazon);
 
     static {
         SUPPLIER_DATA_MANAGER.add(amazon);
@@ -41,8 +43,7 @@ class WriteOriginalModelDataToJsonFiles {
         PRODUCT_CATEGORY_DATA_MANAGER.add(energy);
         PRODUCT_CATEGORY_DATA_MANAGER.add(bodyPillow);
 
-        //setting up products and printing it
-        PRODUCT_DATA_MANAGER.add(new Product(1, "Amazon Fire",BigDecimal.valueOf(49.91), "USD", "Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support.", tablet, amazon));
+        PRODUCT_DATA_MANAGER.add(amazonFire);
         PRODUCT_DATA_MANAGER.add(new Product(2, "Lenovo IdeaPad Miix 700", BigDecimal.valueOf(479.11), "USD", "Keyboard cover is included. Fanless Core m5 processor. Full-size USB ports. Adjustable kickstand.", tablet, lenovo));
         PRODUCT_DATA_MANAGER.add(new Product(3, "Amazon Fire HD 8", BigDecimal.valueOf(89.21), "USD", "Amazon's latest Fire HD 8 tablet is a great value for media consumption.", tablet, amazon));
 
@@ -68,7 +69,16 @@ class WriteOriginalModelDataToJsonFiles {
 //        saveProductCategoriesNoProductList(filePathForProductCategoryData);
 //        saveSuppliersNoProductList(filePathForSupplierData);
 
+//        readingJsonFileWithGenerics(filePathForProductData); // TODO: not working: returns linkedhashmap not a productlist
+
     }
+
+//    private static void readingJsonFileWithGenerics(String filePathForProductData) {
+//        String filePathTest = "src/main/resources/json_data_persistence/testing_data.json";
+//        List<Product> testProductList = JsonMappingHandler.jsonFileToObjectList(filePathForProductData, Product.class);
+//        System.out.println(testProductList);
+//        System.out.println(testProductList.getClass());
+//    }
 
     private static void saveProducts(String filePath) {
         JsonMappingHandler.listToJsonFile(filePath, PRODUCT_DATA_MANAGER.getAll());

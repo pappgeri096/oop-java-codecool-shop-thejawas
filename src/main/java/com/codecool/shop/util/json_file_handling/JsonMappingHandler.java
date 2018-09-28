@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.LongSummaryStatistics;
 
 public class JsonMappingHandler {
 
@@ -63,5 +64,19 @@ public class JsonMappingHandler {
 
         return objectList;
     }
+
+    public static <E> List<E> jsonFileToObjectList(String fileName, Class<?> type) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<E> objectList = null;
+        try {
+            objectList = objectMapper.readValue(new File(fileName), new TypeReference<List<E>>() {});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return objectList;
+    }
+
 
 }

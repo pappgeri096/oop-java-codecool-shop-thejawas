@@ -7,6 +7,7 @@
 
     <title>Codecool Shop</title>
 
+
     <!-- Latest compiled and minified Jquery -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -76,15 +77,14 @@
             </ul>
             <form class="navbar-form navbar-right" role="search">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <input type="text" id="search" class="form-control" placeholder="Search">
                 </div>
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
         </div>
     </div>
 </nav>
-<a class="navbar-form navbar-right shopping-cart" href="/cart"><i class="fas fa-cart-arrow-down fa-lg" th:text="${order.getQuantityOfProducts()}">0</i></a>
-<!--<i class="navbar-form navbar-right" th:text="${order.getQuantityOfProducts()}"></i>-->
+<a class="navbar-form navbar-right shopping-cart" href="/cart"><i class="fas fa-cart-arrow-down fa-lg" th:text="${quantityOfProducts}">0</i></a>
 <div id="products" class="row list-group">
 
     <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products}">
@@ -99,8 +99,7 @@
                         <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
                     </div>
                     <div class="col-xs-12 col-md-6">
-                        <a class="btn btn-success" href="/index?product=1" th:attr="href='/index?product=' + ${prod.id}">Add
-                            to cart</a>
+                        <a class="btn btn-success" th:attr="href='/index?product=' + ${prod.id}">Add to cart</a>
                     </div>
                 </div>
             </div>
@@ -109,6 +108,26 @@
 </div>
 
 <div th:replace="footer.html :: copy"></div>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+
+<script>
+    function search(){
+        search = document.querySelector("#search");
+
+        search.addEventListener("keyup", function () {
+            axios.get('/search', {
+                params: {
+                    keyWord: search.value
+                }
+            })
+                .then(function (response) {
+                    document.querySelector("#products").innerHTML = response.data;
+                });
+    });
+    }
+    search();
+</script>
 
 </body>
 </html>

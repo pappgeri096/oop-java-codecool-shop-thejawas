@@ -1,10 +1,11 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.config.Initializer;
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.JSON.OrderDaoJson;
-import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.Order;
+import com.codecool.shop.dao.CustomerDao;
+import com.codecool.shop.model.Customer;
+import com.codecool.shop.util.CustomerDataField;
+import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,12 +19,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @WebServlet(urlPatterns = {"/checkout"})
 public class CheckOutController extends HttpServlet {
+
+    private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
+
+    private CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
 
     private static final Logger checkoutLogger = LoggerFactory.getLogger(CheckOutController.class);
 
@@ -37,36 +39,47 @@ public class CheckOutController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
-        Order order = orderDataStore.getCurrent();
-        List<String> userData = new ArrayList<>();
-        List<String> formNames = Arrays.asList("name", "email", "phonenumber", "countryBill",
-                "cityBill", "zipcodeBill",
-                "addressBill", "sameAddress", "countryShip", "cityShip",
-                "zipcodeShip", "addressShip");
-        for (String formName : formNames) {
-            if (formName.equals("sameAddress") && req.getParameter(formName) != null && req.getParameter(formName).equals("true")) {
-                for (int i = 3; i < 7; i++) {
-                    userData.add(userData.get(i));
-                }
-                break;
-            } else if (!formName.equals("sameAddress")) {
-                userData.add(req.getParameter(formName));
-            }
-        }
-        order.createUserDataMap(userData);
 
-        OrderDao writeOrderDataToFile = new OrderDaoJson();
-        writeOrderDataToFile.add(order);
-
-//        OrderDao serializeOrder = new OrderDaoJson();
-//        String serializedOrder = ((OrderDaoJson) serializeOrder).orderToJsonString(order);
-//        checkoutLogger.warn(serializedOrder);
-
-        String uuidString = ((OrderDaoJson) writeOrderDataToFile).getUuidString();
-        checkoutLogger.info("User data is saved in json file. Order ID: {}", uuidString);
+        customerDataManager.add(createNewCustomerFromUserInput(req));
 
         resp.sendRedirect("/payment");
+    }
+
+    private Customer createNewCustomerFromUserInput(HttpServletRequest req) {
+        String SHIPPING_ADDRESS_SAME_AS_BILLING = req.getParameter(CustomerDataField.SHIPPING_ADDRESS_SAME.getInputString());
+
+        int id = customerDataManager.generateIdForNewCustomer();
+        String name = req.getParameter(CustomerDataField.USER_NAME.getInputString());
+        String email = req.getParameter(CustomerDataField.EMAIL_ADDRESS.getInputString());
+        int phoneNumber = Integer.parseInt(req.getParameter(CustomerDataField.PHONE_NUMBER.getInputString()));
+        String billingCountry = req.getParameter(CustomerDataField.COUNTRY_BILLING.getInputString());
+        String billingCity = req.getParameter(CustomerDataField.CITY_BILLING.getInputString());
+        String billingZipCode = req.getParameter(CustomerDataField.ZIP_CODE_BILLING.getInputString());
+        String billingAddress = req.getParameter(CustomerDataField.ADDRESS_BILLING.getInputString());
+
+        String shippingCountry;
+        String shippingCity;
+        String shippingZipCode;
+        String shippingAddress;
+
+        if (SHIPPING_ADDRESS_SAME_AS_BILLING != null && SHIPPING_ADDRESS_SAME_AS_BILLING.equals("true")) {
+            shippingCountry = billingCountry;
+            shippingCity = billingCity;
+            shippingZipCode = billingZipCode;
+            shippingAddress = billingAddress;
+
+        } else {
+            shippingCountry = req.getParameter(CustomerDataField.COUNTRY_SHIPPING.getInputString());
+            shippingCity = req.getParameter(CustomerDataField.CITY_SHIPPING.getInputString());
+            shippingZipCode = req.getParameter(CustomerDataField.ZIP_CODE_SHIPPING.getInputString());
+            shippingAddress = req.getParameter(CustomerDataField.ADDRESS_SHIPPING.getInputString());
+
+        }
+
+        return new Customer(
+                id, name, email, phoneNumber, billingCountry, billingCity, billingZipCode, billingAddress,
+                shippingCountry, shippingCity, shippingZipCode, shippingAddress
+        );
     }
 }
 

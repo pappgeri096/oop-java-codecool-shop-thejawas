@@ -1,13 +1,14 @@
 package com.codecool.shop.dao.implementation.postgresql;
 
 import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.implementation.postgresql.query_util.SupplierQueryHandler;
 import com.codecool.shop.model.Supplier;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupplierDaoSql extends BaseDaoSql implements SupplierDao {
+public class SupplierDaoSql extends SupplierQueryHandler implements SupplierDao {
 
     private static SupplierDaoSql instance = null;
 
@@ -43,7 +44,7 @@ public class SupplierDaoSql extends BaseDaoSql implements SupplierDao {
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query);
+             ResultSet resultSet = statement.executeQuery(query)
         ) {
             if (resultSet.next()) {
                 int idFromDB = resultSet.getInt("id");
@@ -64,7 +65,7 @@ public class SupplierDaoSql extends BaseDaoSql implements SupplierDao {
     public void remove(int id) {
         String query = "DELETE FROM supplier WHERE id ='" + id + "';";
 
-        deleteRecordFromDatabase(query);
+        DMLexecute(query);
 
     }
 
@@ -77,7 +78,7 @@ public class SupplierDaoSql extends BaseDaoSql implements SupplierDao {
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query);
+             ResultSet resultSet = statement.executeQuery(query)
         ) {
             while (resultSet.next()) {
                 Supplier supplier = new Supplier(
@@ -95,26 +96,6 @@ public class SupplierDaoSql extends BaseDaoSql implements SupplierDao {
 
     }
 
-    private void insertSupplierWithValidation(String prePreparedQuery, String name, String description) {
-
-        try (Connection connection = getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery);
-        ) {
-            Class.forName("org.postgresql.Driver");
-            pstmt.setString(1, name);
-            pstmt.setString(2, description);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            System.out.println("SQL exception");
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            System.out.println("ClassNotFound exception");
-            e.printStackTrace();
-        }
-
-    }
 
 
 }

@@ -1,13 +1,17 @@
 package com.codecool.shop.controller;
 
 
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.LineItem;
-import com.codecool.shop.model.Order;
+import com.codecool.shop.config.Initializer;
+import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.dao.CustomerDao;
+import com.codecool.shop.model.CartItem;
+import com.codecool.shop.model.Customer;
+import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,62 +19,56 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 @WebServlet(urlPatterns = {"/paypal"})
 public class PaypalController extends HttpServlet {
 
-    private String clientID;
-    private String SecretID;
-    private OrderDao orderDataStore;
-    private Order order;
     private static final Logger paypalLogger = LoggerFactory.getLogger(PaymentController.class);
+    private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
 
-
-    public PaypalController() {
-        this.clientID = "AWTqmvOfxu2VnNifNQblRmD8ty6zvuam7Hh_k36MHk8sbYuZdEtR3gneLyuK_3A7E_AzZm0AWr-rNVA3";
-        SecretID = "ECYgXqdlLBxQsCHhdwMt4yz1LU5O5n6chmJe3EHrhGftsUOiN5PbmergN_0_lqQcFl-JzzC1ep68JG5I";
-        this.orderDataStore = OrderDaoMem.getInstance();
-        this.order = orderDataStore.getCurrent();
-    }
+    private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
+    private CustomerDao customerDataManager = IMPLEMENTATION_FACTORY.getCustomerDataManagerInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        if (order.getUserDataMap().size() == 0 || order.getProductNameAndQuantityMap().size() == 0) {
-            resp.sendRedirect("/");
-            paypalLogger.debug("Empty user data or product quantity");
-            paypalLogger.debug(
-                    "User data size: {}. Product quantity: {}",
-                    order.getUserDataMap().size(),
-                    order.getProductNameAndQuantityMap().size());
-        }
-        paypalLogger.info("Customer is now redirected to paypal.com");
-        //execute payment
-        payment(resp);
+        int numberOfProductsInCart = cartDataManager.getLastCart().getCartItemList().size();
 
+        boolean anyCustomerDataMissing = customerDataManager.checkIfAnyCustomerDataMissing();
+        if (anyCustomerDataMissing || numberOfProductsInCart == 0) {
+            resp.sendRedirect("/");
+            paypalLogger.debug("Not enough user data provided or no product was selected fot purchase");
+            paypalLogger.debug(
+                    "All user data are provided: {}. Product quantity: {}",
+                    anyCustomerDataMissing,
+                    numberOfProductsInCart
+            );
+        } else {
+            paypalLogger.info("Customer is now redirected to paypal.com");
+            //execute payment
+            payment(resp);
+
+        }
     }
+
 
     private void payment(HttpServletResponse resp) throws IOException {
         ShippingAddress address = getAddress();
 
-        List items = new ArrayList();
-        getItems(items);
+        List<Item> paypalItemLists = new ArrayList<>();
+        getItems(paypalItemLists);
 
-        ItemList list = getItemList(address, items);
+        ItemList itemList = getItemList(address, paypalItemLists);
 
-        Amount amount = getAmount();
+        String currency = String.valueOf(cartDataManager.getCurrencyFromLastCartBy(cartDataManager.getLastCart().getCartItemList().get(0).getProduct().getId()));
 
-        List<Transaction> transactions = getTransactions(list, amount);
+        Amount amount = getAmount(currency);
+
+        List<Transaction> transactions = getTransactions(itemList, amount);
 
         PayerInfo info = getPayerInfo(address);
 
@@ -83,9 +81,49 @@ public class PaypalController extends HttpServlet {
         executePayment(resp, payment);
     }
 
+    private void getItems(List<Item> payPalItems) {
+        List<CartItem> itemsIncCurrentCart = cartDataManager.getLastCart().getCartItemList();
+
+        for (CartItem cartItem : itemsIncCurrentCart) {
+
+            String name = cartItem.getProduct().getName();
+            String quantity = Integer.toString(cartItem.getQuantity());
+            String price = String.valueOf(cartItem.getProduct().getDefaultPrice());
+            String currency = String.valueOf(cartDataManager.getCurrencyFromLastCartBy(cartItem.getProduct().getId()));
+
+            addCartItem(payPalItems, name, quantity, price, currency);
+        }
+    }
+
+    private ItemList getItemList(ShippingAddress address, List<Item> payPalItems) {
+        ItemList list = new ItemList();
+        list.setItems(payPalItems);
+        list.setShippingAddress(address);
+        return list;
+    }
+
+
+
+    private void addCartItem(List<Item> payPalItems, String name, String quantity, String price, String currency) {
+
+        Item payPalItem = new Item();
+
+        payPalItem.setName(name);
+        payPalItem.setPrice(price);
+        payPalItem.setCategory("PHYSICAL");
+        payPalItem.setQuantity(quantity);
+        payPalItem.setCurrency(currency);
+        
+        payPalItems.add(payPalItem);
+    }
+
+
     private void executePayment(HttpServletResponse resp, Payment payment) throws IOException {
         try {
-            APIContext apiContext = new APIContext(clientID, SecretID, "sandbox");
+            String clientID = "AWTqmvOfxu2VnNifNQblRmD8ty6zvuam7Hh_k36MHk8sbYuZdEtR3gneLyuK_3A7E_AzZm0AWr-rNVA3";
+            String secretID = "ECYgXqdlLBxQsCHhdwMt4yz1LU5O5n6chmJe3EHrhGftsUOiN5PbmergN_0_lqQcFl-JzzC1ep68JG5I";
+
+            APIContext apiContext = new APIContext(clientID, secretID, "sandbox");
             Payment createdPayment = payment.create(apiContext);
 
             Iterator links = createdPayment.getLinks().iterator();
@@ -139,64 +177,27 @@ public class PaypalController extends HttpServlet {
         transaction.setItemList(list);
         transaction.setDescription("Payment page");
         //transaction.setInvoiceNumber(Integer.toString(ThreadLocalRandom.current().nextInt(1000000000, 999999999 + 1)));
-        List<Transaction> transactions = new ArrayList<Transaction>();
+        List<Transaction> transactions = new ArrayList<>();
         transactions.add(transaction);
         return transactions;
     }
 
-    private Amount getAmount() {
+    private Amount getAmount(String currency) {
         Amount amount = new Amount();
-        amount.setCurrency("USD");
-        amount.setTotal(Double.toString(order.getTotalPrice().doubleValue()));
+        amount.setCurrency(currency);
+        amount.setTotal(Double.toString(cartDataManager.getTotalPriceOfLastCart().doubleValue()));
         return amount;
-    }
-
-    private ItemList getItemList(ShippingAddress address, List items) {
-        ItemList list = new ItemList();
-        list.setItems(items);
-        list.setShippingAddress(address);
-        return list;
-    }
-
-    private void getItems(List items) {
-        for (Map.Entry<String, Integer> entry : order.getProductNameAndQuantityMap().entrySet()) {
-
-
-            String name = entry.getKey();
-            String quantity = Integer.toString(entry.getValue());
-            String price = "1.1";
-
-            for (LineItem item : order.getLineItemList()) {
-                if (item.getProduct().getName().equals(name)) {
-                    price = String.valueOf(item.getProduct().getDefaulPrice());
-                    break;
-                }
-
-            }
-
-            addItem(items, name, quantity, price);
-        }
-    }
-
-    private void addItem(List items, String name, String quantity, String price) {
-        Item item = new Item();
-        item.setName(name);
-
-        item.setPrice(price);
-        item.setCategory("PHYSICAL");
-        item.setQuantity(quantity);
-        item.setCurrency("USD");
-        items.add(item);
     }
 
     private ShippingAddress getAddress() {
         ShippingAddress address = new ShippingAddress();
-        address.setPhone(order.getUserDataMap().get("telephoneNumber"));
+        Customer currentCustomer = customerDataManager.getCurrent();
+        address.setPhone(String.valueOf(currentCustomer.getPhoneNumber()));
         address.setCountryCode("HU");
-        address.setCity(order.getUserDataMap().get("cityBill"));
-        address.setLine1(order.getUserDataMap().get("addressBill"));
-        address.setPostalCode(order.getUserDataMap().get("zipCodeBill"));
-        address.setState(order.getUserDataMap().get("Pest"));
+        address.setCity(currentCustomer.getBillingCity());
+        address.setLine1(currentCustomer.getBillingAddress());
+        address.setPostalCode(currentCustomer.getBillingZipCode());
+        address.setState("Pest"); // TODO: GET STATE AUTOMATICALLY BASED ON CITY NAME
         return address;
     }
 

@@ -1,20 +1,22 @@
 package com.codecool.shop.controller;
 
 import com.braintreegateway.*;
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.Memory.OrderDaoMem;
-import com.codecool.shop.model.Order;
+import com.codecool.shop.config.Initializer;
+import com.codecool.shop.dao.CartDao;
+import com.codecool.shop.util.implementation_factory.ImplementationFactory;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
 
 @WebServlet(urlPatterns = {"/braintree"})
 public class BrainTreeController  extends HttpServlet {
+
+    private static final ImplementationFactory IMPLEMENTATION_FACTORY = Initializer.getImplementationFactory();
+
+    private CartDao cartDataManager = IMPLEMENTATION_FACTORY.getCartDataManagerInstance();
 
     private static BraintreeGateway gateway = new BraintreeGateway(
             Environment.SANDBOX,
@@ -22,13 +24,7 @@ public class BrainTreeController  extends HttpServlet {
             "zt4qsvng8hnygtg8",
             "8fbed28cb5f457cbe3ff1359091f18af"
     );
-    private OrderDao orderDataStore;
-    private Order order;
 
-    public BrainTreeController() {
-        this.orderDataStore = OrderDaoMem.getInstance();
-        this.order = orderDataStore.getCurrent();
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp){
@@ -38,9 +34,10 @@ public class BrainTreeController  extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        String nonce = req.getParameter("payment_method_nonce");;
+
+        String nonce = req.getParameter("payment_method_nonce");
         TransactionRequest request = new TransactionRequest()
-                .amount(order.getTotalPrice())
+                .amount(cartDataManager.getTotalPriceOfLastCart())
                 .paymentMethodNonce(nonce)
                 .options()
                 .submitForSettlement(true)
@@ -49,7 +46,7 @@ public class BrainTreeController  extends HttpServlet {
         Result<Transaction> result = gateway.transaction().sale(request);
 
         if (result.isSuccess()) {
-            Transaction settledTransaction = result.getTarget();
+            Transaction settledTransaction = result.getTarget(); // TODO: DEAD CODE: ARE WE GONNA NEED THIS?
             resp.sendRedirect("/success");
         } else {
             for (ValidationError error : result.getErrors().getAllDeepValidationErrors()) {

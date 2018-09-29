@@ -1,13 +1,14 @@
 package com.codecool.shop.dao.implementation.postgresql;
 
 import com.codecool.shop.dao.ProductCategoryDao;
+import com.codecool.shop.dao.implementation.postgresql.query_util.ProductCategoryQueryHandler;
 import com.codecool.shop.model.ProductCategory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductCategoryDaoSql extends BaseDaoSql implements ProductCategoryDao {
+public class ProductCategoryDaoSql extends ProductCategoryQueryHandler implements ProductCategoryDao {
 
     private static ProductCategoryDaoSql instance = null;
 
@@ -46,7 +47,7 @@ public class ProductCategoryDaoSql extends BaseDaoSql implements ProductCategory
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query);
+             ResultSet resultSet = statement.executeQuery(query)
         ) {
             if (resultSet.next()) {
                 int idFromDB = resultSet.getInt("id");
@@ -68,7 +69,7 @@ public class ProductCategoryDaoSql extends BaseDaoSql implements ProductCategory
     public void remove(int id) {
         String query = "DELETE FROM product_category WHERE id ='" + id + "';";
 
-        deleteRecordFromDatabase(query);
+        DMLexecute(query);
 
     }
 
@@ -82,7 +83,7 @@ public class ProductCategoryDaoSql extends BaseDaoSql implements ProductCategory
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query);
+             ResultSet resultSet = statement.executeQuery(query)
         ) {
             while (resultSet.next()) {
                 ProductCategory category = new ProductCategory(
@@ -98,26 +99,6 @@ public class ProductCategoryDaoSql extends BaseDaoSql implements ProductCategory
         }
 
         return resultList;
-
-    }
-
-    private void insertProductCategoryWithValidation(String prePreparedQuery, String name, String description, String department) {
-
-        try (Connection connection = getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(prePreparedQuery);
-        ) {
-            Class.forName("org.postgresql.Driver");
-            pstmt.setString(1, name);
-            pstmt.setString(2, description);
-            pstmt.setString(3, department);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
     }
 
